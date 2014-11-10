@@ -5,13 +5,33 @@ RainMachine API for accesing RainMachine devices.
 
 The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or bound to port 18080 accessible via normal HTTP
 
-
-# Group API version
-## API versions [/apiVer]
-### List all versions [GET]
+# Group API versions
+## GET /apiVer
 + Response 200 (application/json)
 
         {"apiVer": "4.0.0", "hwVer": 2, "swVer": "4.0.219"}
+
+# Group Authentication
+## POST /auth/login
+Request auth with the device
++ Response 200 (application/json)
+
+        {}
+
+## POST /auth/change
+Request a password change 
++ Response 200 (application/json)
+
+        {}
+
+## POST /auth/check
+Request a password check
++ Response 200 (application/json)
+
+        {}
+
+
+
 
 # Group Device provision
 Device provision related functions
