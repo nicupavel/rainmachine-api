@@ -13,7 +13,7 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 
 # Group Authentication
 ## POST /auth/login
-Request auth with the device
+Request auth with the device response will include a token to be used on subsequent calls
 + Response 200 (application/json)
 
         {}
@@ -29,7 +29,6 @@ Request a password check
 + Response 200 (application/json)
 
         {}
-
 
 
 
