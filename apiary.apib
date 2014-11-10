@@ -1,0 +1,285 @@
+FORMAT: 1A
+
+# RainMachine
+RainMachine API for accesing RainMachine devices. 
+
+The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or bound to port 18080 accessible via normal HTTP
+
+
+# Group API version
+## API versions [/apiVer]
+### List all versions [GET]
++ Response 200 (application/json)
+
+        {"apiVer": "4.0.0", "hwVer": 2, "swVer": "4.0.219"}
+
+# Group Device provision
+Device provision related functions
+## Device settings [/provision]
+
+| Variable      | Type      | Description                   |
+|---------------|-----------|-------------------------------|
+| `httpEnabled` |*boolean*  | If the HTTP server is enabled |
+| `useCommandLineArguments` | *boolean* | If program was started with command line arguments |
+| `hardwareVersion` | *integer* | Hardware version of this device |
+| `databasePath` | *string* | Path to the database | 
+| `programListShowInactive` | *boolean* | List inactive programs in queries | 
+| `programZonesShowInactive` | *boolean* | List inactive zones in queries | 
+| `netName` | *string* | Name of the device | 
+| `masterValveBefore` |*integer*| Seconds for which the master valve will open before each zone |
+
+### Get device settings [GET]
++ Response 200 (application/json)
+
+        {
+          "system": {
+            "httpEnabled": true, 
+            "useCommandLineArguments": false, 
+            "hardwareVersion": 2, 
+            "databasePath": "/rainmachine-app/DB/Default", 
+            "programListShowInactive": true, 
+            "programZonesShowInactive": false, 
+            "netName": "Rain-126", 
+            "masterValveBefore": 10, 
+            "wizardHasRun": true, 
+            "apiVersion": "4.0.0", 
+            "maxWateringCoef": 2, 
+            "masterValveAfter": 10, 
+            "zoneListShowInactive": true, 
+            "selfTest": false, 
+            "managedMode": true, 
+            "localValveCount": 8, 
+            "useMasterValve": false, 
+            "zoneDuration": 60, 
+            "keepDataHistory": false
+          }, 
+          "location": {
+            "elevation": null, 
+            "doyDownloaded": false, 
+            "zip": null, 
+            "stationID": -1, 
+            "stationSource": "", 
+            "et0Average": 1.2345, 
+            "latitude": 36.755419000000006, 
+            "state": "Default", 
+            "stationName": "", 
+            "wsDays": 3, 
+            "stationDownloaded": false, 
+            "address": "Default", 
+            "rainSensitivity": 1, 
+            "timezone": "America/Los_Angeles", 
+            "longitude": -119.776022, 
+            "name": "Fresno"
+          }
+        }
+
+### Sets device settings [POST]
++ Request (application/json)
+
+        {
+          "system": {
+            "httpEnabled": true, 
+            "useCommandLineArguments": false, 
+            "hardwareVersion": 2, 
+            "databasePath": "/rainmachine-app/DB/Default", 
+            "programListShowInactive": true, 
+            "programZonesShowInactive": false, 
+            "netName": "Rain-126", 
+            "masterValveBefore": 10, 
+            "wizardHasRun": true, 
+            "apiVersion": "4.0.0", 
+            "maxWateringCoef": 2, 
+            "masterValveAfter": 10, 
+            "zoneListShowInactive": true, 
+            "selfTest": false, 
+            "managedMode": true, 
+            "localValveCount": 8, 
+            "useMasterValve": false, 
+            "zoneDuration": 60, 
+            "keepDataHistory": false
+          }, 
+          "location": {
+            "elevation": null, 
+            "doyDownloaded": false, 
+            "zip": null, 
+            "stationID": -1, 
+            "stationSource": "", 
+            "et0Average": 1.2345, 
+            "latitude": 36.755419000000006, 
+            "state": "Default", 
+            "stationName": "", 
+            "wsDays": 3, 
+            "stationDownloaded": false, 
+            "address": "Default", 
+            "rainSensitivity": 1, 
+            "timezone": "America/Los_Angeles", 
+            "longitude": -119.776022, 
+            "name": "Fresno"
+          }
+        }
++ Response 200 (application/json)
+
+        {
+            "statusCode": 0 
+        }
+
+# Device name [/provision/name]
+## Returns device name [GET]
++ Response 200 (application/json)
+
+        {"name": "Verde-CIMIS"}
+
+## Sets device name [POST]
++ Response 200 (application/json)
+        
+        {
+            "statusCode": 0 
+        }
+
+
+## Device WIFI Settings [/provision/wifi]
+### Returns current WIFI configuration [GET]
++ Response 200 (application/json)
+
+        {
+          "interface": "wlan0", 
+          "macAddress": "18:c8:e7:81:a2:6e", 
+          "ipAddress": "192.168.12.126", 
+          "hasClientLink": true, 
+          "mode": "managed"
+        }
+
+## Device WIFI nearby Access Points [/provision/wifi/scan]
+### Returns Access Points in range with RainMachine [GET]
++ Response 200 (application/json)
+
+        {
+          "scanResults": [
+            {
+              "SSID": "LinuxConsulting", 
+              "isEncrypted": true, 
+              "signal": "-52", 
+              "isWEP": false, 
+              "BSS": "00:23:69:F9:55:D1", 
+              "isWPA": false, 
+              "isWPA2": true, 
+              "channel": "3"
+            },    
+            {
+              "SSID": "RainMachine", 
+              "isEncrypted": false, 
+              "signal": "-41", 
+              "isWEP": false, 
+              "BSS": "1A:C8:E7:81:9A:B8", 
+              "isWPA": false, 
+              "isWPA2": false, 
+              "channel": "11"
+            }    
+          ]
+        }
+
+## Device Access Point [/provision/wifi/ssid]
+### Sets the Access Point to which RainMachine will connect to [POST]
++ Response 200 (application/json)
+
+        {
+            "statusCode": 0 
+        }
+
+# Group Watering Programs
+## Programs [/program]
+### Get all programs [GET]
++ response 200 (application/json)
+
+        {
+          "programs": [
+            {
+              "uid": 1, 
+              "name": "Daily program", 
+              "active": true, 
+              "startTime": "00:30", 
+              "cycles": 3, 
+              "soak": 4, 
+              "cs_on": true, 
+              "delay": 3, 
+              "delay_on": true, 
+              "status": 0, 
+              "frequency": {
+                "type": 0, 
+                "param": "0"
+              }, 
+              "coef": 0.0, 
+              "ignoreInternetWeather": false, 
+              "futureField1": 0, 
+              "freq_modified": 0, 
+              "useWaterSense": false, 
+              "nextRun": "2014-11-11", 
+              "wateringTimes": [
+                {
+                  "id": 1, 
+                  "name": "Zone 1", 
+                  "duration": 0, 
+                  "active": false
+                }, 
+                {
+                  "id": 8, 
+                  "name": "Zone 8", 
+                  "duration": 90, 
+                  "active": true
+                }
+              ]
+            }
+          ]
+        }
+        
+### Create a new Program [POST]
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+        
+## Program [/program/{id}]
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the program to retrieve
+    
+### Get program with specified id [GET]
++ Response 200 (application/json)
+
+        {
+          "uid": 1, 
+          "name": "Daily program", 
+          "active": true, 
+          "startTime": "00:30", 
+          "cycles": 3, 
+          "soak": 4, 
+          "cs_on": true, 
+          "delay": 3, 
+          "delay_on": true, 
+          "status": 0, 
+          "frequency": {
+            "type": 0, 
+            "param": "0"
+          }, 
+          "coef": 0.0, 
+          "ignoreInternetWeather": false, 
+          "futureField1": 0, 
+          "freq_modified": 0, 
+          "useWaterSense": false, 
+          "nextRun": "2014-11-11", 
+          "wateringTimes": [
+            {
+              "id": 1, 
+              "name": "Zone 1", 
+              "duration": 0, 
+              "active": false
+            }, 
+            {
+              "id": 8, 
+              "name": "Zone 8", 
+              "duration": 90, 
+              "active": true
+            }
+          ]
+        }
+
+    
