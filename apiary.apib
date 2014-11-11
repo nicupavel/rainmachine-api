@@ -1,9 +1,27 @@
 FORMAT: 1A
 
+HOST: https://device.ip:8080
+
 # RainMachine
 RainMachine API for accesing RainMachine devices. 
 
 The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or bound to port 18080 accessible via normal HTTP
+
+##Allowed HTTPs requests:
+
+- `POST` - Creates or updates a resource
+- `GET` - Retrieves a resource or list of resources
+
+##Typical Server Responses
+
+- 200 `OK` - The request was successful
+- 400 `Bad Request` - The request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - Authentication failed or user does not have permissions for the requested operation.
+- 404 `Not Found` - Resource was not found.
+- 405 `Method Not Allowed` - Requested method is not supported for the specified resource.
+- 460 `Cannot Change Password` - Cannot change password
+- 501 `Exception Occured` - Exception occured while processing the call
+- 541 `Provision Failed` - Cannot provision unit 
 
 # Group API versions
 ## GET /apiVer
@@ -34,7 +52,10 @@ Request a password check
 
 # Group Device provision
 Device provision related functions
-## Device settings [/provision]
+## /provision
+### GET
+Get device settings
+
 
 | Variable      | Type      | Description                   |
 |---------------|-----------|-------------------------------|
@@ -47,7 +68,6 @@ Device provision related functions
 | `netName` | *string* | Name of the device | 
 | `masterValveBefore` |*integer*| Seconds for which the master valve will open before each zone |
 
-### Get device settings [GET]
 + Response 200 (application/json)
 
         {
@@ -92,7 +112,9 @@ Device provision related functions
           }
         }
 
-### Sets device settings [POST]
+### POST
+Sets device provision settings
+
 + Request (application/json)
 
         {
@@ -142,13 +164,15 @@ Device provision related functions
             "statusCode": 0 
         }
 
-# Device name [/provision/name]
-## Returns device name [GET]
+## /provision/name
+### GET
+Returns device name 
 + Response 200 (application/json)
 
         {"name": "Verde-CIMIS"}
 
-## Sets device name [POST]
+## POST
+Sets device name
 + Response 200 (application/json)
         
         {
@@ -156,8 +180,8 @@ Device provision related functions
         }
 
 
-## Device WIFI Settings [/provision/wifi]
-### Returns current WIFI configuration [GET]
+## GET /provision/wifi
+Returns current WIFI configuration 
 + Response 200 (application/json)
 
         {
@@ -168,8 +192,8 @@ Device provision related functions
           "mode": "managed"
         }
 
-## Device WIFI nearby Access Points [/provision/wifi/scan]
-### Returns Access Points in range with RainMachine [GET]
+## GET /provision/wifi/scan
+Returns Access Points in range with RainMachine 
 + Response 200 (application/json)
 
         {
@@ -197,8 +221,8 @@ Device provision related functions
           ]
         }
 
-## Device Access Point [/provision/wifi/ssid]
-### Sets the Access Point to which RainMachine will connect to [POST]
+## POST /provision/wifi/ssid
+Sets the Access Point to which RainMachine will connect to
 + Response 200 (application/json)
 
         {
@@ -206,8 +230,10 @@ Device provision related functions
         }
 
 # Group Watering Programs
-## Programs [/program]
-### Get all programs [GET]
+## /program
+### GET
+Get all watering programs defined on device
+
 + response 200 (application/json)
 
         {
@@ -251,17 +277,36 @@ Device provision related functions
           ]
         }
         
-### Create a new Program [POST]
+### POST
+Create a new Program (program id will be automatically generated)
+
 + Response 200 (application/json)
 
         { "statusCode": 0 }
-        
-## Program [/program/{id}]
+
+## GET /program/nextrun
+Returns next running date/time for all active programs
+
++ Response 200 (application/json)
+
+        { }
+
+## POST /program/stopall
+Stop all queued programs
+
++ Response 200 (application/json)
+
+        { }
+
+
+##/program/{id}
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
     
-### Get program with specified id [GET]
+### GET
+Get program with specified id
+
 + Response 200 (application/json)
 
         {
@@ -301,4 +346,304 @@ Device provision related functions
           ]
         }
 
+### POST
+Update program parameters with specified id
++ Response 200 (application/json)
+
+        {}
+
+## POST /program/{id}/delete
+Delete Program with id
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the program to retrieve
     
++ Response 200 (application/json)
+
+        {}
+        
+## POST /program/{id}/start
+Start watering Program with id
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the program to retrieve
+
++ Response 200 (application/json)
+
+        {}
+
+## POST /program/{id}/stop
+Remove Program with id from watering queue
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the program to retrieve
+    
++ Response 200 (application/json)
+
+        {}
+
+# Group Watering Zones
+## GET /zone
+
+Returns a list of all zones and their generic properties
++ Response 200 (application/json)
+
+        {
+          "zones": [
+            {
+              "uid": 1, 
+              "name": "Zone 1", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 2, 
+              "name": "Zone 2", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 3, 
+              "name": "Zone 3", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 4, 
+              "name": "Zone 4", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 5, 
+              "name": "Zone 5", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 6, 
+              "name": "Zone 6", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 7, 
+              "name": "Zone 7", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }, 
+            {
+              "uid": 8, 
+              "name": "Zone 8", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false, 
+              "type": 1, 
+              "master": false
+            }
+          ]
+        }
+        
+## GET /zone/properties
+Returns advanced properties for all zones
++ Response 200 (application/json)
+
+        {
+          "zones": [
+            {
+              "uid": 1, 
+              "name": "Zone 1", 
+              "valveid": 1, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 2, 
+              "name": "Zone 2", 
+              "valveid": 2, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 3, 
+              "name": "Zone 3", 
+              "valveid": 3, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 4, 
+              "name": "Zone 4", 
+              "valveid": 4, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 5, 
+              "name": "Zone 5", 
+              "valveid": 5, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 6, 
+              "name": "Zone 6", 
+              "valveid": 6, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 7, 
+              "name": "Zone 7", 
+              "valveid": 7, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }, 
+            {
+              "uid": 8, 
+              "name": "Zone 8", 
+              "valveid": 8, 
+              "ETcoef": 1, 
+              "active": true, 
+              "type": 1, 
+              "internet": true, 
+              "savings": 50, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 0, 
+              "history": true, 
+              "master": false, 
+              "before": 10, 
+              "after": 10
+            }
+          ]
+        }
