@@ -806,8 +806,95 @@ Returns the entire current watering queue
 
         { "queue": []  }
 
-# Group Watering Restrictions        
-# Group Parsers
-# Group Mixer
+# Group Watering Restrictions   
+Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay
+
+## /restrictions/global
+### GET
+Returns global watering restrictions
+### POST
+Sets global watering restrictions
+
+## /restrictions/hourly
+### GET
+Returns hourly restrictions for watering
+### POST
+Sets a new hourly restriction
+
+## POST /restrictions/hourly/{id}/delete
+Removes an hourly restriction
+
+# Group Daily Stats
+Daily Statistics and Weather
+##/dailystats
+### GET
+Returns daily statistics information
+
+##/dailystats/{date}
+###GET
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+
+# Group Weather Parsers
+Parsers information, data and parameters
+##/parser
+###GET
+Returns information about all weather parsers available
+
+##/parser/{id}
+###GET 
+Returns detalied information about parser
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser
++ Response 200 (application/json)
+
+        {
+          "parser": {
+            "lastRun": null, 
+            "params": {
+              "station": 2, 
+              "customStation": true, 
+              "historicDays": 5
+            }, 
+            "enabled": false, 
+            "uid": 2, 
+            "name": "CIMIS Parser"
+          }
+        }
+
+## GET /parser/{id}/data
+## GET /parser/{id}/activate
+## GET /parser/{id}/params
+
+# Group Weather Mixed Data
+Mixed weather data from parsers
+## GET /mixer
+Return all available mixer data
+## GET /mixer/{date}
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+
 # Group Diagnostics
+Software diagnostics, logs and status
+##/diag
+###GET
+Returns software status
+##/diag/upload
+###GET
+Returns diagnostics upload status
+###POST
+Starts diagnostics upload to RainMachine support server
+##/diag/download
+###GET
+Retrieves an archive with logs and databases from RainMachine
+
+# Group Machine
+## /update
+### GET
+Returns software update status
+### POST 
+Initiates a software update
+##/sysupgrade
+###POST
+Initiate a firmware download and install
 
