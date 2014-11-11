@@ -375,7 +375,7 @@ Remove Program with id from watering queue
 # Group Watering Zones
 ## GET /zone
 
-Returns a list of all zones and their generic properties
+Returns a list of *all* zones and their generic properties
 + Response 200 (application/json)
 
         {
@@ -488,7 +488,7 @@ Returns a list of all zones and their generic properties
         }
         
 ## GET /zone/properties
-Returns advanced properties for all zones
+Returns advanced properties for *all* zones
 + Response 200 (application/json)
 
         {
@@ -639,3 +639,175 @@ Returns advanced properties for all zones
             }
           ]
         }
+
+        
+## /zone/{id}/properties
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the zone to water
+
+### GET
+Retrieve properties for zone with id
+
++ Response 200 (application/json)
+
+        {
+          "uid": 1, 
+          "name": "Zone 1", 
+          "valveid": 1, 
+          "ETcoef": 1, 
+          "active": true, 
+          "type": 1, 
+          "internet": true, 
+          "savings": 50, 
+          "slope": 1, 
+          "sun": 1, 
+          "soil": 1, 
+          "group_id": 0, 
+          "history": true, 
+          "master": false, 
+          "before": 10, 
+          "after": 10
+        }
+
+### POST
+Set properties for zone with id
+
++ Response 200 (application/json)
+
+        {  }
+
+## POST /zone/{id}/start
+Start watering zone with id
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the zone to water
+
++ Response 200 (application/json)
+
+        {}
+        
+## POST /zone/{id}/stop
+Stop watering zone with id
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the zone to stop watering
+
++ Response 200 (application/json)
+
+        {}
+
+# Group Watering Information
+## GET /watering/zone
+Returns status of watering on *all* zones
++ Response 200 (application/json)
+
+        {
+          "zones": [
+            {
+              "uid": 1, 
+              "name": "Zone 1", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 2, 
+              "name": "Zone 2", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 3, 
+              "name": "Zone 3", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 4, 
+              "name": "Zone 4", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 5, 
+              "name": "Zone 5", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 6, 
+              "name": "Zone 6", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 7, 
+              "name": "Zone 7", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }, 
+            {
+              "uid": 8, 
+              "name": "Zone 8", 
+              "state": 0, 
+              "userDuration": 0, 
+              "machineDuration": 0, 
+              "remaining": 0, 
+              "cycle": 0, 
+              "noOfCycles": 0, 
+              "restriction": false
+            }
+          ]
+        }
+
+## GET /watering/program
+Returns the running watering program if any
+
++ Response 200 (application/json)
+
+        { "programs": [] }
+
+## GET /watering/queue
+Returns the entire current watering queue
+
++ Response 200 (application/json)
+
+        { "queue": []  }
+
+# Group Watering Restrictions        
+# Group Parsers
+# Group Mixer
+# Group Diagnostics
+
