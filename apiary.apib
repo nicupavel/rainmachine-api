@@ -889,12 +889,17 @@ Starts diagnostics upload to RainMachine support server
 Retrieves an archive with logs and databases from RainMachine
 
 # Group Machine
-## /update
+## /machine/time
+### GET
+Returns the time on machine
+### POST 
+Changes the time on machine
+## /machine/update
 ### GET
 Returns software update status
 ### POST 
 Initiates a software update
-##/sysupgrade
+##/machine/sysupgrade
 ###POST
 Initiate a firmware download and install
 
