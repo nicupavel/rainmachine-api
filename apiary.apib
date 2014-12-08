@@ -805,6 +805,85 @@ Returns the entire current watering queue
 + Response 200 (application/json)
 
         { "queue": []  }
+        
+## GET /watering/past
+Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started
+
++ Response 200 (application/json)
+
+        {
+          "pastValues": [
+            {
+              "pid": 1, 
+              "dateTimestamp": 1418025600, 
+              "dateTime": "2014-12-08 00:00:00", 
+              "used": 1, 
+              "et0": 0.7508403396708584, 
+              "qpf": 0
+            }
+          ]
+        }
+
+## GET /watering/available
+Returns the available water in soil for each zone
+
++ Response 200 (application/json)
+
+        {
+          "availableWaterValues": [
+            {
+              "dateTime": "2014-12-08 00:00:00", 
+              "day": 1418025600, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 19.60317710318884
+            }, 
+            {
+              "dateTime": "2014-12-07 00:00:00", 
+              "day": 1417939200, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 19.653164729968374
+            }, 
+            {
+              "dateTime": "2014-12-06 00:00:00", 
+              "day": 1417852800, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 19.40323269049864
+            }, 
+            {
+              "dateTime": "2014-12-05 00:00:00", 
+              "day": 1417766400, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 19.469913502450538
+            }, 
+            {
+              "dateTime": "2014-12-03 00:00:00", 
+              "day": 1417593600, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 0.0
+            }, 
+            {
+              "dateTime": "2014-12-02 00:00:00", 
+              "day": 1417507200, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 0.0
+            }, 
+            {
+              "dateTime": "2014-11-28 00:00:00", 
+              "day": 1417161600, 
+              "pid": 1, 
+              "zid": 8, 
+              "aw": 0.0
+            }
+          ]
+        }
+
+
 
 # Group Watering Restrictions   
 Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay
@@ -812,6 +891,18 @@ Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Dela
 ## /restrictions/global
 ### GET
 Returns global watering restrictions
++ Response 200 (application/json)
+
+        {
+          "hotDaysExtraWatering": false, //Enable watering over 100% of the user specified time
+          "freezeProtectEnabled": false,
+          "freezeProtectTemp": 2, 
+          "noWaterInWeekDays": "0000000", 
+          "noWaterInMonths": "000000000000", 
+          "rainDelayStartTime": -1,  //Program a rain delay to take place at the specified time
+          "rainDelayDuration": 0
+        }
+
 ### POST
 Sets global watering restrictions
 
@@ -824,6 +915,18 @@ Sets a new hourly restriction
 ## POST /restrictions/hourly/{id}/delete
 Removes an hourly restriction
 
+##/restrictions/raindelay
+### GET
+Returns the number of seconds until the forced Rain Delay mode is finished
++ Response 200 (application/json)
+
+        {
+          "delayCounter": 86397
+        }
+
+### POST
+Sets the number of days for which a Rain Delay is wanted
+
 # Group Daily Stats
 Daily Statistics and Weather
 ##/dailystats
@@ -834,12 +937,81 @@ Returns daily statistics information
 ###GET
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
++ Response 200 (application/json)
+
+        {
+          "id": 0, //day 0 current negative past, >0 future day
+          "day": "2014-12-08", 
+          "mint": 8.38, 
+          "maxt": 19.31, 
+          "icon": 3, 
+          "percentage": 0, 
+          "wateringFlag": 0, 
+          "vibration": [ //vibration feature, how the percetage varies with forecast prediction
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0
+          ]
+        }
 
 # Group Weather Parsers
 Parsers information, data and parameters
 ##/parser
 ###GET
 Returns information about all weather parsers available
++ Response 200 (application/json)
+
+        {
+          "parsers": [
+            {
+              "lastRun": "2014-12-08 00:07:13", 
+              "enabled": true, 
+              "uid": 1, 
+              "name": "NOAA Parser"
+            }, 
+            {
+              "lastRun": "2014-12-08 00:08:21", 
+              "params": {
+                "appKey": "523cf689-7ba6-47bd-a2be-6dc1c1ba9afb", 
+                "station": 2, 
+                "historicDays": 5, 
+                "customStation": true
+              }, 
+              "enabled": true, 
+              "uid": 3, 
+              "name": "CIMIS Parser"
+            }, 
+            {
+              "lastRun": "2014-12-08 00:07:13", 
+              "params": {
+                "appKey": "922309bbf729baba82616dca01572d3057eead89", 
+                "useProxy": true
+              }, 
+              "enabled": true, 
+              "uid": 5, 
+              "name": "ForecastIO Parser"
+            }, 
+            {
+              "lastRun": null, 
+              "enabled": false, 
+              "uid": 4, 
+              "name": "My Example Parser"
+            }, 
+            {
+              "lastRun": null, 
+              "enabled": false, 
+              "uid": 2, 
+              "name": "Simulator Parser"
+            }
+          ]
+        }
 
 ##/parser/{id}
 ###GET 
@@ -863,7 +1035,14 @@ Returns detalied information about parser
         }
 
 ## GET /parser/{id}/data
-## GET /parser/{id}/activate
+## GET /parser/{id}/data/{date}
+## GET /parser/{id}/data/{date}/{days}
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
+
+## POST /parser/{id}/activate
 ## POST /parser/{id}/params
 
 # Group Weather Mixed Data
@@ -871,8 +1050,10 @@ Mixed weather data from parsers
 ## GET /mixer
 Return all available mixer data
 ## GET /mixer/{date}
+## GET /mixer/{date}/{days}
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
 
 # Group Diagnostics
 Software diagnostics, logs and status
@@ -902,4 +1083,10 @@ Initiates a software update
 ##/machine/sysupgrade
 ###POST
 Initiate a firmware download and install
+## /machine/ssh
+### POST
+Disable/Enable ssh daemon
+## /machine/touch
+### POST
+Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons
 
