@@ -27,26 +27,64 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 ## GET /apiVer
 + Response 200 (application/json)
 
-        {"apiVer": "4.0.0", "hwVer": 2, "swVer": "4.0.219"}
+        {
+            "apiVer": "4.0.0", 
+            "hwVer": 2, 
+            "swVer": "4.0.219"
+        }
 
 # Group Authentication
 ## POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
++ Request 
+
+        {
+            "pwd": "password",
+            "remember": 1
+        }
+        
 + Response 200 (application/json)
 
-        {}
+        {
+            "access_token": "fb127e22a7cd1294cf47cce8acb4cd88c87eb27236b0a3be7dfd1f82", 
+            "checksum": "14245b630a7affb06f7cad6004da60c0f928545e34f7e9c3dcf81ec747937bba06a1665ff61a6923fe12e8e4cc1057c89f25735f778c9b87", 
+            "expiration": "Mon, 09 Dec 2019 06:43:17 GMT", 
+            "statusCode": 0
+        } 
 
 ## POST /auth/change
-Request a password change 
+Request a password change
++ Request
+
+        {
+                newPass: "newPass",
+                oldPass: "oldPass" 
+                //Optionally send "checksum" received from a /auth/login to change password without old password
+        }
+
 + Response 200 (application/json)
 
-        {}
+        {
+            "access_token": "13d45261540dc77f4cd130eaca2ce8ca7d42aa674dea76a9e2d24cd7", 
+            "checksum": "266ce876ab8df7f8e0d6e503a820eab39c60d1dd4a9b9f8ffcfdd746b0cf1c28868aa13dad57b4a7d1e07b0a5b8a602095dce7e291983415", 
+            "expiration": "Mon, 09 Dec 2019 06:50:03 GMT", 
+            "statusCode": 0
+        }
 
 ## POST /auth/check
-Request a password check
+Request a password check.
+
++ Request
+
+        {
+            "pwd": "password"
+        }
+
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0
+        } 
 
 
 
@@ -55,109 +93,167 @@ Device provision related functions
 ## /provision
 ### GET
 Get device settings
+#### System
+| Variable                   | Type       | Description          |
+| ---------------------------|------------|--------------------- |
+| `httpEnabled`              | *boolean*  | If the HTTP server is enabled                   |
+| `programZonesShowInactive` | *boolean*  | List program inactive zones in queries                  |
+| `masterValveAfter`         | *integer*  | Seconds for which the master valve will open after each zone                     |
+| `apiVersion`               | *string*   | Version of software API                      |
+| `selfTest`                 | *boolean*  | Reserved   ( **review** )                    |
+| `maxLEDBrightness`         | *integer*  | Maximum brightness for the front panel leds           |
+| `masterValveBefore`        | *integer*  | Seconds for which the master valve will open before each zone                   |
+| `wizardHasRun`             | *boolean*  | Indicates if the wizard from a mobile device has been run                      |
+| `managedMode`              | *boolean*  | Indicates if the WIFI has been configured in client mode ( **review** )                     |
+| `netName`                  | *string*   | Device Name                     |
+| `keepDataHistory`          | *boolean*  | If device should keep yearly weather mixed data ( **review** )                       |
+| `touchAdvanced`            | *boolean*  | Activate touch panel advanced usage that allows queueing of zones                    |
+| `hardwareVersion`          | *integer*  | Hardware version of the device                     |
+| `programListShowInactive`  | *boolean*  | List inactive programs in queries                     |
+| `parserHistorySize`        | *integer*  | How many historic days the parsers will keep ( **review** )                       |
+| `minLEDBrightness`         | *integer*  | Minimum brightness for the front panel leds                     |
+| `localValveCount`          | *integer*  | Number of valves this device has available                     |
+| `useCommandLineArguments`  | *boolean*  | If the application was started with extra arguments                     |
+| `databasePath`             | *string*   | File system path to the databases                     |
+| `zoneListShowInactive`     | *boolean*  | List inactive zones in queries                     |
+| `zoneDuration`             | *integer*  | How many seconds a zone will run when started from local touch panel                    |
+| `useMasterValve`           | *boolean*  | If a Master Valve is connected to Valve 1                     |
+| `maxWateringCoef`          | *integer*  | How much over-watering is allowed                     |
 
+#### Location
 
-| Variable      | Type      | Description                   |
-|---------------|-----------|-------------------------------|
-| `httpEnabled` |*boolean*  | If the HTTP server is enabled |
-| `useCommandLineArguments` | *boolean* | If program was started with command line arguments |
-| `hardwareVersion` | *integer* | Hardware version of this device |
-| `databasePath` | *string* | Path to the database | 
-| `programListShowInactive` | *boolean* | List inactive programs in queries | 
-| `programZonesShowInactive` | *boolean* | List inactive zones in queries | 
-| `netName` | *string* | Name of the device | 
-| `masterValveBefore` |*integer*| Seconds for which the master valve will open before each zone |
+| Variable            | Type       | Description          |
+| --------------------|------------|--------------------- |
+| `elevation`         | *float*    | Terrain elevation in meters |
+| `doyDownloaded`     | *boolean*  | If et0 data for each day of year has been downloaded for this location                  |
+| `zip`               | *integer*  | Location ZIP  ( **review** )                     |
+| `krs`               | *float*    | Adjustment coefficient used in ET0 ASCE formula  |
+| `stationDownloaded` | *boolean*  | If nearby weather stations had been downloaded   |
+| `state`             | *string*   | Location state                      |
+| `longitude`         | *float*    | Location longitude                  |
+| `windElevation`     | *integer*  | The elevation at which wind is measured for this location used in ET0 ASCE formula                      |
+| `et0Average`        | *float*    | The average ET0 value for this location                  |
+| `rainSensitivity`   | *float*    | How much precipitation influences ET0 formula, as percentage represented in float                      |
+| `stationID`         | *integer*  | The closest weather station ID                      |
+| `stationSource`     | *string*   | Where the weather station list comes from, station list or grid list                      |
+| `stationName`       | *string*   | Weather station name                      |
+| `address`           | *string*   | Location address                      |
+| `latitude`          | *float*    | Location latitude                      |
+| `timezone`          | *string*   | Timezone description                      |
+| `vaporPressure`     | *float*    | Vapor pressure constant used in ET0 ASCE formula                     |
+| `name`              | *string*   | Device name                     |
+| `wsDays`            | *integer*  | Day period for which the water savings are taken in account                      |
+
 
 + Response 200 (application/json)
 
         {
-          "system": {
-            "httpEnabled": true, 
-            "useCommandLineArguments": false, 
-            "hardwareVersion": 2, 
-            "databasePath": "/rainmachine-app/DB/Default", 
-            "programListShowInactive": true, 
-            "programZonesShowInactive": false, 
-            "netName": "Rain-126", 
-            "masterValveBefore": 10, 
-            "wizardHasRun": true, 
-            "apiVersion": "4.0.0", 
-            "maxWateringCoef": 2, 
-            "masterValveAfter": 10, 
-            "zoneListShowInactive": true, 
-            "selfTest": false, 
-            "managedMode": true, 
-            "localValveCount": 8, 
-            "useMasterValve": false, 
-            "zoneDuration": 60, 
-            "keepDataHistory": false
-          }, 
-          "location": {
-            "elevation": null, 
-            "doyDownloaded": false, 
-            "zip": null, 
-            "stationID": -1, 
-            "stationSource": "", 
-            "et0Average": 1.2345, 
-            "latitude": 36.755419000000006, 
-            "state": "Default", 
-            "stationName": "", 
-            "wsDays": 3, 
-            "stationDownloaded": false, 
-            "address": "Default", 
-            "rainSensitivity": 1, 
-            "timezone": "America/Los_Angeles", 
-            "longitude": -119.776022, 
-            "name": "Fresno"
-          }
+          "system": 
+            {
+                "httpEnabled": true, 
+                "programZonesShowInactive": false, 
+                "masterValveAfter": 10, 
+                "zoneListShowInactive": true, 
+                "selfTest": false, 
+                "maxLEDBrightness": 80, 
+                "masterValveBefore": 10, 
+                "wizardHasRun": true, 
+                "managedMode": false, 
+                "netName": "Rainmachine", 
+                "apiVersion": "4.0.0", 
+                "keepDataHistory": false, 
+                "hardwareVersion": 2, 
+                "programListShowInactive": true, 
+                "parserHistorySize": 365, 
+                "minLEDBrightness": 0, 
+                "localValveCount": 8, 
+                "useCommandLineArguments": true, 
+                "databasePath": "/indevel/rainmachine2/rainmachine/DB/Fresno", 
+                "touchAdvanced": false, 
+                "zoneDuration": 60, 
+                "useMasterValve": false, 
+                "maxWateringCoef": 2
+            }, 
+          "location": 
+            {
+                "stationID": 9599, 
+                "elevation": 2.0, 
+                "doyDownloaded": true, 
+                "zip": null, 
+                "krs": 0.19, 
+                "longitude": -119.776022, 
+                "state": "Default", 
+                "stationSource": "station", 
+                "et0Average": 7.47, 
+                "latitude": 36.755419, 
+                "windElevation": 2, 
+                "stationName": "FRESNO YOSEMITE INT'L", 
+                "wsDays": 2, 
+                "stationDownloaded": true, 
+                "address": "Default", 
+                "rainSensitivity": 0.8, 
+                "timezone": "America/Los_Angeles", 
+                "vaporPressure": 1.4, 
+                "name": "Fresno"
+            }
         }
 
 ### POST
-Sets device provision settings
+Sets device provision settings. See above for parameter explanation.
 
 + Request (application/json)
 
         {
-          "system": {
-            "httpEnabled": true, 
-            "useCommandLineArguments": false, 
-            "hardwareVersion": 2, 
-            "databasePath": "/rainmachine-app/DB/Default", 
-            "programListShowInactive": true, 
-            "programZonesShowInactive": false, 
-            "netName": "Rain-126", 
-            "masterValveBefore": 10, 
-            "wizardHasRun": true, 
-            "apiVersion": "4.0.0", 
-            "maxWateringCoef": 2, 
-            "masterValveAfter": 10, 
-            "zoneListShowInactive": true, 
-            "selfTest": false, 
-            "managedMode": true, 
-            "localValveCount": 8, 
-            "useMasterValve": false, 
-            "zoneDuration": 60, 
-            "keepDataHistory": false
-          }, 
-          "location": {
-            "elevation": null, 
-            "doyDownloaded": false, 
-            "zip": null, 
-            "stationID": -1, 
-            "stationSource": "", 
-            "et0Average": 1.2345, 
-            "latitude": 36.755419000000006, 
-            "state": "Default", 
-            "stationName": "", 
-            "wsDays": 3, 
-            "stationDownloaded": false, 
-            "address": "Default", 
-            "rainSensitivity": 1, 
-            "timezone": "America/Los_Angeles", 
-            "longitude": -119.776022, 
-            "name": "Fresno"
-          }
+          "system": 
+            {
+                "httpEnabled": true, 
+                "programZonesShowInactive": false, 
+                "masterValveAfter": 10, 
+                "zoneListShowInactive": true, 
+                "selfTest": false, 
+                "maxLEDBrightness": 80, 
+                "masterValveBefore": 10, 
+                "wizardHasRun": true, 
+                "managedMode": false, 
+                "netName": "Rainmachine", 
+                "apiVersion": "4.0.0", 
+                "keepDataHistory": false, 
+                "hardwareVersion": 2, 
+                "programListShowInactive": true, 
+                "parserHistorySize": 365, 
+                "minLEDBrightness": 0, 
+                "localValveCount": 8, 
+                "useCommandLineArguments": true, 
+                "databasePath": "/indevel/rainmachine2/rainmachine/DB/Fresno", 
+                "touchAdvanced": false, 
+                "zoneDuration": 60, 
+                "useMasterValve": false, 
+                "maxWateringCoef": 2
+            }, 
+          "location": 
+            {
+                "stationID": 9599, 
+                "elevation": 2.0, 
+                "doyDownloaded": true, 
+                "zip": null, 
+                "krs": 0.19, 
+                "longitude": -119.776022, 
+                "state": "Default", 
+                "stationSource": "station", 
+                "et0Average": 7.47, 
+                "latitude": 36.755419, 
+                "windElevation": 2, 
+                "stationName": "FRESNO YOSEMITE INT'L", 
+                "wsDays": 2, 
+                "stationDownloaded": true, 
+                "address": "Default", 
+                "rainSensitivity": 0.8, 
+                "timezone": "America/Los_Angeles", 
+                "vaporPressure": 1.4, 
+                "name": "Fresno"
+            }
         }
+        
 + Response 200 (application/json)
 
         {
