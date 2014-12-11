@@ -24,41 +24,43 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 - 541 `Provision Failed` - Cannot provision unit 
 
 # Group API versions
-## GET /apiVer
+## GET /apiVer <spk1-partial>
 + Response 200 (application/json)
 
         {
             "apiVer": "4.0.0", 
             "hwVer": 2, 
+            "hwVer": "1.0" <spk1-only> (as string)
             "swVer": "4.0.219"
         }
 
 # Group Authentication
-## POST /auth/login
+## POST /auth/login <spk1-partial>
 Request auth with the device response will include a token to be used on subsequent calls
 + Request 
 
         {
-            "pwd": "password",
-            "remember": 1
+            "pwd": "password", <spk1>
+            "remember": 1 <spk1>
         }
         
 + Response 200 (application/json)
 
         {
-            "access_token": "fb127e22a7cd1294cf47cce8acb4cd88c87eb27236b0a3be7dfd1f82", 
+            "access_token": "fb127e22a7cd1294cf47cce8acb4cd88c87eb27236b0a3be7dfd1f82", <spk1>
             "checksum": "14245b630a7affb06f7cad6004da60c0f928545e34f7e9c3dcf81ec747937bba06a1665ff61a6923fe12e8e4cc1057c89f25735f778c9b87", 
             "expiration": "Mon, 09 Dec 2019 06:43:17 GMT", 
-            "statusCode": 0
+            "statusCode": 0 <spk1>
+            "expires_in": 157680000 <spk1-only> (seconds)
         } 
 
-## POST /auth/change
+## POST /auth/change <spk1-partial>
 Request a password change
 + Request
 
         {
-                newPass: "newPass",
-                oldPass: "oldPass" 
+                newPass: "newPass", <spk1>
+                oldPass: "oldPass" <spk1>
                 //Optionally send "checksum" received from a /auth/login to change password without old password
         }
 
@@ -68,10 +70,11 @@ Request a password change
             "access_token": "13d45261540dc77f4cd130eaca2ce8ca7d42aa674dea76a9e2d24cd7", 
             "checksum": "266ce876ab8df7f8e0d6e503a820eab39c60d1dd4a9b9f8ffcfdd746b0cf1c28868aa13dad57b4a7d1e07b0a5b8a602095dce7e291983415", 
             "expiration": "Mon, 09 Dec 2019 06:50:03 GMT", 
-            "statusCode": 0
+            "statusCode": 0 <spk1>
+            "message":"Action Successful" <spk1-only>
         }
 
-## POST /auth/check
+## POST /auth/check <spk1>
 Request a password check.
 
 + Request
@@ -84,6 +87,7 @@ Request a password check.
 
         {
             "statusCode": 0
+            "message":"Action Successful" <spk1-only>
         } 
 
 
@@ -267,12 +271,13 @@ Returns device name
 
         {"name": "Verde-CIMIS"}
 
-## POST
+## POST <spk1>
 Sets device name
 + Response 200 (application/json)
         
         {
             "statusCode": 0 
+            "message":"Action Successful" <spk1-only>
         }
 
 
@@ -327,7 +332,7 @@ Sets the Access Point to which RainMachine will connect to
 
 # Group Watering Programs
 ## /program
-### GET
+### GET <spk1-partial>
 Get all watering programs defined on device
 
 + response 200 (application/json)
@@ -335,112 +340,129 @@ Get all watering programs defined on device
         {
           "programs": [
             {
-              "uid": 1, 
-              "name": "Daily program", 
-              "active": true, 
-              "startTime": "00:30", 
-              "cycles": 3, 
-              "soak": 4, 
-              "cs_on": true, 
-              "delay": 3, 
-              "delay_on": true, 
-              "status": 0, 
+              "uid": 1, <spk1> 
+              "name": "Daily program", <spk1> 
+              "active": true, <spk1> 
+              "startTime": "00:30", <spk1> 
+              "cycles": 3, <spk1> 
+              "soak": 4, <spk1> 
+              "cs_on": true, <spk1> 
+              "delay": 3, <spk1> 
+              "delay_on": true, <spk1> 
+              "status": 0, <spk1> 
               "frequency": {
-                "type": 0, 
-                "param": "0"
+                "type": 0, <spk1> 
+                "param": "0" <spk1>
               }, 
               "coef": 0.0, 
-              "ignoreInternetWeather": false, 
-              "futureField1": 0, 
-              "freq_modified": 0, 
+              "ignoreInternetWeather": false, <spk1> 
+              "futureField1": 0, <spk1> 
+              "freq_modified": 0, <spk1> 
               "useWaterSense": false, 
-              "nextRun": "2014-11-11", 
+              "nextRun": "2014-11-11", <spk1> 
               "wateringTimes": [
                 {
-                  "id": 1, 
-                  "name": "Zone 1", 
-                  "duration": 0, 
-                  "active": false
+                  "id": 1, <spk1> 
+                  "name": "Zone 1", <spk1> 
+                  "duration": 0, <spk1> 
+                  "active": false <spk1> 
                 }, 
                 {
-                  "id": 8, 
-                  "name": "Zone 8", 
-                  "duration": 90, 
-                  "active": true
+                  "id": 8, <spk1> 
+                  "name": "Zone 8", <spk1> 
+                  "duration": 90, <spk1> 
+                  "active": true <spk1> 
                 }
               ]
             }
           ]
         }
         
-### POST
+### POST <spk1>
 Create a new Program (program id will be automatically generated)
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        {
+            "statusCode": 0
+            "message":"Action Successful" <spk1-only>
+        } 
 
-## GET /program/nextrun
+## GET /program/nextrun <spk1>
 Returns next running date/time for all active programs
 
 + Response 200 (application/json)
 
-        { }
+        {
+            "nextRuns": [
+                {
+                    "pid": 31,
+                    "startTime": "05:55"
+                },
+                {
+                    "pid": 33,
+                    "startTime": "11:22"
+                }
+            ]
+        }
 
 ##/program/{id}
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
     
-### GET
+### GET <spk1-partial>
 Get program with specified id
 
 + Response 200 (application/json)
 
         {
-          "uid": 1, 
-          "name": "Daily program", 
-          "active": true, 
-          "startTime": "00:30", 
-          "cycles": 3, 
-          "soak": 4, 
-          "cs_on": true, 
-          "delay": 3, 
-          "delay_on": true, 
-          "status": 0, 
+          "uid": 1, <spk1> 
+          "name": "Daily program", <spk1> 
+          "active": true, <spk1> 
+          "startTime": "00:30", <spk1> 
+          "cycles": 3, <spk1> 
+          "soak": 4, <spk1> 
+          "cs_on": true, <spk1> 
+          "delay": 3, <spk1> 
+          "delay_on": true, <spk1> 
+          "status": 0, <spk1> 
           "frequency": {
-            "type": 0, 
-            "param": "0"
+            "type": 0, <spk1> 
+            "param": "0" <spk1> 
           }, 
           "coef": 0.0, 
-          "ignoreInternetWeather": false, 
-          "futureField1": 0, 
-          "freq_modified": 0, 
+          "ignoreInternetWeather": false, <spk1> 
+          "futureField1": 0, <spk1> 
+          "freq_modified": 0, <spk1> 
           "useWaterSense": false, 
-          "nextRun": "2014-11-11", 
+          "nextRun": "2014-11-11", <spk1> 
           "wateringTimes": [
             {
-              "id": 1, 
-              "name": "Zone 1", 
-              "duration": 0, 
-              "active": false
+              "id": 1, <spk1> 
+              "name": "Zone 1", <spk1> 
+              "duration": 0, <spk1> 
+              "active": false <spk1> 
             }, 
             {
-              "id": 8, 
-              "name": "Zone 8", 
-              "duration": 90, 
-              "active": true
+              "id": 8, <spk1> 
+              "name": "Zone 8", <spk1> 
+              "duration": 90, <spk1> 
+              "active": true <spk1> 
             }
           ]
         }
 
-### POST
+### POST <spk1-partial>
 Update program parameters with specified id
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0
+            "message":"Action Successful" <spk1-only>
+        } 
 
-## POST /program/{id}/delete
+## POST /program/{id}/delete <spk1>
 Delete Program with id
 
 + Parameters
@@ -448,28 +470,37 @@ Delete Program with id
     
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
         
-## POST /program/{id}/start
+## POST /program/{id}/start <spk1>
 Start watering Program with id
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
 
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
 
-## POST /program/{id}/stop
+## POST /program/{id}/stop <spk1>
 Remove Program with id from watering queue
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
     
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
 
 # Group Watering Zones
-## GET /zone
+## GET /zone <spk1-partial>
 
 Returns a list of *all* zones and their generic properties
 + Response 200 (application/json)
@@ -477,17 +508,17 @@ Returns a list of *all* zones and their generic properties
         {
           "zones": [
             {
-              "uid": 1, 
-              "name": "Zone 1", 
-              "state": 0, 
+              "uid": 1, <spk1> 
+              "name": "Zone 1", <spk1> 
+              "state": 0, <spk1> 
               "userDuration": 0, 
               "machineDuration": 0, 
-              "remaining": 0, 
+              "remaining": 0, <spk1> 
               "cycle": 0, 
               "noOfCycles": 0, 
               "restriction": false, 
-              "type": 1, 
-              "master": false
+              "type": 1, <spk1> 
+              "master": false <spk1> 
             }, 
             {
               "uid": 2, 
@@ -583,29 +614,29 @@ Returns a list of *all* zones and their generic properties
           ]
         }
         
-## GET /zone/properties
+## GET /zone/properties <spk1-partial>
 Returns advanced properties for *all* zones
 + Response 200 (application/json)
 
         {
           "zones": [
             {
-              "uid": 1, 
-              "name": "Zone 1", 
+              "uid": 1, <spk1> 
+              "name": "Zone 1", <spk1> 
               "valveid": 1, 
               "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
+              "active": true, <spk1> 
+              "type": 1, <spk1> 
+              "internet": true, <spk1> 
               "savings": 50, 
               "slope": 1, 
               "sun": 1, 
               "soil": 1, 
               "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 10, 
-              "after": 10
+              "history": true, <spk1> 
+              "master": false, <spk1> 
+              "before": 10, <spk1> 
+              "after": 10 <spk1> 
             }, 
             {
               "uid": 2, 
@@ -741,54 +772,63 @@ Returns advanced properties for *all* zones
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
-### GET
+### GET <spk1-partial> 
 Retrieve properties for zone with id
 
 + Response 200 (application/json)
 
         {
-          "uid": 1, 
-          "name": "Zone 1", 
+          "uid": 1, <spk1> 
+          "name": "Zone 1", <spk1> 
           "valveid": 1, 
           "ETcoef": 1, 
-          "active": true, 
-          "type": 1, 
-          "internet": true, 
+          "active": true, <spk1> 
+          "type": 1, <spk1> 
+          "internet": true, <spk1> 
           "savings": 50, 
           "slope": 1, 
           "sun": 1, 
           "soil": 1, 
           "group_id": 0, 
-          "history": true, 
-          "master": false, 
-          "before": 10, 
-          "after": 10
+          "history": true, <spk1> 
+          "master": false, <spk1> 
+          "before": 10, <spk1> 
+          "after": 10 <spk1> 
         }
 
-### POST
+### POST <spk1-partial>
 Set properties for zone with id
 
 + Response 200 (application/json)
 
-        {  }
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
 
-## POST /zone/{id}/start
+## POST /zone/{id}/start <spk1>
 Start watering zone with id
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
         
-## POST /zone/{id}/stop
+## POST /zone/{id}/stop <spk1>
 Stop watering zone with id
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to stop watering
 
 + Response 200 (application/json)
 
-        {}
+        {
+            "statusCode": 0 <spk1-only>
+            "message":"Action Successful" <spk1-only>
+        } 
 
 # Group Watering Information
 ## GET /watering/zone
@@ -1012,7 +1052,7 @@ Sets a new hourly restriction
 Removes an hourly restriction
 
 ##/restrictions/raindelay
-### GET
+### GET <spk1>
 Returns the number of seconds until the forced Rain Delay mode is finished
 + Response 200 (application/json)
 
@@ -1020,29 +1060,29 @@ Returns the number of seconds until the forced Rain Delay mode is finished
           "delayCounter": 86397
         }
 
-### POST
+### POST <spk1>
 Sets the number of days for which a Rain Delay is wanted
 
 # Group Daily Stats
 Daily Statistics and Weather
 ##/dailystats
-### GET
+### GET <spk1-partial>
 Returns daily statistics information
 
 ##/dailystats/{date}
-###GET
+###GET <spk1-partial>
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
 + Response 200 (application/json)
 
         {
-          "id": 0, //day 0 current negative past, >0 future day
-          "day": "2014-12-08", 
-          "mint": 8.38, 
-          "maxt": 19.31, 
-          "icon": 3, 
-          "percentage": 0, 
-          "wateringFlag": 0, 
+          "id": 0, <spk1> //day 0 current negative past, >0 future day
+          "day": "2014-12-08", <spk1> 
+          "mint": 8.38, <spk1> 
+          "maxt": 19.31, <spk1> 
+          "icon": 3, <spk1> 
+          "percentage": 0, <spk1> 
+          "wateringFlag": 0, <spk1> 
           "vibration": [ //vibration feature, how the percetage varies with forecast prediction
             0, 
             0, 
@@ -1162,23 +1202,26 @@ Returns diagnostics upload status
 ###POST
 Starts diagnostics upload to RainMachine support server
 ##/diag/download
-###GET
+###GET <spk1>
 Retrieves an archive with logs and databases from RainMachine
 
 # Group Machine
 ## /machine/time
-### GET
+### GET <spk1>
 Returns the time on machine
-### POST 
+### POST <spk1>
 Changes the time on machine
 ## /machine/update
-### GET
+### GET <spk1>
 Returns software update status
-### POST 
+### POST <spk1>
 Initiates a software update
 ##/machine/sysupgrade
 ###POST
 Initiate a firmware download and install
+## /machine/reboot
+### POST <spk1-only>
+Initiates a system reboot
 ## /machine/ssh
 ### POST
 Disable/Enable ssh daemon
