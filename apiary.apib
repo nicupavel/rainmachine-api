@@ -26,7 +26,7 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 # Group API versions
 ## GET /apiVer
 Returns the software, hardware and api level versions.
-*Available on Sprinkler 1 (hwVer:1)*.
+*Available on Sprinkler 1 (hwVer:1). Response: "apiVer":"4.0.0", "hwVer":"1.0", "swVer":"3.63".*
 + Response 200 (application/json)
 
         {
@@ -38,6 +38,7 @@ Returns the software, hardware and api level versions.
 # Group Authentication
 ## POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
+*Available on Sprinkler 1 (hwVer:1). Response: "access_token", "statusCode", "expires_in".*
 + Request 
 
         {
@@ -56,6 +57,7 @@ Request auth with the device response will include a token to be used on subsequ
 
 ## POST /auth/change
 Request a password change
+*Partial support on Sprinkler 1 (hwVer:1): "newPass", "oldPass". Response: "statusCode", "message".*
 + Request
 
         {
@@ -75,6 +77,7 @@ Request a password change
 
 ## POST /auth/check
 Request a password check.
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 
 + Request
 
@@ -271,6 +274,7 @@ Returns device name (short cut to provision.system.name
 
 ## POST
 Sets device name
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 + Response 200 (application/json)
         
         {
@@ -331,6 +335,7 @@ Sets the Access Point to which RainMachine will connect to
 ## /program
 ### GET
 Get all watering programs defined on device
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes".*
 
 + response 200 (application/json)
 
@@ -377,6 +382,7 @@ Get all watering programs defined on device
         
 ### POST
 Create a new Program (program id will be automatically generated)
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 
 + Response 200 (application/json)
 
@@ -384,10 +390,22 @@ Create a new Program (program id will be automatically generated)
 
 ## GET /program/nextrun
 Returns next running date/time for all active programs
+*Available on Sprinkler 1 (hwVer:1).*
 
 + Response 200 (application/json)
 
-        { }
+        {
+            "nextRuns": [
+                {
+                    "pid": 31,
+                    "startTime": "05:55"
+                },
+                {
+                    "pid": 33,
+                    "startTime": "11:22"
+                }
+            ]
+        }
 
 ##/program/{id}
 
@@ -396,6 +414,7 @@ Returns next running date/time for all active programs
     
 ### GET
 Get program with specified id
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes".*
 
 + Response 200 (application/json)
 
@@ -438,12 +457,14 @@ Get program with specified id
 
 ### POST
 Update program parameters with specified id
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes". Response: "statusCode", "message".*
 + Response 200 (application/json)
 
         {}
 
 ## POST /program/{id}/delete
 Delete Program with id
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
@@ -454,6 +475,7 @@ Delete Program with id
         
 ## POST /program/{id}/start
 Start watering Program with id
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
 
@@ -463,6 +485,7 @@ Start watering Program with id
 
 ## POST /program/{id}/stop
 Remove Program with id from watering queue
+*Available on Sprinkler 1 (hwVer:1).*
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
     
@@ -474,6 +497,7 @@ Remove Program with id from watering queue
 ## GET /zone
 
 Returns a list of *all* zones and their generic properties
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "state", "remaining", "type", "master".*
 + Response 200 (application/json)
 
         {
@@ -587,6 +611,8 @@ Returns a list of *all* zones and their generic properties
         
 ## GET /zone/properties
 Returns advanced properties for *all* zones
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
+
 + Response 200 (application/json)
 
         {
@@ -745,6 +771,7 @@ Returns advanced properties for *all* zones
 
 ### GET
 Retrieve properties for zone with id
+*Partial support on Sprinkler 1 (hwVer:1): "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
 
 + Response 200 (application/json)
 
@@ -769,6 +796,7 @@ Retrieve properties for zone with id
 
 ### POST
 Set properties for zone with id
+*Partial support on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 
 + Response 200 (application/json)
 
@@ -776,6 +804,7 @@ Set properties for zone with id
 
 ## POST /zone/{id}/start
 Start watering zone with id
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
@@ -785,6 +814,7 @@ Start watering zone with id
         
 ## POST /zone/{id}/stop
 Stop watering zone with id
+*Available on Sprinkler 1 (hwVer:1). Response: "statusCode", "message".*
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to stop watering
 
@@ -1016,6 +1046,7 @@ Removes an hourly restriction
 ##/restrictions/raindelay
 ### GET
 Returns the number of seconds until the forced Rain Delay mode is finished
+*Available on Sprinkler 1 (hwVer:1).*
 + Response 200 (application/json)
 
         {
@@ -1024,15 +1055,18 @@ Returns the number of seconds until the forced Rain Delay mode is finished
 
 ### POST
 Sets the number of days for which a Rain Delay is wanted
+*Available on Sprinkler 1 (hwVer:1).*
 
 # Group Daily Stats
 Daily Statistics and Weather
 ##/dailystats
 ### GET
 Returns daily statistics information
+*Partial support on Sprinkler 1 (hwVer:1): "vibration" not available.*
 
 ##/dailystats/{date}
 ###GET
+*Partial support on Sprinkler 1 (hwVer:1): "vibration" not available.*
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
 + Response 200 (application/json)
@@ -1166,21 +1200,30 @@ Starts diagnostics upload to RainMachine support server
 ##/diag/download
 ###GET
 Retrieves an archive with logs and databases from RainMachine
+*Available on Sprinkler 1 (hwVer:1).*
 
 # Group Machine
 ## /machine/time
 ### GET
 Returns the time on machine
-### POST 
+*Available on Sprinkler 1 (hwVer:1).*
+### POST
 Changes the time on machine
+*Available on Sprinkler 1 (hwVer:1).*
 ## /machine/update
 ### GET
 Returns software update status
-### POST 
+*Available on Sprinkler 1 (hwVer:1).*
+### POST
 Initiates a software update
+*Available on Sprinkler 1 (hwVer:1).*
 ##/machine/sysupgrade
 ###POST
 Initiate a firmware download and install
+## /machine/reboot
+### POST
+Initiates a system reboot
+*Available on Sprinkler 1 (hwVer:1).*
 ## /machine/ssh
 ### POST
 Disable/Enable ssh daemon
