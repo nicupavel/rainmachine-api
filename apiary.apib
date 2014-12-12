@@ -24,7 +24,9 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 - 541 `Provision Failed` - Cannot provision unit 
 
 # Group API versions
-## GET /apiVer <spk1-partial>
+## GET /apiVer
+Returns the software, hardware and api level versions.
+*Available on Sprinkler 1 (hwVer:1).*
 + Response 200 (application/json)
 
         {
@@ -266,13 +268,14 @@ Sets device provision settings. See above for parameter explanation.
 
 ## /provision/name
 ### GET
-Returns device name 
+Returns device name (short cut to provision.system.name
 + Response 200 (application/json)
 
-        {"name": "Verde-CIMIS"}
+        {"name": "Test-CIMIS"}
 
-## POST <spk1>
+## POST
 Sets device name
+*Available on Sprinkler 1 (hwVer:1).*
 + Response 200 (application/json)
         
         {
