@@ -1061,10 +1061,107 @@ Sets the number of days for which a Rain Delay is wanted
 Daily Statistics and Weather
 ##/dailystats
 ### GET
-Returns daily statistics about simulated watering. It has 14 historical days (older) and 7 days in the future. 
-Statistics are built from mixer and simulator data.
+Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
+Statistics are built from mixer and simulator data. 
+
+| Variable                   | Type       | Description          |
+| ---------------------------|------------|--------------------- |
+| `id`                       | *int*      | Day offset relative to today which is 0. Negative  values are in the past. Positive in the future |
+| `wateringFlag`             | *int*      | ( **review** )  |
+| `day`                      | *string*   | Day in YYYY-MM-DD format |
+| `mint`                     | *float*    | Minimum temperature of the day |
+| `maxt`                     | *float*    | Maximum temperature of the day |
+| `icon`                     | *int*      | Weather icon for that day (see icon definitions) |
+| `percentage`               | *int*      | How much it actually waters |
+| `simulatedPercentage`      | *int*      | How much it would water if a daily program would be configured  |
+| `vibration`                | *array of int*      | How the watering `percetage` varies with historical and future weather predictions |
+| `simulatedVibration`       | *array of int*      | As above but if a daily program would be configured |
 
 *Partial support on Sprinkler 1 (hwVer:1): "vibration" not available.*
+
+
++ Response 200 (application/json)
+
+        {
+          "WeatherData": 
+            [
+            {
+              "id": -1, 
+              "day": "2014-11-30", 
+              "mint": 9.9, 
+              "maxt": 21.9, 
+              "icon": null, 
+              "percentage": 0, 
+              "wateringFlag": 0, 
+              "vibration": [
+                56, 
+                56, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+              ], 
+              "simulatedPercentage": 16.33062599489387, 
+              "simulatedVibration": [
+                16
+              ]
+            },
+            {
+              "id": 0, 
+              "day": "2014-12-01", 
+              "mint": 6.9, 
+              "maxt": 21.9, 
+              "icon": null, 
+              "percentage": 0, 
+              "wateringFlag": 0, 
+              "vibration": [
+                56, 
+                56, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+              ], 
+              "simulatedPercentage": 16.33062599489387, 
+              "simulatedVibration": [
+                16
+              ]
+            },
+            {
+              "id": 1, 
+              "day": "2014-12-02", 
+              "mint": 6.9, 
+              "maxt": 21.9, 
+              "icon": null, 
+              "percentage": 0, 
+              "wateringFlag": 0, 
+              "vibration": [
+                56, 
+                56, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+              ], 
+              "simulatedPercentage": 16.33062599489387, 
+              "simulatedVibration": [
+                16
+              ]
+            },
+            ]
+        }
 
 ##/dailystats/{date}
 ###GET
@@ -1073,15 +1170,17 @@ Statistics are built from mixer and simulator data.
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
 + Response 200 (application/json)
 
+            
+
         {
-          "id": 0, //day 0 current negative past, >0 future day
+          "id": 0,
           "day": "2014-12-08", 
           "mint": 8.38, 
           "maxt": 19.31, 
           "icon": 3, 
           "percentage": 0, 
           "wateringFlag": 0, 
-          "vibration": [ //vibration feature, how the percetage varies with forecast prediction
+          "vibration": [
             0, 
             0, 
             0, 
