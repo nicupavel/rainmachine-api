@@ -1,11 +1,11 @@
 FORMAT: X-1A
 
-HOST: https://device.ip:8080/api/4/
+HOST: https://device.ip/api/4/
 
 # RainMachine
 RainMachine API for accesing RainMachine devices. 
 
-The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or bound to port 18080 accessible via normal HTTP
+The RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80. Use of HTTPS is highly recommended.
 
 ##Allowed HTTPs requests:
 
@@ -23,6 +23,12 @@ The RESTful interface is (by default) bound to port 8080 accessible via HTTPS or
 - 501 `Exception Occured` - Exception occured while processing the call
 - 541 `Provision Failed` - Cannot provision unit 
 
+##Authentication
+
+After authenticating using `POST /auth/login` [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
+
+Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
+
 # Group API versions
 ## GET /apiVer
 Returns the software, hardware and api level versions.
@@ -36,6 +42,7 @@ Returns the software, hardware and api level versions.
         }
 
 # Group Authentication
+<a name="post-auth-login"></a>
 ## POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
 *Available on Sprinkler 1 (hwVer:1). Response: "access_token", "statusCode", "expires_in".*
