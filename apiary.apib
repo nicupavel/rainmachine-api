@@ -7,9 +7,9 @@ RainMachine API version 4 for accesing RainMachine devices.
 
 Compatible devices:
 
-- 1st generation RainMachine: partial support where noted
-- [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): full support
-- [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): full support
+- 1st generation RainMachine: `hwVer: 1.0` partial support where noted
+- [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support
+- [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support
 
 For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80. Use of HTTPS is highly recommended.
 
@@ -117,11 +117,14 @@ Get device settings
 #### System
 | Variable                   | Type       | Description          |
 | ---------------------------|------------|--------------------- |
-| `httpEnabled`              | *boolean*  | If the HTTP server is enabled                   |
-| `programZonesShowInactive` | *boolean*  | List program inactive zones in queries                  |
-| `masterValveAfter`         | *integer*  | Seconds for which the master valve will open after each zone                     |
-| `apiVersion`               | *string*   | Version of software API                      |
-| `selfTest`                 | *boolean*  | Reserved   ( **review** )                    |
+| `httpEnabled`              | *boolean*  | If the HTTP server is enabled                                                          |
+| `programSingleSchedule`    | *boolean*  | Allows multiple runs of same program in the same day (eg: rescheduled to another hour) |
+| `mixerHistorySize`         | *integer*  | The number of days mixer will save in it's history                                     |
+| `programZonesShowInactive` | *boolean*  | List program inactive zones in queries                                                 |
+| `standaloneMode`           | *boolean*  | If the device is configured but left in Access Point mode (no internet weather)        |
+| `masterValveAfter`         | *integer*  | Seconds for which the master valve will open after each zone                           |
+| `apiVersion`               | *string*   | Version of software API                                                                |
+| `selfTest`                 | *boolean*  | Reserved                                                                               |
 | `maxLEDBrightness`         | *integer*  | Maximum brightness for the front panel leds           |
 | `masterValveBefore`        | *integer*  | Seconds for which the master valve will open before each zone                   |
 | `wizardHasRun`             | *boolean*  | Indicates if the wizard from a mobile device has been run                      |
