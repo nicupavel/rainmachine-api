@@ -65,8 +65,8 @@ Request auth with the device response will include a token to be used on subsequ
 + Response 200 (application/json)
 
         {
-            "access_token": "fb127e22a7cd1294cf47cce8acb4cd88c87eb27236b0a3be7dfd1f82", 
-            "checksum": "14245b630a7affb06f7cad6004da60c0f928545e34f7e9c3dcf81ec747937bba06a1665ff61a6923fe12e8e4cc1057c89f25735f778c9b87", 
+            "access_token": "fb127e22a7cd1294df47cce8acb4cd88c87eb27236b0a3be7dfd1f82", 
+            "checksum": "14245b630a7affb06f7dad6004da60c0f928545e34f7e9c3dcf81ec747937bba06a1665ff61a6923fe12e8e4cc1057c89f25735f778c9b87", 
             "expiration": "Mon, 09 Dec 2019 06:43:17 GMT", 
             "statusCode": 0
         } 
@@ -79,7 +79,6 @@ Request a password change
         {
                 newPass: "newPass",
                 oldPass: "oldPass" 
-                //Optionally send "checksum" received from a /auth/login to change password without old password
         }
 
 + Response 200 (application/json)
@@ -115,168 +114,219 @@ Device provision related functions
 ### GET
 Get device settings
 #### System
-| Variable                   | Type       | Description          |
-| ---------------------------|------------|--------------------- |
-| `httpEnabled`              | *boolean*  | If the HTTP server is enabled                                                          |
-| `programSingleSchedule`    | *boolean*  | Allows multiple runs of same program in the same day (eg: rescheduled to another hour) |
-| `mixerHistorySize`         | *integer*  | The number of days mixer will save in it's history                                     |
-| `programZonesShowInactive` | *boolean*  | List program inactive zones in queries                                                 |
-| `standaloneMode`           | *boolean*  | If the device is configured but left in Access Point mode (no internet weather)        |
-| `masterValveAfter`         | *integer*  | Seconds for which the master valve will open after each zone                           |
-| `apiVersion`               | *string*   | Version of software API                                                                |
-| `selfTest`                 | *boolean*  | Reserved                                                                               |
-| `maxLEDBrightness`         | *integer*  | Maximum brightness for the front panel leds           |
-| `masterValveBefore`        | *integer*  | Seconds for which the master valve will open before each zone                   |
-| `wizardHasRun`             | *boolean*  | Indicates if the wizard from a mobile device has been run                      |
-| `managedMode`              | *boolean*  | Indicates if the WIFI has been configured in client mode ( **review** )                     |
-| `netName`                  | *string*   | Device Name                     |
-| `keepDataHistory`          | *boolean*  | If device should keep yearly weather mixed data ( **review** )                       |
-| `touchAdvanced`            | *boolean*  | Activate touch panel advanced usage that allows queueing of zones                    |
-| `hardwareVersion`          | *integer*  | Hardware version of the device                     |
-| `programListShowInactive`  | *boolean*  | List inactive programs in queries                     |
-| `parserHistorySize`        | *integer*  | How many historic days the parsers will keep ( **review** )                       |
-| `minLEDBrightness`         | *integer*  | Minimum brightness for the front panel leds                     |
-| `localValveCount`          | *integer*  | Number of valves this device has available                     |
-| `useCommandLineArguments`  | *boolean*  | If the application was started with extra arguments                     |
-| `databasePath`             | *string*   | File system path to the databases                     |
-| `zoneListShowInactive`     | *boolean*  | List inactive zones in queries                     |
-| `zoneDuration`             | *integer*  | How many seconds a zone will run when started from local touch panel                    |
-| `useMasterValve`           | *boolean*  | If a Master Valve is connected to Valve 1                     |
-| `maxWateringCoef`          | *integer*  | How much over-watering is allowed                     |
+| Variable                      | Type       | Description          |
+| ------------------------------|------------|--------------------- |
+| `httpEnabled`                 | *boolean*  | If the HTTP server is enabled                                                          |
+| `programSingleSchedule`       | *boolean*  | Allows multiple runs of same program in the same day (eg: rescheduled to another hour) |
+| `mixerHistorySize`            | *integer*  | The number of days mixer will save in it's history                                     |
+| `programZonesShowInactive`    | *boolean*  | List program inactive zones in queries                                                 |
+| `standaloneMode`              | *boolean*  | If the device is configured but left in Access Point mode (no internet weather)        |
+| `masterValveAfter`            | *integer*  | Seconds for which the master valve will open after each zone                           |
+| `apiVersion`                  | *string*   | Version of software API                                                                |
+| `selfTest`                    | *boolean*  | Reserved                                                                               |
+| `defaultZoneWateringDuration` | *integer*  | Default seconds that a zone will be watered when started manually                      |
+| `maxLEDBrightness`            | *integer*  | Maximum brightness for the front panel leds (0 - 255)                                  |
+| `simulatorHistorySize`        | *integer*  | How many days to keep simulated data in database (default 0)                           |
+| `masterValveBefore`           | *integer*  | Seconds for which the master valve will open before each zone                          |
+| `touchProgramToRun`           | *integer*  | Which program can be run from touch interface on Mini 8 (id of program)                |
+| `useRainSensor`               | *boolean*  | Set to true if you have a rain sensor connected. Will stop watering if rain is detected|
+| `wizardHasRun`                | *boolean*  | Indicates if the wizard from a mobile device has been run                              |
+| `waterLogHistorySize`         | *integer*  | How many days to keep watering information in database (default 365)                   |
+| `netName`                     | *string*   | Device Name                                                                            |
+| `touchSleepTimeout`           | *integer*  | After how many seconds of inactivity to close the leds on Mini 8                       |
+| `touchAdvanced`               | *boolean*  | Activate touch panel advanced usage that allows queueing of zones on Mini 8            |
+| `hardwareVersion`             | *integer*  | Hardware version of the device  (same as hwVer from /apiVer call)                      |
+| `touchLongPressTimeout`       | *integer*  | After how many seconds a long touch will register automatically on Mini 8              |
+| `parserDataSizeInDays`        | *integer*  | How many days of forecast parsers should get                                           |
+| `programListShowInactive`     | *boolean*  | List inactive programs in queries                                                      |
+| `parserHistorySize`           | *integer*  | How many past days the parsers will keep in database                                   |
+| `minLEDBrightness`            | *integer*  | Minimum brightness for the front panel leds                                            |
+| `minWateringDurationThreshold`| *integer*  | If calculated watering duration in seconds is lower that this the zone won't be started|
+| `localValveCount`             | *integer*  | Number of valves this device has available                                             |
+| `touchAPSeconds`              | *integer*  | Delay after which the user won't be alloed to login when device is in setup mode       |
+| `useCommandLineArguments`     | *boolean*  | If the application was started with extra arguments                                    |
+| `databasePath`                | *string*   | File system path to the databases                                                      |
+| `touchCyclePrograms`          | *string*   | If the local touch interface on Mini 8 should also allow program start besides zones   |
+| `zoneListShowInactive`        | *boolean*  | List inactive zones in queries                                                         |
+| `zoneDuration`                | *int array*| Default list of zone durations for manual running                                      |
+| `useCorrectionForPast`        | *boolean*  | If watering algorithm should also consider past weather data                           |
+| `useMasterValve`              | *boolean*  | If a Master Valve is connected to Valve 1                                              |
+| `maxWateringCoef`             | *integer*  | How much over-watering is allowed                                                      |
 
 #### Location
 
-| Variable            | Type       | Description          |
-| --------------------|------------|--------------------- |
-| `elevation`         | *float*    | Terrain elevation in meters |
-| `doyDownloaded`     | *boolean*  | If et0 data for each day of year has been downloaded for this location                  |
-| `zip`               | *integer*  | Location ZIP  ( **review** )                     |
-| `krs`               | *float*    | Adjustment coefficient used in ET0 ASCE formula  |
-| `stationDownloaded` | *boolean*  | If nearby weather stations had been downloaded   |
-| `state`             | *string*   | Location state                      |
-| `longitude`         | *float*    | Location longitude                  |
-| `windElevation`     | *integer*  | The elevation at which wind is measured for this location used in ET0 ASCE formula                      |
-| `et0Average`        | *float*    | The average ET0 value for this location                  |
-| `rainSensitivity`   | *float*    | How much precipitation influences ET0 formula, as percentage represented in float                      |
-| `stationID`         | *integer*  | The closest weather station ID                      |
-| `stationSource`     | *string*   | Where the weather station list comes from, station list or grid list                      |
-| `stationName`       | *string*   | Weather station name                      |
-| `address`           | *string*   | Location address                      |
-| `latitude`          | *float*    | Location latitude                      |
-| `timezone`          | *string*   | Timezone description                      |
-| `vaporPressure`     | *float*    | Vapor pressure constant used in ET0 ASCE formula                     |
-| `name`              | *string*   | Device name                     |
-| `wsDays`            | *integer*  | Day period for which the water savings are taken in account                      |
+| Variable                      | Type       | Description                                                                            |
+| ------------------------------|------------|--------------------------------------------------------------------------------------- |
+| `stationID`                   | *integer*  | The closest weather station ID                                                         |
+| `elevation`                   | *float*    | Terrain elevation in meters                                                            |
+| `doyDownloaded`               | *boolean*  | If et0 data for each day of year has been downloaded for this location                 |
+| `zip`                         | *integer*  | Location ZIP  ( **obsolete** )                                                         |
+| `windSensitivity`             | *float*    | Sensitivity to wind speed (as percentage in float)                                     |
+| `krs`                         | *float*    | Adjustment coefficient used in ET0 ASCE formula                                        |
+| `state`                       | *string*   | Location state                                                                         |
+| `stationSource`               | *string*   | Where the weather station list comes from, station list or grid list                   |
+| `et0Average`                  | *float*    | The average ET0 value for this location                                                |
+| `latitude`                    | *float*    | Location latitude                                                                      |
+| `windElevation`               | *integer*  | The elevation at which wind is measured for this location used in ET0 ASCE formula     |
+| `stationName`                 | *string*   | Weather station name                                                                   |
+| `wsDays`                      | *integer*  | For how many days the water savings are taken in account                               |
+| `stationDownloaded`           | *boolean*  | If nearby weather stations had been downloaded                                         |
+| `address`                     | *string*   | Location address                                                                       |
+| `rainSensitivity`             | *float*    | How much precipitation influences ET0 formula, as percentage represented in float      |
+| `timezone`                    | *string*   | Timezone description                                                                   |
+| `longitude`                   | *float*    | Location longitude                                                                     |
+| `name`                        | *string*   | Location name                                                                          |
+
 
 
 + Response 200 (application/json)
 
-        {
-          "system": 
-            {
-                "httpEnabled": true, 
-                "programZonesShowInactive": false, 
-                "masterValveAfter": 10, 
-                "zoneListShowInactive": true, 
-                "selfTest": false, 
-                "maxLEDBrightness": 80, 
-                "masterValveBefore": 10, 
-                "wizardHasRun": true, 
-                "managedMode": false, 
-                "netName": "Rainmachine", 
-                "apiVersion": "4.0.0", 
-                "keepDataHistory": false, 
-                "hardwareVersion": 2, 
-                "programListShowInactive": true, 
-                "parserHistorySize": 365, 
-                "minLEDBrightness": 0, 
-                "localValveCount": 8, 
-                "useCommandLineArguments": true, 
-                "databasePath": "/indevel/rainmachine2/rainmachine/DB/Fresno", 
-                "touchAdvanced": false, 
-                "zoneDuration": 60, 
-                "useMasterValve": false, 
-                "maxWateringCoef": 2
-            }, 
-          "location": 
-            {
-                "stationID": 9599, 
-                "elevation": 2.0, 
-                "doyDownloaded": true, 
-                "zip": null, 
-                "krs": 0.19, 
-                "longitude": -119.776022, 
-                "state": "Default", 
-                "stationSource": "station", 
-                "et0Average": 7.47, 
-                "latitude": 36.755419, 
-                "windElevation": 2, 
-                "stationName": "FRESNO YOSEMITE INT'L", 
-                "wsDays": 2, 
-                "stationDownloaded": true, 
-                "address": "Default", 
-                "rainSensitivity": 0.8, 
-                "timezone": "America/Los_Angeles", 
-                "vaporPressure": 1.4, 
-                "name": "Fresno"
-            }
-        }
+	{
+		"system": {
+		"httpEnabled": true, 
+		"programSingleSchedule": false, 
+		"mixerHistorySize": 365, 
+		"programZonesShowInactive": false, 
+		"standaloneMode": false, 
+		"masterValveAfter": 0, 
+		"apiVersion": "4.0.0", 
+		"selfTest": false, 
+		"defaultZoneWateringDuration": 300, 
+		"maxLEDBrightness": 80, 
+		"simulatorHistorySize": 0, 
+		"masterValveBefore": 0, 
+		"touchProgramToRun": null, 
+		"useRainSensor": false, 
+		"wizardHasRun": true, 
+		"waterLogHistorySize": 365, 
+		"netName": "Nicu-SPK2", 
+		"touchSleepTimeout": 10, 
+		"touchAdvanced": false, 
+		"hardwareVersion": 2, 
+		"touchLongPressTimeout": 3, 
+		"parserDataSizeInDays": 6, 
+		"programListShowInactive": true, 
+		"parserHistorySize": 365, 
+		"minLEDBrightness": 0, 
+		"minWateringDurationThreshold": 0, 
+		"localValveCount": 8, 
+		"touchAuthAPSeconds": 60, 
+		"useCommandLineArguments": false, 
+		"databasePath": "/rainmachine-app/DB/Default", 
+		"touchCyclePrograms": true, 
+		"zoneListShowInactive": true, 
+		"zoneDuration": [
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300
+		], 
+		"useCorrectionForPast": false, 
+		"useMasterValve": false, 
+		"maxWateringCoef": 2
+		}, 
+		"location": {
+		"stationID": 9234, 
+		"elevation": 106.87275695799999, 
+		"doyDownloaded": true, 
+		"zip": null, 
+		"windSensitivity": 0.5, 
+		"krs": 0.19, 
+		"state": "Default", 
+		"stationSource": "station", 
+		"et0Average": 6, 
+		"latitude": 37.662431199999994, 
+		"windElevation": 2, 
+		"stationName": "LIVERMORE MUNI AP", 
+		"wsDays": 2, 
+		"stationDownloaded": true, 
+		"address": "Default", 
+		"rainSensitivity": 0.8, 
+		"timezone": "America/Los_Angeles", 
+		"longitude": -121.87467890000001, 
+		"name": "Pleasanton, CA, United States"
+		}
+	}
 
 ### POST
-Sets device provision settings. See above for parameter explanation.
+Sets device provision settings. See above for parameter explanation. Settings can be sent in full list, multiple keys/values or just one key/value.
 
 + Request (application/json)
 
-        {
-          "system": 
-            {
-                "httpEnabled": true, 
-                "programZonesShowInactive": false, 
-                "masterValveAfter": 10, 
-                "zoneListShowInactive": true, 
-                "selfTest": false, 
-                "maxLEDBrightness": 80, 
-                "masterValveBefore": 10, 
-                "wizardHasRun": true, 
-                "managedMode": false, 
-                "netName": "Rainmachine", 
-                "apiVersion": "4.0.0", 
-                "keepDataHistory": false, 
-                "hardwareVersion": 2, 
-                "programListShowInactive": true, 
-                "parserHistorySize": 365, 
-                "minLEDBrightness": 0, 
-                "localValveCount": 8, 
-                "useCommandLineArguments": true, 
-                "databasePath": "/indevel/rainmachine2/rainmachine/DB/Fresno", 
-                "touchAdvanced": false, 
-                "zoneDuration": 60, 
-                "useMasterValve": false, 
-                "maxWateringCoef": 2
-            }, 
-          "location": 
-            {
-                "stationID": 9599, 
-                "elevation": 2.0, 
-                "doyDownloaded": true, 
-                "zip": null, 
-                "krs": 0.19, 
-                "longitude": -119.776022, 
-                "state": "Default", 
-                "stationSource": "station", 
-                "et0Average": 7.47, 
-                "latitude": 36.755419, 
-                "windElevation": 2, 
-                "stationName": "FRESNO YOSEMITE INT'L", 
-                "wsDays": 2, 
-                "stationDownloaded": true, 
-                "address": "Default", 
-                "rainSensitivity": 0.8, 
-                "timezone": "America/Los_Angeles", 
-                "vaporPressure": 1.4, 
-                "name": "Fresno"
-            }
-        }
+	{
+		"system": {
+		"httpEnabled": true, 
+		"programSingleSchedule": false, 
+		"mixerHistorySize": 365, 
+		"programZonesShowInactive": false, 
+		"standaloneMode": false, 
+		"masterValveAfter": 0, 
+		"apiVersion": "4.0.0", 
+		"selfTest": false, 
+		"defaultZoneWateringDuration": 300, 
+		"maxLEDBrightness": 80, 
+		"simulatorHistorySize": 0, 
+		"masterValveBefore": 0, 
+		"touchProgramToRun": null, 
+		"useRainSensor": false, 
+		"wizardHasRun": true, 
+		"waterLogHistorySize": 365, 
+		"netName": "Nicu-SPK2", 
+		"touchSleepTimeout": 10, 
+		"touchAdvanced": false, 
+		"hardwareVersion": 2, 
+		"touchLongPressTimeout": 3, 
+		"parserDataSizeInDays": 6, 
+		"programListShowInactive": true, 
+		"parserHistorySize": 365, 
+		"minLEDBrightness": 0, 
+		"minWateringDurationThreshold": 0, 
+		"localValveCount": 8, 
+		"touchAuthAPSeconds": 60, 
+		"useCommandLineArguments": false, 
+		"databasePath": "/rainmachine-app/DB/Default", 
+		"touchCyclePrograms": true, 
+		"zoneListShowInactive": true, 
+		"zoneDuration": [
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300, 
+		300
+		], 
+		"useCorrectionForPast": false, 
+		"useMasterValve": false, 
+		"maxWateringCoef": 2
+		}, 
+		"location": {
+		"stationID": 9234, 
+		"elevation": 106.87275695799999, 
+		"doyDownloaded": true, 
+		"zip": null, 
+		"windSensitivity": 0.5, 
+		"krs": 0.19, 
+		"state": "Default", 
+		"stationSource": "station", 
+		"et0Average": 6, 
+		"latitude": 37.662431199999994, 
+		"windElevation": 2, 
+		"stationName": "LIVERMORE MUNI AP", 
+		"wsDays": 2, 
+		"stationDownloaded": true, 
+		"address": "Default", 
+		"rainSensitivity": 0.8, 
+		"timezone": "America/Los_Angeles", 
+		"longitude": -121.87467890000001, 
+		"name": "Pleasanton, CA, United States"
+		}
+	}
         
 + Response 200 (application/json)
 
