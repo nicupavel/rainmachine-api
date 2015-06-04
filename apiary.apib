@@ -2167,7 +2167,60 @@ Returns mixer data starting from specified `date` until current day
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        {
+          "mixerDataByDate": [
+            {
+              "forecastInfo": {
+                "id": 217, 
+                "time": "2015-06-03 21:26:37"
+              }, 
+              "dailyValues": [
+                {
+                  "day": "2015-06-03 00:00:00", 
+                  "temperature": 15.92, 
+                  "rh": 85.1, 
+                  "wind": 2.37, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 0, 
+                  "qpf": 0, 
+                  "condition": 0, 
+                  "pressure": 101.17, 
+                  "dewPoint": 10.6, 
+                  "minTemp": 11.06, 
+                  "maxTemp": 22.27, 
+                  "minRH": 47.1, 
+                  "maxRH": 84.75, 
+                  "et0calc": 4.7355358560658312, 
+                  "et0final": 4.74
+                }, 
+                {
+                  "day": "2015-06-04 00:00:00", 
+                  "temperature": 15.84, 
+                  "rh": 68.59, 
+                  "wind": 2.71, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 3, 
+                  "qpf": 0, 
+                  "condition": 3, 
+                  "pressure": 100.94, 
+                  "dewPoint": 9.69, 
+                  "minTemp": 11.06, 
+                  "maxTemp": 23.19, 
+                  "minRH": 42.9, 
+                  "maxRH": 86.3, 
+                  "et0calc": 5.1318712729042166, 
+                  "et0final": 5.13
+                }
+            ]
+            }
+            ]
+            }
 
 ## GET /mixer/{date}/{days}
 Returns mixer data starting from specified `date` for a number of specified `days`
@@ -2177,7 +2230,60 @@ Returns mixer data starting from specified `date` for a number of specified `day
     
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        {
+          "mixerDataByDate": [
+            {
+              "forecastInfo": {
+                "id": 217, 
+                "time": "2015-06-03 21:26:37"
+              }, 
+              "dailyValues": [
+                {
+                  "day": "2015-06-03 00:00:00", 
+                  "temperature": 15.92, 
+                  "rh": 85.1, 
+                  "wind": 2.37, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 0, 
+                  "qpf": 0, 
+                  "condition": 0, 
+                  "pressure": 101.17, 
+                  "dewPoint": 10.6, 
+                  "minTemp": 11.06, 
+                  "maxTemp": 22.27, 
+                  "minRH": 47.1, 
+                  "maxRH": 84.75, 
+                  "et0calc": 4.7355358560658312, 
+                  "et0final": 4.74
+                }, 
+                {
+                  "day": "2015-06-04 00:00:00", 
+                  "temperature": 15.84, 
+                  "rh": 68.59, 
+                  "wind": 2.71, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 3, 
+                  "qpf": 0, 
+                  "condition": 3, 
+                  "pressure": 100.94, 
+                  "dewPoint": 9.69, 
+                  "minTemp": 11.06, 
+                  "maxTemp": 23.19, 
+                  "minRH": 42.9, 
+                  "maxRH": 86.3, 
+                  "et0calc": 5.1318712729042166, 
+                  "et0final": 5.13
+                }
+            ]
+            }
+            ]
+            }
 
 
 # Group Diagnostics
