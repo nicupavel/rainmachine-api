@@ -2287,18 +2287,68 @@ Returns mixer data starting from specified `date` for a number of specified `day
 
 
 # Group Diagnostics
-Software diagnostics, logs and status
+Software diagnostics, logs and device status
 ##/diag
 ###GET
-Returns software status
+Returns software and device status
+
++ Response 200 (application/json)
+
+            {
+              "hasWifi": true, 
+              "uptime": "2 days, 22:33:59", 
+              "memUsage": 11992, 
+              "networkStatus": true, 
+              "bootCompleted": true, 
+              "lastCheckTimestamp": 1433409727, 
+              "wizardHasRun": true, 
+              "standaloneMode": false, 
+              "cpuUsage": 3.0, 
+              "lastCheck": "2015-06-04 02:22:07", 
+              "softwareVersion": "4.0.535", 
+              "timeStatus": true, 
+              "locationStatus": true, 
+              "wifiMode": "managed", 
+              "gatewayAddress": "192.168.12.1", 
+              "weatherStatus": true
+            }
+
 ##/diag/upload
 ###GET
 Returns diagnostics upload status
+
++ Response 200 (application/json)
+
+        {
+          "status": 0
+        }
+
 ###POST
 Starts diagnostics upload to RainMachine support FTP server
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ##/diag/log
 ###GET
-Retrieves the entire application log
+Retrieves the entire application log (**review**)
++ Response 200 (text/html)
+
+         <html><head><title> LOG file </title></head><body> 
+            <style>h1, h2, h3, h4, h5 {font-family: Arial; font-weight: normal;}
+            a:link {text-decoration: none; color: #3399cc;}
+            a:visited {text-decoration: none; color: #3399cc;}
+            a:hover {text-decoration: underline; color: #3399cc;}
+            a:active {text-decoration: none; color: #3399cc;}
+            h1 {text-decoration: none; font-size:36px; color: #3399cc;}
+            h3 {text-decoration: none; font-size:18px; color: #3399cc; font-weight: bold; }
+            h4 {text-decoration: none; font-size:12px; color: #000; font-weight: bold; }
+            h5 {color: #ccc;}
+            pre {font-size: 12px;}</style> <h1>LOG file</h1><pre>2015-05-25 02:01:32,178 - INFO  - rmWirelessOpenWRT:109 - OpenWRT WIFI/Network reload/restart successful!
+        </pre><br/></br><h5>Generated 02:29AM on June 04, 2015 </h5></body></html>
+
+
 ##/diag/log/level
 ###POST
 Sets the log level for the application. Log level is numeric and can take values:
@@ -2308,49 +2358,121 @@ Sets the log level for the application. Log level is numeric and can take values
 - 40 : Errors
 - 50 : No logging
 
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ##/diag/download
 ###GET
 Retrieves an archive with logs and databases from RainMachine
 *Only Available on 1st gen.*
+
++ Response 200 (application/zip)
+
+            zipfile
 
 # Group Machine
 ## /machine/time
 ### GET
 Returns the time on machine
 *Available on 1st gen.*
+
++ Response 200 (application/zip)
+
+        { "appDate": "2015-06-04 02:33:17" }
+
 ### POST
 Changes the time on machine
 *Available on 1st gen.*
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+        
 ## /machine/update/check
 ### POST
 Checks if there are any package updates. The status returned from /machine/update will be updated with new information.
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ## /machine/update
 ### GET
 Returns software update status
 *Available on 1st gen.*
+
++ Response 200 (application/json)
+
+        {
+          "lastUpdateCheckTimestamp": 1433411100, 
+          "packageDetails": [
+            {
+              "packageName": "rainmachine-app", 
+              "newVersion": "4.0.539", 
+              "oldVersion": "4.0.535"
+            }
+          ], 
+          "update": true, 
+          "lastUpdateCheck": "2015-06-04 02:45:00", 
+          "updateStatus": 1
+        }
+
 ### POST
 Starts a software update (requires a call to /machine/update/check)
 *Available on 1st gen.*
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ##/machine/sysupgrade
 ###POST
 Initiate a firmware download and install
 
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ## /machine/ssh
 ### POST
 Disables/Enables SSH daemon, the daemon will also be stopped/started accordingly.
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+    
 ## /machine/touch
 ### POST
 Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons
 
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+        
 ## /machine/reboot
 ### POST
 Initiates a system reboot
 *Available on 1st gen.*
 
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 # Group Dev
 ## /dev/import/parser
 ### POST
 Installs a new parser to the device. Parsers are written in python and follow [RainMachine Parser API](http://docs.rainmachineparsers.apiary.io/). 
+
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+    
 ## /dev/import/waterlog
 ### POST
 Imports a waterlog database from another RainMachine device
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
