@@ -1560,18 +1560,55 @@ Returns global watering restrictions
 ### POST
 Sets global watering restrictions
 
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 ## /restrictions/hourly
 ### GET
-Returns hourly restrictions for watering
+Returns defined hourly restrictions for watering
+
++ Response 200 (application/json)
+    
+        {
+          "hourlyRestrictions": [
+            {
+              "interval": "2:0 - 3:0", 
+              "dayStartMinute": 120, 
+              "uid": 1, 
+              "minuteDuration": 60, 
+              "weekDays": "1000000"
+            }
+          ]
+        }
+        
 ### POST
-Sets a new hourly restriction
+Sets a new hourly restriction, will return a json with restriction details.
+
++ Response 200 (application/json)
+
+        {
+        "restriction": 
+            {
+            "interval": "2:0 - 3:0", 
+            "dayStartMinute": 120, 
+            "uid": 2, 
+            "minuteDuration": 60, 
+            "weekDays": "1000000"
+            }, 
+            "message": "OK", "statusCode": 0
+        }
 
 ## POST /restrictions/hourly/{id}/delete
-Removes an hourly restriction
+Removes an hourly restriction with the specified id.
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
 
 ##/restrictions/raindelay
 ### GET
-Returns the number of seconds until the forced Rain Delay mode is finished
+Returns the number of seconds until the forced Rain Delay is finished
 *Available on 1st gen.*
 + Response 200 (application/json)
 
@@ -1580,8 +1617,13 @@ Returns the number of seconds until the forced Rain Delay mode is finished
         }
 
 ### POST
-Sets the number of days for which a Rain Delay is wanted
+Sets the number of days for which a Rain Delay is wanted, the Rain Delay will start at the time of POST request being register.
 *Available on 1st gen.*
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+
 
 # Group Daily Stats
 Daily Statistics and Weather
@@ -1590,18 +1632,32 @@ Daily Statistics and Weather
 Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
 Statistics are built from mixer and simulator data. 
 
-| Variable                   | Type       | Description          |
-| ---------------------------|------------|--------------------- |
-| `id`                       | *int*      | Day offset relative to today which is 0. Negative  values are in the past. Positive in the future |
-| `wateringFlag`             | *int*      | ( **review** )  |
-| `day`                      | *string*   | Day in YYYY-MM-DD format |
-| `mint`                     | *float*    | Minimum temperature of the day |
-| `maxt`                     | *float*    | Maximum temperature of the day |
-| `icon`                     | *int*      | Weather icon for that day (see icon definitions) |
-| `percentage`               | *int*      | How much it actually waters |
-| `simulatedPercentage`      | *int*      | How much it would water if a daily program would be configured  |
-| `vibration`                | *array of int*      | How the watering `percetage` varies with historical and future weather predictions |
-| `simulatedVibration`       | *array of int*      | As above but if a daily program would be configured |
+| Variable                   | Type          | Description          |
+| ---------------------------|---------------|--------------------- |
+| `id`                       | *int*         | Day offset relative to today which is 0. Negative  values are in the past. Positive in the future |
+| `wateringFlag`             | *int*         | See below |
+| `day`                      | *string*      | Day in YYYY-MM-DD format |
+| `mint`                     | *float*       | Minimum temperature of the day |
+| `maxt`                     | *float*       | Maximum temperature of the day |
+| `icon`                     | *int*         | Weather icon for that day (see icon definitions) |
+| `percentage`               | *int*         | How much it actually waters |
+| `simulatedPercentage`      | *int*         | How much it would water if a daily program would be configured  |
+| `vibration`                | *array of int*| How the watering `percetage` varies with historical and future weather predictions |
+| `simulatedVibration`       | *array of int*| As above but if a daily program would be configured |
+
+| Watering Flag Value        | Description                          |
+| ---------------------------|------------------------------------- |
+| 0                          | Normal watering                      |
+| 1                          | Interrupted by user                  |
+| 2                          | Restriction Threshold                |
+| 3                          | Restriction Freeze Protect           |
+| 4                          | Restriction Day                      |
+| 5                          | Restriction Out Of Day               |
+| 6                          | Water Surplus                        |
+| 7                          | Stopped by Rain Sensor               |
+
+
+
 
 *Partial support on 1st gen: "vibration" not available.*
 
@@ -1691,6 +1747,7 @@ Statistics are built from mixer and simulator data.
 
 ##/dailystats/{date}
 ###GET
+Returns daily statistics about simulated watering starting from specified `date`.
 *Partial support on 1st gen: "vibration" not available.*
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
@@ -1720,6 +1777,64 @@ Statistics are built from mixer and simulator data.
               "simulatedVibration": [
                 16
               ]
+        }
+        
+##/dailystats/details/{date}
+###GET
+Returns daily statistics detauls about simulated watering starting with `date` which is optional.
+*Partial support on 1st gen: "vibration" not available.*
++ Parameters
+    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
+    
++ Response 200 (application/json)
+
+          "DailyStatsDetails": [
+            {
+              "dayTimestamp": 1433365200, 
+              "day": "2015-06-04", 
+              "mint": 18.600000000000001, 
+              "maxt": 29.800000000000001, 
+              "icon": 11, 
+              "programs": [
+                {
+                  "id": 1, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 0, 
+                      "availableWater": 2.6507623461121783, 
+                      "coefficient": 0, 
+                      "percentage": 0
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 0, 
+                      "availableWater": 2.6507623461121783, 
+                      "coefficient": 0, 
+                      "percentage": 0
+                    }
+                  ]
+                }
+              ], 
+              "simulatedPrograms": [
+                {
+                  "id": 1, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 60, 
+                      "computedWateringTime": 0, 
+                      "availableWater": 2.6507623461121783, 
+                      "coefficient": 0, 
+                      "percentage": 0
+                    }
+                  ]
+                }
+              ]
+            }
+        ]
         }
 
 # Group Parsers
