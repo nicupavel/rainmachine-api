@@ -275,7 +275,7 @@ Sets device provision settings. See above for parameter explanation. Settings ca
         "useRainSensor": false, 
         "wizardHasRun": true, 
         "waterLogHistorySize": 365, 
-        "netName": "Nicu-SPK2", 
+        "netName": "RainMachine", 
         "touchSleepTimeout": 10, 
         "touchAdvanced": false, 
         "hardwareVersion": 2, 
@@ -337,10 +337,10 @@ Sets device provision settings. See above for parameter explanation. Settings ca
 
 ## /provision/name
 ### GET
-Returns device name (short cut to provision.system.name
+Returns device name (shortcut to provision.system.netName)
 + Response 200 (application/json)
 
-        {"name": "Test-CIMIS"}
+        {"name": "RainMachine"}
 
 ## POST
 Sets device name
@@ -414,14 +414,14 @@ Get all watering programs defined on device
           "programs": [
             {
               "uid": 1, 
-              "name": "Daily program", 
+              "name": "Program1", 
               "active": true, 
-              "startTime": "00:30", 
-              "cycles": 3, 
-              "soak": 4, 
-              "cs_on": true, 
-              "delay": 3, 
-              "delay_on": true, 
+              "startTime": "06:00", 
+              "cycles": 0, 
+              "soak": 0, 
+              "cs_on": false, 
+              "delay": 0, 
+              "delay_on": false, 
               "status": 0, 
               "frequency": {
                 "type": 0, 
@@ -432,20 +432,20 @@ Get all watering programs defined on device
               "futureField1": 0, 
               "freq_modified": 0, 
               "useWaterSense": false, 
-              "nextRun": "2014-11-11", 
+              "nextRun": "2015-06-04", 
               "wateringTimes": [
                 {
                   "id": 1, 
                   "name": "Zone 1", 
+                  "duration": 300, 
+                  "active": true
+                }, 
+                {
+                  "id": 2, 
+                  "name": "Zone 2", 
                   "duration": 0, 
                   "active": false
                 }, 
-                {
-                  "id": 8, 
-                  "name": "Zone 8", 
-                  "duration": 90, 
-                  "active": true
-                }
               ]
             }
           ]
@@ -491,14 +491,14 @@ Get program with specified id
 
         {
           "uid": 1, 
-          "name": "Daily program", 
+          "name": "Program1", 
           "active": true, 
-          "startTime": "00:30", 
-          "cycles": 3, 
-          "soak": 4, 
-          "cs_on": true, 
-          "delay": 3, 
-          "delay_on": true, 
+          "startTime": "06:00", 
+          "cycles": 0, 
+          "soak": 0, 
+          "cs_on": false, 
+          "delay": 0, 
+          "delay_on": false, 
           "status": 0, 
           "frequency": {
             "type": 0, 
@@ -509,20 +509,20 @@ Get program with specified id
           "futureField1": 0, 
           "freq_modified": 0, 
           "useWaterSense": false, 
-          "nextRun": "2014-11-11", 
+          "nextRun": "2015-06-04", 
           "wateringTimes": [
             {
               "id": 1, 
               "name": "Zone 1", 
+              "duration": 300, 
+              "active": true
+            }, 
+            {
+              "id": 2, 
+              "name": "Zone 2", 
               "duration": 0, 
               "active": false
             }, 
-            {
-              "id": 8, 
-              "name": "Zone 8", 
-              "duration": 90, 
-              "active": true
-            }
           ]
         }
 
@@ -531,7 +531,7 @@ Update program parameters with specified id
 *Partial support on 1st gen: "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes". Response: "statusCode", "message".*
 + Response 200 (application/json)
 
-        {}
+        { "statusCode": 0 }
 
 ## POST /program/{id}/delete
 Delete Program with id
@@ -542,7 +542,7 @@ Delete Program with id
     
 + Response 200 (application/json)
 
-        {}
+        { "statusCode": 0 }
         
 ## POST /program/{id}/start
 Start watering Program with id
@@ -552,7 +552,7 @@ Start watering Program with id
 
 + Response 200 (application/json)
 
-        {}
+        { "statusCode": 0 }
 
 ## POST /program/{id}/stop
 Remove Program with id from watering queue
@@ -562,7 +562,7 @@ Remove Program with id from watering queue
     
 + Response 200 (application/json)
 
-        {}
+        { "statusCode": 0 }
 
 # Group Zones
 Irrigation zones, each zone corresponds to a valve connector on device
@@ -585,7 +585,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 2, 
@@ -598,7 +599,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 3, 
@@ -611,7 +613,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 4, 
@@ -624,7 +627,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 5, 
@@ -637,7 +641,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 6, 
@@ -650,7 +655,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 7, 
@@ -663,7 +669,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }, 
             {
               "uid": 8, 
@@ -676,7 +683,8 @@ Returns a list of *all* zones and their generic properties
               "noOfCycles": 0, 
               "restriction": false, 
               "type": 1, 
-              "master": false
+              "master": false, 
+              "waterSense": false
             }
           ]
         }
@@ -704,8 +712,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.0, 
+                "precipitationRate": 0.0, 
+                "appEfficiency": 0.0, 
+                "allowedSurfaceAcc": 0.0, 
+                "rootDepth": 0, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 0.0, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "permWilting": 0.0, 
+                "fieldCapacity": 0.0
+              }
             }, 
             {
               "uid": 2, 
@@ -722,8 +755,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 40.64, 
+                "appEfficiency": 0.55000000000000012, 
+                "allowedSurfaceAcc": 6.35, 
+                "rootDepth": 254, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 8.8899999999999988, 
+                "detailedMonthsKc": [
+                  0.41, 
+                  0.46, 
+                  0.52, 
+                  0.56000000000000012, 
+                  0.6, 
+                  0.62, 
+                  0.62, 
+                  0.6, 
+                  0.56000000000000012, 
+                  0.5, 
+                  0.45, 
+                  0.4
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.2
+              }
             }, 
             {
               "uid": 3, 
@@ -740,8 +798,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.4, 
+                "precipitationRate": 40.64, 
+                "appEfficiency": 0.6, 
+                "allowedSurfaceAcc": 4.064, 
+                "rootDepth": 205.73999999999997, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 3.8099999999999994, 
+                "detailedMonthsKc": [
+                  0.52, 
+                  0.64, 
+                  0.7, 
+                  0.73, 
+                  0.73, 
+                  0.71, 
+                  0.69, 
+                  0.67000000000000012, 
+                  0.64, 
+                  0.6, 
+                  0.56999999999999988, 
+                  0.53
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.2
+              }
             }, 
             {
               "uid": 4, 
@@ -758,8 +841,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 35.559999999999994, 
+                "appEfficiency": 0.7, 
+                "allowedSurfaceAcc": 6.604, 
+                "rootDepth": 508, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 12.7, 
+                "detailedMonthsKc": [
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012, 
+                  0.55000000000000012
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.12
+              }
             }, 
             {
               "uid": 5, 
@@ -776,8 +884,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.55000000000000012, 
+                "precipitationRate": 35.559999999999994, 
+                "appEfficiency": 0.75, 
+                "allowedSurfaceAcc": 6.0959999999999988, 
+                "rootDepth": 711.19999999999988, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 10.16, 
+                "detailedMonthsKc": [
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4, 
+                  0.4
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.16
+              }
             }, 
             {
               "uid": 6, 
@@ -794,8 +927,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 5.08, 
+                "appEfficiency": 0.8, 
+                "allowedSurfaceAcc": 6.604, 
+                "rootDepth": 635, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 5.08, 
+                "detailedMonthsKc": [
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61, 
+                  0.61
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.21
+              }
             }, 
             {
               "uid": 7, 
@@ -812,8 +970,33 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.35, 
+                "precipitationRate": 8.8899999999999988, 
+                "appEfficiency": 0.65, 
+                "allowedSurfaceAcc": 2.54, 
+                "rootDepth": 233.68, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 2.54, 
+                "detailedMonthsKc": [
+                  0.52, 
+                  0.64, 
+                  0.7, 
+                  0.73, 
+                  0.73, 
+                  0.61, 
+                  0.69, 
+                  0.67000000000000012, 
+                  0.64, 
+                  0.6, 
+                  0.56999999999999988, 
+                  0.53
+                ], 
+                "permWilting": 0.03, 
+                "fieldCapacity": 0.2
+              }
             }, 
             {
               "uid": 8, 
@@ -830,20 +1013,70 @@ Returns advanced properties for *all* zones
               "group_id": 0, 
               "history": true, 
               "master": false, 
-              "before": 10, 
-              "after": 10
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "maxAllowedDepletion": 0.0, 
+                "precipitationRate": 0.0, 
+                "appEfficiency": 0.0, 
+                "allowedSurfaceAcc": 0.0, 
+                "rootDepth": 0, 
+                "isTallPlant": 0, 
+                "soilIntakeRate": 0.0, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "permWilting": 0.0, 
+                "fieldCapacity": 0.0
+              }
             }
           ]
         }
 
+
+## /zone/{id}
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the zone to water
+
+### GET
+Retrieve properties for zone with specified id.
+*Partial support on 1st gen*
+
++ Response 200 (application/json)
+
+        {
+          "uid": 1, 
+          "name": "Zone 1", 
+          "state": 0, 
+          "userDuration": 0, 
+          "machineDuration": 0, 
+          "remaining": 0, 
+          "cycle": 0, 
+          "noOfCycles": 0, 
+          "restriction": false, 
+          "type": 1, 
+          "master": false, 
+          "waterSense": false
+        }
         
 ## /zone/{id}/properties
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
 ### GET
-Retrieve properties for zone with id
-*Partial support on 1st gen: "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
+Retrieve advanced properties for zone with specified id.
+*Partial support on 1st gen*
 
 + Response 200 (application/json)
 
@@ -892,10 +1125,13 @@ Stop watering zone with id
 
 + Response 200 (application/json)
 
-        {}
+        { "statusCode": 0 }
 
 # Group Watering
-Watering Information and Status
+Watering Information and Status including data for past water usage. The past water usage statistics are split in two parts 
+real data that comes from user programs (which could be daily or every 7 days) and user manual watering, and a simulated part that comes from a simulated daily program
+that is simulated each day.
+
 ## GET /watering/zone
 Returns status of watering on *all* zones
 + Response 200 (application/json)
@@ -994,21 +1230,53 @@ Returns status of watering on *all* zones
         }
 
 ## GET /watering/program
-Returns the running watering program if any
+Returns the running watering program or empty list if no programs are currently running.
 
 + Response 200 (application/json)
 
-        { "programs": [] }
+        {
+          "programs": [
+            {
+              "uid": 1, 
+              "name": "Program1", 
+              "manual": true, 
+              "userStartTime": "2015-06-03 23:43:00", 
+              "realStartTime": "2015-06-03 23:43:48", 
+              "status": 1
+            }
+          ]
+        }
 
 ## GET /watering/queue
-Returns the entire current watering queue
+Returns the current watering queue or empty list if no watering is taking place.
 
 + Response 200 (application/json)
 
-        { "queue": []  }
+        {
+          "queue": [
+            {
+              "availableWater": 0, 
+              "realDuration": 0, 
+              "running": true, 
+              "uid": null, 
+              "restriction": false, 
+              "manual": true, 
+              "pid": 1, 
+              "flag": 0, 
+              "machineDuration": 300.0, 
+              "userDuration": 300.0, 
+              "zid": 1, 
+              "userStartTime": "2015-06-03 23:43:00", 
+              "cycles": 1, 
+              "hwZid": 1, 
+              "realStartTime": "2015-06-03 23:43:48", 
+              "cycle": 1
+            }
+          ]
+        }
         
 ## GET /watering/past
-Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started
+Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.
 
 + Response 200 (application/json)
 
@@ -1026,7 +1294,7 @@ Returns the et0 and qpf values used on the last runs of programs, including the 
         }
 
 ## GET /watering/available
-Returns the available water in soil for each zone
+Returns the available water in soil for each zone in each program for all days.
 
 + Response 200 (application/json)
 
@@ -1084,6 +1352,191 @@ Returns the available water in soil for each zone
           ]
         }
 
+## GET /watering/log
+Return all basic past water usage
+
++ Response 200 (application/json)
+
+        {
+          "waterLog": {
+            "days": [
+              {
+                "date": "2015-06-03", 
+                "realDuration": 541, 
+                "dayTimestamp": 1433314800
+              }
+            ]
+          }
+        }
+
+## GET /watering/log/{date}/{days}
+Returns basic water usage data starting from specified `date` for a number of specified `days`
+
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
++ Response 200 (application/json)
+
+        {
+          "waterLog": {
+            "days": [
+              {
+                "date": "2015-06-03", 
+                "realDuration": 541, 
+                "dayTimestamp": 1433314800
+              }
+            ]
+          }
+        }
+
+## GET /watering/log/details/{date}/{days}
+Returns detalied water usage starting from specified `date` for a number of specified `days`.
+
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
++ Response 200 (application/json)
+
+        {
+          "waterLog": {
+            "days": [
+              {
+                "date": "2015-06-03", 
+                "dateTimestamp": 1433314800, 
+                "programs": [
+                  {
+                    "id": 1, 
+                    "zones": [
+                      {
+                        "uid": 1, 
+                        "flag": 0, 
+                        "cycles": [
+                          {
+                            "id": 1, 
+                            "startTime": "2015-06-03 06:00:00", 
+                            "startTimestamp": 1433336400, 
+                            "userDuration": 300, 
+                            "machineDuration": 240.5214319229126, 
+                            "realDuration": 241
+                          }
+                        ]
+                      }
+                    ]
+                  }, 
+                  {
+                    "id": 0, 
+                    "zones": [
+                      {
+                        "uid": 1, 
+                        "flag": 0, 
+                        "cycles": [
+                          {
+                            "id": 1, 
+                            "startTime": "2015-06-03 23:43:48", 
+                            "startTimestamp": 1433400228, 
+                            "userDuration": 300, 
+                            "machineDuration": 300, 
+                            "realDuration": 300
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        
+## GET /watering/log/simulated/{date}/{days}
+Returns basic water usage data for the simulated program (doesn't actually water) starting from specified `date` for a number of specified `days`
+
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
++ Response 200 (application/json)
+
+        {
+          "waterLog": {
+            "days": [
+              {
+                "date": "2015-06-03", 
+                "realDuration": 541, 
+                "dayTimestamp": 1433314800
+              }
+            ]
+          }
+        }
+
+## GET /watering/log/simulated/details/{date}/{days}
+Returns detalied water usage for the simulated program (doesn't actually water) starting from specified `date` for a number of specified `days`.
+
++ Parameters
+    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
++ Response 200 (application/json)
+
+        {
+          "waterLog": {
+            "days": [
+              {
+                "date": "2015-06-03", 
+                "dateTimestamp": 1433314800, 
+                "programs": [
+                  {
+                    "id": 1, 
+                    "zones": [
+                      {
+                        "uid": 1, 
+                        "flag": 0, 
+                        "cycles": [
+                          {
+                            "id": 1, 
+                            "startTime": "2015-06-03 06:00:00", 
+                            "startTimestamp": 1433336400, 
+                            "userDuration": 300, 
+                            "machineDuration": 240.5214319229126, 
+                            "realDuration": 241
+                          }
+                        ]
+                      }
+                    ]
+                  }, 
+                  {
+                    "id": 0, 
+                    "zones": [
+                      {
+                        "uid": 1, 
+                        "flag": 0, 
+                        "cycles": [
+                          {
+                            "id": 1, 
+                            "startTime": "2015-06-03 23:43:48", 
+                            "startTimestamp": 1433400228, 
+                            "userDuration": 300, 
+                            "machineDuration": 300, 
+                            "realDuration": 300
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+
+## POST /watering/stopall
+Stops all watering in progress including zones and programs that were started.
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
 
 
 # Group Restrictions   
