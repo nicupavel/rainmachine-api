@@ -410,7 +410,7 @@ Get all watering programs defined on device
 
 | Variable                      | Type                | Description                                                                            |
 | ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
-| `uid`                         | *integer*           | Program ID. Automatically generated when a new program is created                      |
+| `uid`                         | *integer*           | Program unique ID. Automatically generated when a new program is created               |
 | `name`                        | *string*            | Program Name                                                                           |
 | `active                       | *boolean*           | If program is not active it won't be started                                           |
 | `startTime`                   | *string*            | Program start time in HH:MM format                                                     |
@@ -419,7 +419,7 @@ Get all watering programs defined on device
 | `cs_on`                       | *boolean*           | If cycle and soak settings are enabled or not for this program                         |
 | `delay`                       | *integer*           | The delay between starting next zone (to build water pressure)                         |
 | `delay_on`                    | *boolean*           | If the delay between zones is enabled or not                                           |
-| `status`                      | *integer*           | 0 - not running, 1 - running, 2 - queued                                               |
+| `status`                      | *integer*           | Watering status: 0 - not running, 1 - running, 2 - queued                                               |
 | `frequency`                   | *object*            |   |
 | `coef`                        | *float*             |   |
 | `ignoreInternetWeather`       | *boolean*           |   |
@@ -593,6 +593,22 @@ Irrigation zones, each zone corresponds to a valve connector on device
 
 Returns a list of *all* zones and their generic properties
 *Partial support on 1st gen: "uid", "name", "state", "remaining", "type", "master".*
+
+| Variable                      | Type                | Description                                                                            |
+| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
+| `uid`                         | *integer*           | Zone unique ID Usually from 1 to max number of valves                                  |
+| `name`                        | *string*            | Name of the zone                                                                       |
+| `state`                       | *integer*           | Watering status: 0 - not running, 1 - running, 2 - queued                              |
+| `userDuration`                | *integer*           | Duration in seconds that was set by user for this zone                                 |
+| `machineDuration`             | *integer*           | Duration of actual watering that was calculated by RainMachine                         |
+| `remaining`                   | *integer*           | Remaining duration when watering has started                                           |
+| `cycle`                       | *integer*           | The current cycle for this zone (if running from a program with cycles enabled)        |
+| `noOfCycles`                  | *integer*           | Total number of cycles for this zone for running program                               |
+| `restriction`                 | *boolean*           | If the zone is in any current restrictions                                             |
+| `type`                        | *integer*           | Vegetation Type (**review**)                                                           |
+| `master`                      | *boolean*           | If the zone is set as master valve                                                     |
+| `watersense`                  | *boolean*           | If the zone is in a watersense program                                                 |
+
 + Response 200 (application/json)
 
         {
