@@ -408,7 +408,30 @@ Watering Programs, each program can contain several Zones and rules that control
 Get all watering programs defined on device
 *Partial support on 1st gen: "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes".*
 
-+ response 200 (application/json)
+| Variable                      | Type                | Description                                                                            |
+| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
+| `uid`                         | *integer*           | Program ID. Automatically generated when a new program is created                      |
+| `name`                        | *string*            | Program Name                                                                           |
+| `active                       | *boolean*           | If program is not active it won't be started                                           |
+| `startTime`                   | *string*            | Program start time in HH:MM format                                                     |
+| `cycles`                      | *integer*           | The number of cycles that the duration of each zone will be split into                 |
+| `soak`                        | *integer*           | How many seconds to wait before starting next cycle for same zone                      |
+| `cs_on`                       | *boolean*           | If cycle and soak settings are enabled or not for this program                         |
+| `delay`                       | *integer*           | The delay between starting next zone (to build water pressure)                         |
+| `delay_on`                    | *boolean*           | If the delay between zones is enabled or not                                           |
+| `status`                      | *integer*           | 0 - not running, 1 - running, 2 - queued                                               |
+| `frequency`                   | *object*            |   |
+| `coef`                        | *float*             |   |
+| `ignoreInternetWeather`       | *boolean*           |   |
+| `futureField1`                | *integer*           |   |
+| `freq_modified`               | *integer*           |   |
+| `useWaterSense`               | *boolean*           |   |
+| `nextRun`                     | *string*            | Next scheduled run in YYYY-MM-DD format |
+| `wateringTimes`               | *array of objects*  |   |
+
+
+
++ Response 200 (application/json)
 
         {
           "programs": [
