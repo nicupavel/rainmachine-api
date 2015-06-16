@@ -1709,81 +1709,73 @@ Statistics are built from mixer and simulator data.
 + Response 200 (application/json)
 
         {
-          "WeatherData": 
-            [
-            {
-              "id": -1, 
-              "day": "2014-11-30", 
-              "mint": 9.9, 
-              "maxt": 21.9, 
-              "icon": null, 
-              "percentage": 0, 
-              "wateringFlag": 0, 
-              "vibration": [
-                56, 
-                56, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0
-              ], 
-              "simulatedPercentage": 16.33062599489387, 
-              "simulatedVibration": [
-                16
-              ]
-            },
+          "DailyStats": [
             {
               "id": 0, 
-              "day": "2014-12-01", 
-              "mint": 6.9, 
-              "maxt": 21.9, 
-              "icon": null, 
-              "percentage": 0, 
+              "day": "2015-06-16", 
+              "mint": 11.16, 
+              "maxt": 29.6, 
+              "icon": 0, 
+              "percentage": 100, 
               "wateringFlag": 0, 
               "vibration": [
-                56, 
-                56, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100
               ], 
-              "simulatedPercentage": 16.33062599489387, 
+              "simulatedPercentage": 100, 
               "simulatedVibration": [
-                16
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100
               ]
-            },
+            }, 
             {
               "id": 1, 
-              "day": "2014-12-02", 
-              "mint": 6.9, 
-              "maxt": 21.9, 
-              "icon": null, 
-              "percentage": 0, 
+              "day": "2015-06-17", 
+              "mint": 12.619999999999999, 
+              "maxt": 30.99, 
+              "icon": 3, 
+              "percentage": 100, 
               "wateringFlag": 0, 
               "vibration": [
-                56, 
-                56, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100
               ], 
-              "simulatedPercentage": 16.33062599489387, 
+              "simulatedPercentage": 100, 
               "simulatedVibration": [
-                16
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100, 
+                100
               ]
             }
             ]
@@ -1823,13 +1815,11 @@ Returns daily statistics about simulated watering starting from specified `date`
               ]
         }
         
-##/dailystats/details/{date}
+##/dailystats/details
 ###GET
 Returns daily statistics detauls about simulated watering starting with `date` which is optional.
 *Partial support on 1st gen: "vibration" not available.*
-+ Parameters
-    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
-    
+
 + Response 200 (application/json)
 
           "DailyStatsDetails": [
