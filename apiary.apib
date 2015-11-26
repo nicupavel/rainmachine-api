@@ -3,7 +3,7 @@ FORMAT: X-1A
 HOST: https://device.ip/api/4/
 
 # RainMachine
-RainMachine API version 4 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.3.
+RainMachine API version 4.1 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.4.
 
 Compatible devices:
 
@@ -35,8 +35,23 @@ For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-min
 ##Authentication
 
 After authenticating using `POST /auth/login` [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
-
 Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
+
+##Summary of changes from API 4.0 to API 4.1
+ - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.
+ - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.
+ - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. 
+ - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.
+ - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates
+ - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server
+ 
+ - **MODIFICATION** - `GET /watering/log` Added *userDuration* field
+ - **MODIFICATION** - `GET /zone` Added *active* field
+ - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields
+ - **MODIFICATION** - `GET /watering/available` Added possibility to specify start date and days
+ - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run
+ - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields
+ 
 
 # Group API versions
 ## GET /apiVer
@@ -45,7 +60,7 @@ Returns the software, hardware and api level versions.
 + Response 200 (application/json)
 
         {
-            "apiVer": "4.0.0", 
+            "apiVer": "4.1.0", 
             "hwVer": 2, 
             "swVer": "4.0.219"
         }
@@ -1188,7 +1203,8 @@ Start watering zone with id
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
     
-+ Request 
++ Request
+
         {
             "time": 60
         }
@@ -1620,7 +1636,22 @@ Stops all watering in progress including zones and programs that were started.
 
 
 # Group Restrictions   
-Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay
+Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay. New in 4.1: Rain Sensor
+
+## /restritions/currently
+### GET
+Returns a summary of current restrictions on device. If any of the month, week day, hourly, freeze or rain delay restrictions are active a coresponding field in the reply is set to true.
++ Response 200 (application/json)
+
+        {
+          "hourly": false, 
+          "freeze": false, 
+          "month": false, 
+          "weekDay": false, 
+          "rainDelay": false, 
+          "rainDelayCounter": -1, 
+          "rainSensor": false
+        }
 
 ## /restrictions/global
 ### GET
