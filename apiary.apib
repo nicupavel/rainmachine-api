@@ -37,7 +37,7 @@ For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-min
 After authenticating using `POST /auth/login` [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
 Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
 
-### Summary of changes from API 4.0 to API 4.1
+### Changes from API 4.0 to API 4.1
  - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.
  - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.
  - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. 
