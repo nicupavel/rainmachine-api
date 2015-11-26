@@ -5,7 +5,7 @@ HOST: https://device.ip/api/4/
 # RainMachine
 RainMachine API version 4.1 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.4.
 
-Compatible devices:
+### Compatible devices:
 
 - 1st generation RainMachine: `hwVer: 1.0` partial support where noted
 - [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support
@@ -15,12 +15,12 @@ For 1st generation RainMachine the RESTful interface is accessible via HTTPS on 
 
 For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.
 
-##Allowed HTTPs requests:
+### Allowed HTTPs requests
 
 - `POST` - Creates or updates a resource
 - `GET` - Retrieves a resource or list of resources
 
-##Typical Server Responses
+### Typical Server Responses
 
 - 200 `OK` - The request was successful
 - 400 `Bad Request` - The request could not be understood or was missing required parameters.
@@ -32,12 +32,12 @@ For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-min
 - 540 `Database Error` - Error saving data to database
 - 541 `Provision Failed` - Cannot provision unit 
 
-##Authentication
+### Authentication
 
 After authenticating using `POST /auth/login` [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
 Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
 
-##Summary of changes from API 4.0 to API 4.1
+### Summary of changes from API 4.0 to API 4.1
  - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.
  - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.
  - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. 
@@ -1644,13 +1644,13 @@ Returns a summary of current restrictions on device. If any of the month, week d
 + Response 200 (application/json)
 
         {
-          "hourly": false, 
-          "freeze": false, 
-          "month": false, 
-          "weekDay": false, 
-          "rainDelay": false, 
-          "rainDelayCounter": -1, 
-          "rainSensor": false
+            "hourly": false, 
+            "freeze": false, 
+            "month": false, 
+            "weekDay": false, 
+            "rainDelay": false, 
+            "rainDelayCounter": -1, 
+            "rainSensor": false
         }
 
 ## /restrictions/global
