@@ -49,6 +49,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /zone` Added *active* field
  - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields
  - **MODIFICATION** - `GET /watering/available` Added possibility to specify start date and days
+ - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days
  - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run
  - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields
  
@@ -1371,26 +1372,44 @@ Returns the current watering queue or empty list if no watering is taking place.
           ]
         }
         
-## GET /watering/past
+## GET /watering/past/{date}/{days}
 Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.
+If no date/days parameters are sent the yesterday values are returned.
+
++ Parameters
+    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
 
 + Response 200 (application/json)
 
         {
           "pastValues": [
             {
-              "pid": 1, 
-              "dateTimestamp": 1418025600, 
-              "dateTime": "2014-12-08 00:00:00", 
-              "used": 1, 
-              "et0": 0.7508403396708584, 
+              "pid": 4, 
+              "dateTimestamp": 1450166400, 
+              "dateTime": "2015-12-15 00:00:00", 
+              "used": true, 
+              "et0": 1.3241329016030579, 
+              "qpf": 0
+            }, 
+            {
+              "pid": 4, 
+              "dateTimestamp": 1450252800, 
+              "dateTime": "2015-12-16 00:00:00", 
+              "used": true, 
+              "et0": 1.417105023767904, 
               "qpf": 0
             }
           ]
         }
 
-## GET /watering/available
+## GET /watering/available/{date}/{days}
 Returns the available water in soil for each zone in each program for all days.
+
++ Parameters
+    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
+    + days (optional, int, `30`) ... How many days to return
+
 
 + Response 200 (application/json)
 
