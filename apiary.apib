@@ -52,6 +52,8 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days
  - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run
  - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields
+ - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.
+ 
  
 
 # Group API versions
@@ -428,7 +430,7 @@ Get all watering programs defined on device
 | ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
 | `uid`                         | *integer*           | Program unique ID. Automatically generated when a new program is created               |
 | `name`                        | *string*            | Program Name                                                                           |
-| `active                       | *boolean*           | If program is not active it won't be started                                           |
+| `active`                       | *boolean*           | If program is not active it won't be started                                           |
 | `startTime`                   | *string*            | Program start time in HH:MM format                                                     |
 | `cycles`                      | *integer*           | The number of cycles that the duration of each zone will be split into                 |
 | `soak`                        | *integer*           | How many seconds to wait before starting next cycle for same zone                      |
@@ -444,8 +446,23 @@ Get all watering programs defined on device
 | `useWaterSense`               | *boolean*           |   |
 | `nextRun`                     | *string*            | Next scheduled run in YYYY-MM-DD format |
 | `wateringTimes`               | *array of objects*  |   |
+| `startTimeParams`             | *object*            | Used to set program start time at sunrise/sunset. Start hour, minute is automatically computed every time the program starts (see below)  |
 
 
+
+| **frequency** Object keys       | Type                | Description                                                   |
+| ------------------------------|---------------------|-------------------------------------------------------------- |
+| `type`                        | *integer*           | Daily: 0, Every N days: 1, Weekday: 2, Odd/Even day: 4        |
+| `param`                       | *integer*           | Odd days: 1, Even days: 0, EveryNFormat: days,  Weekday: "SSFTWTM0" |
+
+
+
+
+|**startTimeParams** Object keys   | Type                | Description                                                   |
+| ------------------------------|---------------------|-------------------------------------------------------------- |
+| `type`                        | *integer*           | Normal start time: 0, Sunrise: 1, Sunset: 2        |
+| `offsetMinutes`               | *integer*           | Minutes after/before sunrise/sunset        |
+| `offsetSign`                  | *integer*           | -1 offsetMinutes are before selected type, 1 means after |
 
 + Response 200 (application/json)
 
@@ -461,7 +478,12 @@ Get all watering programs defined on device
               "cs_on": false, 
               "delay": 0, 
               "delay_on": false, 
-              "status": 0, 
+              "status": 0,
+              "startTimeParams": {
+                "type": 2, 
+                "offsetMinutes": 190, 
+                "offsetSign": -1
+              },
               "frequency": {
                 "type": 0, 
                 "param": "0"
@@ -574,7 +596,12 @@ Get program with specified id
           "cs_on": false, 
           "delay": 0, 
           "delay_on": false, 
-          "status": 0, 
+          "status": 0,
+          "startTimeParams": {
+                "type": 2, 
+                "offsetMinutes": 190, 
+                "offsetSign": -1
+          }, 
           "frequency": {
             "type": 0, 
             "param": "0"
