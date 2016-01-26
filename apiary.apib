@@ -44,7 +44,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.
  - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates
  - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server
- 
+ - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values (ver > .636)
  - **MODIFICATION** - `GET /watering/log` Added *userDuration* field
  - **MODIFICATION** - `GET /zone` Added *active* field
  - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields
@@ -53,6 +53,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run
  - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields
  - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.
+ 
  
  
 
