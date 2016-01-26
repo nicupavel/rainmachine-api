@@ -2440,14 +2440,27 @@ Activates or deactivates a parser. If a parser is not active it won't be run.
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
+
+## POST /parser/{id}/defaults
+Sets the default parameters for a parser
+
++ Response 200 (application/json)
+
+        { 
+            "statusCode": 0 
+        }
 
 ## POST /parser/{id}/params
 Sets the custom parameters for a parser
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
 
 ## POST /parser/run
 Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser
@@ -2459,7 +2472,9 @@ Forcefully runs parsers, mixer and simulator, this will delete all previous pars
     
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
 
 
 # Group Mixer
@@ -2723,7 +2738,9 @@ Sets the log level for the application. Log level is numeric and can take values
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
 
 ##/diag/download
 ###GET
@@ -2732,7 +2749,8 @@ Retrieves an archive with logs and databases from RainMachine
 
 + Response 200 (application/zip)
 
-            zipfile
+            binary data
+
 
 # Group Machine
 ## /machine/time
@@ -2742,7 +2760,9 @@ Returns the time on machine
 
 + Response 200 (application/zip)
 
-        { "appDate": "2015-06-04 02:33:17" }
+        { 
+            "appDate": "2015-06-04 02:33:17" 
+        }
 
 ### POST
 Changes the time on machine
@@ -2750,7 +2770,9 @@ Changes the time on machine
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
         
 ## /machine/update/check
 ### POST
@@ -2758,7 +2780,9 @@ Checks if there are any package updates. The status returned from /machine/updat
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { 
+            "statusCode": 0 
+        }
 
 ## /machine/update
 ### GET
