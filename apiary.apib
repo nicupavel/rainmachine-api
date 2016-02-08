@@ -44,7 +44,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.
  - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates
  - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server
- - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values (ver > .636)
+
  - **MODIFICATION** - `GET /watering/log` Added *userDuration* field
  - **MODIFICATION** - `GET /zone` Added *active* field
  - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields
@@ -52,10 +52,13 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days
  - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run
  - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields
- - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes. (ver > .650)
- - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. (ver > .667)
  
+### Changes from API 4.1 to API 4.2
+ - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values
+ - **NEW**  - `GET /auth/totp` Generates a timebased one time password for guest/support access with 1 day valability
  
+ - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.
+ - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. 
 
 # Group API versions
 ## GET /apiVer
