@@ -15,7 +15,7 @@ For 1st generation RainMachine the RESTful interface is accessible via HTTPS on 
 
 For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.
 
-### Allowed HTTPs requests
+### Allowed HTTPS requests
 
 - `POST` - Creates or updates a resource
 - `GET` - Retrieves a resource or list of resources
@@ -2700,6 +2700,8 @@ Returns software and device status
               "locationStatus": true, 
               "wifiMode": "managed", 
               "gatewayAddress": "192.168.12.1", 
+              "internetStatus": true,
+              "cloudStatus": -1,
               "weatherStatus": true
             }
 
@@ -2722,22 +2724,12 @@ Starts diagnostics upload to RainMachine support FTP server
 
 ##/diag/log
 ###GET
-Retrieves the entire application log (**review**)
-+ Response 200 (text/html)
+Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>``
++ Response 200 (application/json)
 
-         <html><head><title> LOG file </title></head><body> 
-            <style>h1, h2, h3, h4, h5 {font-family: Arial; font-weight: normal;}
-            a:link {text-decoration: none; color: #3399cc;}
-            a:visited {text-decoration: none; color: #3399cc;}
-            a:hover {text-decoration: underline; color: #3399cc;}
-            a:active {text-decoration: none; color: #3399cc;}
-            h1 {text-decoration: none; font-size:36px; color: #3399cc;}
-            h3 {text-decoration: none; font-size:18px; color: #3399cc; font-weight: bold; }
-            h4 {text-decoration: none; font-size:12px; color: #000; font-weight: bold; }
-            h5 {color: #ccc;}
-            pre {font-size: 12px;}</style> <h1>LOG file</h1><pre>2015-05-25 02:01:32,178 - INFO  - rmWirelessOpenWRT:109 - OpenWRT WIFI/Network reload/restart successful!
-        </pre><br/></br><h5>Generated 02:29AM on June 04, 2015 </h5></body></html>
-
+        {
+            log: "YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>"
+        }
 
 ##/diag/log/level
 ###POST
@@ -2767,7 +2759,7 @@ Retrieves an archive with logs and databases from RainMachine
 # Group Machine
 ## /machine/time
 ### GET
-Returns the time on machine
+Returns the time on machine in format ``YYYY-MM-DD HH:MM:SS``
 *Available on 1st gen.*
 
 + Response 200 (application/zip)
@@ -2809,7 +2801,7 @@ Returns software update status
             {
               "packageName": "rainmachine-app", 
               "newVersion": "4.0.539", 
-              "oldVersion": "4.0.535"
+              "oldVersion": "4.0.636"
             }
           ], 
           "update": true, 
