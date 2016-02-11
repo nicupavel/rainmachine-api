@@ -2450,6 +2450,12 @@ Returns parser weather data starting from specified `date` for a number of speci
 ## POST /parser/{id}/activate
 Activates or deactivates a parser. If a parser is not active it won't be run.
 
++ Request 
+
+        {
+            "activate": true,
+        }
+
 + Response 200 (application/json)
 
         { 
