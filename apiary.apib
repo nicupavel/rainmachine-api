@@ -2450,6 +2450,12 @@ Returns parser weather data starting from specified `date` for a number of speci
 ## POST /parser/{id}/activate
 Activates or deactivates a parser. If a parser is not active it won't be run.
 
++ Request 
+
+        {
+            "activate": true,
+        }
+
 + Response 200 (application/json)
 
         { 
@@ -2476,7 +2482,18 @@ Sets the custom parameters for a parser
 
 ## POST /parser/run
 Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser
+
++ Request
+
+        {
+            "parser": true,
+            "mixer": true,
+            "simulator": true,
+            "parserId": 1
+        }
+    
 + Parameters
+ 
     + id  (optional, number, ``) ... Which parser to run, empty means all parsers
     + parser (optional, bool, `True`) ... True means run parser(s), False doesn't run parser(s)
     + mixer (optional, bool, `True`) ... True means run mixer, False doesn't run mixer
