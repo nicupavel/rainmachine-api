@@ -59,7 +59,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  
  - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.
  - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. 
-- **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program
+ - **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program
 
 # Group API versions
 ## GET /apiVer
@@ -444,7 +444,7 @@ Get all watering programs defined on device
 | ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
 | `uid`                         | *integer*           | Program unique ID. Automatically generated when a new program is created               |
 | `name`                        | *string*            | Program Name                                                                           |
-| `active`                       | *boolean*           | If program is not active it won't be started                                           |
+| `active`                      | *boolean*           | If program is not active it won't be started                                           |
 | `startTime`                   | *string*            | Program start time in HH:MM format                                                     |
 | `cycles`                      | *integer*           | The number of cycles that the duration of each zone will be split into                 |
 | `soak`                        | *integer*           | How many seconds to wait before starting next cycle for same zone                      |
