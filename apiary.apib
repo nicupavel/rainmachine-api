@@ -59,6 +59,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  
  - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.
  - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. 
+- **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program
 
 # Group API versions
 ## GET /apiVer
@@ -451,16 +452,16 @@ Get all watering programs defined on device
 | `delay`                       | *integer*           | The delay between starting next zone (to build water pressure)                         |
 | `delay_on`                    | *boolean*           | If the delay between zones is enabled or not                                           |
 | `status`                      | *integer*           | Watering status: 0 - not running, 1 - running, 2 - queued                                               |
-| `frequency`                   | *object*            |   |
-| `coef`                        | *float*             |   |
-| `ignoreInternetWeather`       | *boolean*           |   |
-| `futureField1`                | *integer*           |   |
-| `freq_modified`               | *integer*           |   |
-| `useWaterSense`               | *boolean*           |   |
+| `frequency`                   | *object*            | Frequency of this program (see below)   |
+| `coef`                        | *float*             | unused   |
+| `ignoreInternetWeather`       | *boolean*           |  If program should ignore all weather dataa |
+| `futureField1`                | *integer*           |  unused|
+| `freq_modified`               | *integer*           |  unused |
+| `useWaterSense`               | *boolean*           | WaterSense algorithm that automatically determines the time to be watered for each zone  |
 | `nextRun`                     | *string*            | Next scheduled run in YYYY-MM-DD format |
-| `wateringTimes`               | *array of objects*  |   |
+| `wateringTimes`               | *array of objects*  | List of zones and their watering times for this program |
 | `startTimeParams`             | *object*            | Used to set program start time at sunrise/sunset. Start hour, minute is automatically computed every time the program starts (see below)  |
-
+| `simulationExpired`           | *boolean*           | True if simulation data for that program has expired and a new one is being run
 
 
 | **frequency** Object keys       | Type                | Description                                                   |
