@@ -61,6 +61,12 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. 
  - **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program
 
+### Changes from API 4.2 to API 4.3 (beta unreleased)
+ - **MODIFICATION** - Added more values for water log flag: 
+    zwfRainSensorSoftware = 8
+    zwfRestrictionMonth = 9
+    zwfRestrictionRainDelay = 10
+
 # Group API versions
 ## GET /apiVer
 Returns the software, hardware and api level versions.
