@@ -2833,6 +2833,14 @@ Checks if there are any package updates. The status returned from /machine/updat
 ## /machine/update
 ### GET
 Returns software update status
+Available status codes:
+- STATUS_IDLE = 1
+- STATUS_CHECKING = 2
+- STATUS_DOWNLOADING = 3
+- STATUS_UPGRADING = 4
+- STATUS_ERROR = 5
+- STATUS_REBOOT = 6
+    
 *Available on 1st gen.*
 
 + Response 200 (application/json)
