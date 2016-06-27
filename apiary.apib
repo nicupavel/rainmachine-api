@@ -2833,7 +2833,7 @@ Checks if there are any package updates. The status returned from /machine/updat
 ## /machine/update
 ### GET
 Returns software update status
-Available status codes:
+Available updateStatus codes:
 - STATUS_IDLE = 1
 - STATUS_CHECKING = 2
 - STATUS_DOWNLOADING = 3
@@ -2860,7 +2860,7 @@ Available status codes:
         }
 
 ### POST
-Starts a software update (requires a call to /machine/update/check)
+Starts a software update (requires a *POST* call to /machine/update/check)
 *Available on 1st gen.*
 
 + Response 200 (application/json)
