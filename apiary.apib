@@ -711,9 +711,9 @@ Returns a list of *all* zones and their generic properties
 | `cycle`                       | *integer*           | The current cycle for this zone (if running from a program with cycles enabled)        |
 | `noOfCycles`                  | *integer*           | Total number of cycles for this zone for running program                               |
 | `restriction`                 | *boolean*           | If the zone is in any current restrictions                                             |
-| `type`                        | *integer*           | Vegetation Type (**review**)                                                           |
+| `type`                        | *integer*           | Vegetation Type (see below)                                                           |
 | `master`                      | *boolean*           | If the zone is set as master valve                                                     |
-| `watersense`                  | *boolean*           | If the zone is in a watersense program                                                 |
+| `watersense`                  | *boolean*           | NO LONGER USED in API 4.3                  |
 
 + Response 200 (application/json)
 
@@ -837,6 +837,27 @@ Returns a list of *all* zones and their generic properties
 ## GET /zone/properties
 Returns advanced properties for *all* zones
 *Partial support on 1st gen: "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
+
+| Variable                      | Type                | Description                                                                            |
+| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
+| `ETcoef`                      | *float*             | The custom (Other) vegetation coeficient set by user for this zone
+| `savings`                     | *int*               | The percentage that increase or decrease the Field Capacity of this zone
+| `slope`                       | *int*               | The slope of the zone (see below)
+| `sun`                         | *int*               | The sun exposure of the zone (see below)
+| `soil`                        | *int*               | The soil type (see below)
+| `group_id`                    | *int*               | The sprinkler head type (see below)
+| `maxAllowedDepletion`         | *float*             | The maximum allowed depletion
+| `precipitationRate`           | *float*             | Sprinkler head precipiration rate (mm/h)
+| `appEfficiency`               | *float*             | Sprinkler head application efficiency (percent)
+| `allowedSurfaceAcc`           | *float*             | Soil allowed surface accumulation (mm)
+| `rootDepth`                   | *int*               | Average Root depth of the plants in the zone (mm)
+| `isTallPlant `                | *bool*              | True/False if plant is above 20cm
+| `soilIntakeRate`              | *float*             | Soil intake rate (mm/h)
+| `detailedMonthsKc`            | *string*            | String with format "[0.4, 0.3,....12th Value]" expressing the crop coeficient for each year month
+| `permWilting`                 | *float*             | Permanent wilting point (percent of the plant root depth)
+| `fieldCapacity`               | *float*             | Decimal percentage that is used when defining a custom Soil type which is the amount of water remaining in the soil a few days after having been wetted and after free drainage has ceased | 
+| `currentFieldCapacity`        | *float*             | Current field capacity a read-only value that is computed by rainmachine from the sun, slope, soil and vegetation types parameters. This represent how much water in mm the zone can hold |
+| `referenceTime`               | *int*               | EPA Watersense suggested daily summer day watering time in seconds. This value is read-only and it's computed by RainMachine based on other zone parameters  |
 
 + Response 200 (application/json)
 
