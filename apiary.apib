@@ -715,6 +715,7 @@ Returns a list of *all* zones and their generic properties
 | `master`                      | *boolean*           | If the zone is set as master valve                                                     |
 | `watersense`                  | *boolean*           | NO LONGER USED in API 4.3                  |
 
+
 + Response 200 (application/json)
 
         {
@@ -859,7 +860,54 @@ Returns advanced properties for *all* zones
 | `currentFieldCapacity`        | *float*             | Current field capacity a read-only value that is computed by rainmachine from the sun, slope, soil and vegetation types parameters. This represent how much water in mm the zone can hold |
 | `referenceTime`               | *int*               | EPA Watersense suggested daily summer day watering time in seconds. This value is read-only and it's computed by RainMachine based on other zone parameters  |
 
-+ Response 200 (application/json)
+### Vegetation Type (`type`)
+    NotSet = 0
+    NotSetOld = 1
+    Grass = 2
+    FruitTrees = 3
+    Flowers = 4
+    Vegetables = 5
+    Citrus = 6
+    Bushes = 7
+    Xeriscape = 9
+    Other = 99 (Use advanced values)
+
+### Soil Type (`soil`)    
+    NotSet = 0
+    ClayLoam = 1
+    SiltyClay = 2
+    Clay = 3
+    Loam = 4
+    SandyLoam = 5
+    LoamySand = 6
+    Sand = 7
+    Other = 99 (Use advanced values)
+    
+### Sprinkler Type (`group_id`)
+    NotSet = 0
+    PopupSpray = 1
+    Rotors = 2
+    SurfaceDrip = 3
+    Bubblers = 4
+    Other = 99 (Use advanced values)
+
+### Slope Type (`slope`)
+    NotSet = 0
+    Flat = 1
+    Moderate = 2
+    High = 3
+    VeryHigh = 4
+    Other = 99 (Use advanced values)
+
+
+### Sun Exposure (`sun`)
+    NotSet = 0
+    FullSun = 1
+    PartialShade = 2
+    FullShade = 3
+
+
+ded+ Response 200 (application/json)
 
         {
           "zones": [
