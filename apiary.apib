@@ -85,7 +85,7 @@ Returns the software, hardware and api level versions.
         {
             "apiVer": "4.3.0", 
             "hwVer": 2, 
-            "swVer": "4.0.636"
+            "swVer": "4.0.840"
         }
 
 # Group Authentication
@@ -447,6 +447,390 @@ Sets the Access Point to which RainMachine will connect to and network settings 
         {
             "statusCode": 0 
         }
+        
+## GET /provision/cloud
+Returns Remote Access status
++ Response 200 (application/json)
+
+        {
+          "enabled": false, 
+          "email": "", 
+          "pendingEmail": ""
+        }
+        
+
+## GET /provision/doy
+Returns locally stored (on device) seasonal data for the setup location
+
++ Response 200 (application/json)
+
+        [
+          0.95999999999999996, 
+          0.96999999999999997, 
+          0.96999999999999997, 
+          0.97999999999999998, 
+          0.98999999999999999, 
+          0.98999999999999999, 
+          0.98999999999999999, 
+          1.0, 
+          1.01, 
+          1.02, 
+          1.02, 
+          1.03, 
+          1.04, 
+          1.05, 
+          1.0600000000000001, 
+          1.0700000000000001, 
+          1.0800000000000001, 
+          1.1000000000000001, 
+          1.1100000000000001, 
+          1.1200000000000001, 
+          1.1299999999999999, 
+          1.1499999999999999, 
+          1.1599999999999999, 
+          1.1799999999999999, 
+          1.1899999999999999, 
+          1.21, 
+          1.22, 
+          1.24, 
+          1.26, 
+          1.27, 
+          1.29, 
+          1.3100000000000001, 
+          1.3300000000000001, 
+          1.3500000000000001, 
+          1.3600000000000001, 
+          1.3899999999999999, 
+          1.4099999999999999, 
+          1.4199999999999999, 
+          1.45, 
+          1.47, 
+          1.49, 
+          1.51, 
+          1.53, 
+          1.55, 
+          1.5800000000000001, 
+          1.5900000000000001, 
+          1.6200000000000001, 
+          1.6399999999999999, 
+          1.6599999999999999, 
+          1.6799999999999999, 
+          1.6899999999999999, 
+          1.72, 
+          1.74, 
+          1.76, 
+          1.78, 
+          1.8, 
+          1.8200000000000001, 
+          1.8400000000000001, 
+          1.8600000000000001, 
+          1.8799999999999999, 
+          1.8899999999999999, 
+          1.9199999999999999, 
+          1.9399999999999999, 
+          1.96, 
+          1.97, 
+          2.0, 
+          2.0099999999999998, 
+          2.0299999999999998, 
+          2.0499999999999998, 
+          2.0699999999999998, 
+          2.0899999999999999, 
+          2.1099999999999999, 
+          2.1299999999999999, 
+          2.1400000000000001, 
+          2.1699999999999999, 
+          2.1899999999999999, 
+          2.21, 
+          2.2200000000000002, 
+          2.25, 
+          2.27, 
+          2.2799999999999998, 
+          2.3100000000000001, 
+          2.3300000000000001, 
+          2.3500000000000001, 
+          2.3799999999999999, 
+          2.3900000000000001, 
+          2.4199999999999999, 
+          2.4300000000000002, 
+          2.46, 
+          2.48, 
+          2.5099999999999998, 
+          2.5299999999999998, 
+          2.5600000000000001, 
+          2.5600000000000001, 
+          2.5899999999999999, 
+          2.6099999999999999, 
+          2.6400000000000001, 
+          2.6499999999999999, 
+          2.6800000000000002, 
+          2.71, 
+          2.71, 
+          2.7400000000000002, 
+          2.7599999999999998, 
+          2.7799999999999998, 
+          2.79, 
+          2.8100000000000001, 
+          2.8300000000000001, 
+          2.8599999999999999, 
+          2.8599999999999999, 
+          2.8900000000000001, 
+          2.8999999999999999, 
+          2.9100000000000001, 
+          2.9300000000000002, 
+          2.9300000000000002, 
+          2.9500000000000002, 
+          2.9700000000000002, 
+          2.98, 
+          2.98, 
+          3.0, 
+          3.0099999999999998, 
+          3.0099999999999998, 
+          3.02, 
+          3.04, 
+          3.04, 
+          3.0499999999999998, 
+          3.0600000000000001, 
+          3.0699999999999998, 
+          3.0699999999999998, 
+          3.0800000000000001, 
+          3.1000000000000001, 
+          3.1000000000000001, 
+          3.1099999999999999, 
+          3.1200000000000001, 
+          3.1200000000000001, 
+          3.1299999999999999, 
+          3.1400000000000001, 
+          3.1400000000000001, 
+          3.1600000000000001, 
+          3.1600000000000001, 
+          3.1699999999999999, 
+          3.2000000000000002, 
+          3.1899999999999999, 
+          3.21, 
+          3.23, 
+          3.2200000000000002, 
+          3.2400000000000002, 
+          3.2599999999999998, 
+          3.27, 
+          3.2799999999999998, 
+          3.2999999999999998, 
+          3.3100000000000001, 
+          3.3300000000000001, 
+          3.3300000000000001, 
+          3.3399999999999999, 
+          3.3599999999999999, 
+          3.3700000000000001, 
+          3.3900000000000001, 
+          3.3900000000000001, 
+          3.4100000000000001, 
+          3.4199999999999999, 
+          3.4399999999999999, 
+          3.4300000000000002, 
+          3.4500000000000002, 
+          3.46, 
+          3.48, 
+          3.4700000000000002, 
+          3.48, 
+          3.4900000000000002, 
+          3.4900000000000002, 
+          3.5, 
+          3.5, 
+          3.4900000000000002, 
+          3.5, 
+          3.4900000000000002, 
+          3.4900000000000002, 
+          3.48, 
+          3.48, 
+          3.48, 
+          3.46, 
+          3.46, 
+          3.4500000000000002, 
+          3.4500000000000002, 
+          3.4199999999999999, 
+          3.4100000000000001, 
+          3.4100000000000001, 
+          3.3900000000000001, 
+          3.3700000000000001, 
+          3.3599999999999999, 
+          3.3399999999999999, 
+          3.3300000000000001, 
+          3.3199999999999998, 
+          3.2999999999999998, 
+          3.2799999999999998, 
+          3.27, 
+          3.25, 
+          3.2400000000000002, 
+          3.23, 
+          3.21, 
+          3.1899999999999999, 
+          3.1800000000000002, 
+          3.1600000000000001, 
+          3.1600000000000001, 
+          3.1499999999999999, 
+          3.1299999999999999, 
+          3.1200000000000001, 
+          3.1200000000000001, 
+          3.1099999999999999, 
+          3.1000000000000001, 
+          3.0800000000000001, 
+          3.0899999999999999, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0699999999999998, 
+          3.0800000000000001, 
+          3.0699999999999998, 
+          3.0800000000000001, 
+          3.0699999999999998, 
+          3.0600000000000001, 
+          3.0699999999999998, 
+          3.0699999999999998, 
+          3.0600000000000001, 
+          3.0699999999999998, 
+          3.0699999999999998, 
+          3.0699999999999998, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0899999999999999, 
+          3.0899999999999999, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.1000000000000001, 
+          3.0899999999999999, 
+          3.0899999999999999, 
+          3.0899999999999999, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0800000000000001, 
+          3.0600000000000001, 
+          3.0600000000000001, 
+          3.0499999999999998, 
+          3.0499999999999998, 
+          3.0299999999999998, 
+          3.0299999999999998, 
+          3.02, 
+          3.0, 
+          3.0, 
+          2.98, 
+          2.9700000000000002, 
+          2.96, 
+          2.9500000000000002, 
+          2.9399999999999999, 
+          2.9199999999999999, 
+          2.8999999999999999, 
+          2.8900000000000001, 
+          2.8700000000000001, 
+          2.8599999999999999, 
+          2.8399999999999999, 
+          2.8199999999999998, 
+          2.8100000000000001, 
+          2.79, 
+          2.77, 
+          2.75, 
+          2.7400000000000002, 
+          2.7200000000000002, 
+          2.6899999999999999, 
+          2.6800000000000002, 
+          2.6600000000000001, 
+          2.6400000000000001, 
+          2.6200000000000001, 
+          2.5899999999999999, 
+          2.5699999999999998, 
+          2.5499999999999998, 
+          2.5299999999999998, 
+          2.5, 
+          2.48, 
+          2.4700000000000002, 
+          2.4399999999999999, 
+          2.4199999999999999, 
+          2.3900000000000001, 
+          2.3700000000000001, 
+          2.3500000000000001, 
+          2.3199999999999998, 
+          2.2999999999999998, 
+          2.27, 
+          2.25, 
+          2.2200000000000002, 
+          2.2000000000000002, 
+          2.1699999999999999, 
+          2.1299999999999999, 
+          2.1099999999999999, 
+          2.0899999999999999, 
+          2.0600000000000001, 
+          2.0299999999999998, 
+          2.0, 
+          1.98, 
+          1.95, 
+          1.9199999999999999, 
+          1.8899999999999999, 
+          1.8600000000000001, 
+          1.8300000000000001, 
+          1.8, 
+          1.77, 
+          1.74, 
+          1.71, 
+          1.6799999999999999, 
+          1.6599999999999999, 
+          1.6200000000000001, 
+          1.6000000000000001, 
+          1.5700000000000001, 
+          1.55, 
+          1.52, 
+          1.49, 
+          1.46, 
+          1.4399999999999999, 
+          1.4099999999999999, 
+          1.3899999999999999, 
+          1.3600000000000001, 
+          1.3500000000000001, 
+          1.3200000000000001, 
+          1.3, 
+          1.28, 
+          1.26, 
+          1.24, 
+          1.22, 
+          1.2, 
+          1.1899999999999999, 
+          1.1599999999999999, 
+          1.1499999999999999, 
+          1.1399999999999999, 
+          1.1200000000000001, 
+          1.1100000000000001, 
+          1.0900000000000001, 
+          1.0800000000000001, 
+          1.0700000000000001, 
+          1.0600000000000001, 
+          1.05, 
+          1.03, 
+          1.03, 
+          1.02, 
+          1.01, 
+          1.0, 
+          0.98999999999999999, 
+          0.98999999999999999, 
+          0.97999999999999998, 
+          0.96999999999999997, 
+          0.96999999999999997, 
+          0.96999999999999997, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.94999999999999996, 
+          0.95999999999999996, 
+          0.94999999999999996, 
+          0.95999999999999996, 
+          0.94999999999999996, 
+          0.94999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996, 
+          0.95999999999999996
+        ]
 
 # Group Programs
 Watering Programs, each program can contain several Zones and rules that control the irrigation
@@ -1783,7 +2167,7 @@ Stops all watering in progress including zones and programs that were started.
 # Group Restrictions   
 Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay. New in 4.1: Rain Sensor
 
-## /restritions/currently
+## /restrictions/currently
 ### GET
 Returns a summary of current restrictions on device. If any of the month, week day, hourly, freeze or rain delay restrictions are active a coresponding field in the reply is set to true.
 + Response 200 (application/json)
@@ -1804,12 +2188,12 @@ Returns global watering restrictions
 + Response 200 (application/json)
 
         {
-          "hotDaysExtraWatering": false, //Enable watering over 100% of the user specified time
-          "freezeProtectEnabled": false,
+          "hotDaysExtraWatering": true, 
+          "freezeProtectEnabled": true, 
           "freezeProtectTemp": 2, 
-          "noWaterInWeekDays": "0000000", 
+          "noWaterInWeekDays": "1001011", 
           "noWaterInMonths": "000000000000", 
-          "rainDelayStartTime": -1,  //Program a rain delay to take place at the specified time
+          "rainDelayStartTime": 1479210751, 
           "rainDelayDuration": 0
         }
 
@@ -1883,6 +2267,8 @@ Sets the number of days for which a Rain Delay is wanted, the Rain Delay will st
 
 # Group Daily Stats
 Daily Statistics and Weather
+
+
 ##/dailystats
 ### GET
 Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
@@ -1929,73 +2315,161 @@ Statistics are built from mixer and simulator data.
           "DailyStats": [
             {
               "id": 0, 
-              "day": "2015-06-16", 
-              "mint": 11.16, 
-              "maxt": 29.6, 
+              "day": "2016-11-15", 
+              "mint": 13.33, 
+              "maxt": 16.670000000000002, 
               "icon": 0, 
-              "percentage": 100, 
+              "percentage": 36.168480580665893, 
               "wateringFlag": 0, 
               "vibration": [
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100
+                33, 
+                38, 
+                20, 
+                21, 
+                40, 
+                36
               ], 
-              "simulatedPercentage": 100, 
+              "simulatedPercentage": 35.078271640697743, 
               "simulatedVibration": [
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100
+                0, 
+                37, 
+                0, 
+                0, 
+                39, 
+                35
               ]
             }, 
             {
               "id": 1, 
-              "day": "2015-06-17", 
-              "mint": 12.619999999999999, 
-              "maxt": 30.99, 
-              "icon": 3, 
-              "percentage": 100, 
+              "day": "2016-11-16", 
+              "mint": 12.220000000000001, 
+              "maxt": 16.670000000000002, 
+              "icon": 2, 
+              "percentage": 43.799943160442922, 
               "wateringFlag": 0, 
               "vibration": [
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100
+                45, 
+                44, 
+                44, 
+                44, 
+                44, 
+                44
               ], 
-              "simulatedPercentage": 100, 
+              "simulatedPercentage": 43.799943160442929, 
               "simulatedVibration": [
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100, 
-                100
+                77, 
+                44, 
+                64, 
+                65, 
+                44, 
+                44
+              ]
+            }, 
+            {
+              "id": 2, 
+              "day": "2016-11-17", 
+              "mint": 10.56, 
+              "maxt": 17.219999999999999, 
+              "icon": 3, 
+              "percentage": 46.156735489183404, 
+              "wateringFlag": 0, 
+              "vibration": [
+                43, 
+                45, 
+                45, 
+                46, 
+                46, 
+                46
+              ], 
+              "simulatedPercentage": 46.48896192216516, 
+              "simulatedVibration": [
+                42, 
+                44, 
+                44, 
+                46, 
+                46, 
+                46
+              ]
+            }, 
+            {
+              "id": 3, 
+              "day": "2016-11-18", 
+              "mint": 10.56, 
+              "maxt": 18.890000000000001, 
+              "icon": 3, 
+              "percentage": 48.670541625659837, 
+              "wateringFlag": 0, 
+              "vibration": [
+                47, 
+                49, 
+                50, 
+                49, 
+                49, 
+                49
+              ], 
+              "simulatedPercentage": 48.670541625659837, 
+              "simulatedVibration": [
+                47, 
+                49, 
+                50, 
+                49, 
+                49, 
+                49
+              ]
+            }, 
+            {
+              "id": 4, 
+              "day": "2016-11-19", 
+              "mint": 13.33, 
+              "maxt": 18.329999999999998, 
+              "icon": 0, 
+              "percentage": 41.499260586322904, 
+              "wateringFlag": 0, 
+              "vibration": [
+                41, 
+                42, 
+                42, 
+                42, 
+                41, 
+                41
+              ], 
+              "simulatedPercentage": 42.034238102728658, 
+              "simulatedVibration": [
+                41, 
+                43, 
+                43, 
+                43, 
+                42, 
+                42
+              ]
+            }, 
+            {
+              "id": 5, 
+              "day": "2016-11-20", 
+              "mint": 13.33, 
+              "maxt": 17.780000000000001, 
+              "icon": 0, 
+              "percentage": 37.754417971482603, 
+              "wateringFlag": 0, 
+              "vibration": [
+                36, 
+                37, 
+                37, 
+                37, 
+                38, 
+                38
+              ], 
+              "simulatedPercentage": 37.754417971482596, 
+              "simulatedVibration": [
+                36, 
+                37, 
+                37, 
+                37, 
+                38, 
+                38
               ]
             }
-            ]
+          ]
         }
 
 ##/dailystats/{date}
@@ -2007,29 +2481,30 @@ Returns daily statistics about simulated watering starting from specified `date`
 + Response 200 (application/json)
 
         {
-              "id": 1, 
-              "day": "2014-12-02", 
-              "mint": 6.9, 
-              "maxt": 21.9, 
-              "icon": null, 
-              "percentage": 0, 
-              "wateringFlag": 0, 
-              "vibration": [
-                56, 
-                56, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0
-              ], 
-              "simulatedPercentage": 16.33062599489387, 
-              "simulatedVibration": [
-                16
-              ]
+          "id": 1, 
+          "day": "2016-11-16", 
+          "mint": 12.220000000000001, 
+          "maxt": 16.670000000000002, 
+          "icon": 2, 
+          "percentage": 43.799943160442922, 
+          "wateringFlag": 0, 
+          "vibration": [
+            45, 
+            44, 
+            44, 
+            44, 
+            44, 
+            44
+          ], 
+          "simulatedPercentage": 43.799943160442929, 
+          "simulatedVibration": [
+            77, 
+            44, 
+            64, 
+            65, 
+            44, 
+            44
+          ]
         }
         
 ##/dailystats/details
@@ -2042,22 +2517,118 @@ Returns daily statistics detauls about simulated watering starting with `date` w
         {
           "DailyStatsDetails": [
             {
-              "dayTimestamp": 1434438000, 
-              "day": "2015-06-16", 
-              "mint": 11.16, 
-              "maxt": 29.6, 
+              "dayTimestamp": 1479196800, 
+              "day": "2016-11-15", 
+              "mint": 13.33, 
+              "maxt": 16.670000000000002, 
               "icon": 0, 
               "programs": [
                 {
-                  "id": 1, 
+                  "id": 32, 
                   "zones": [
                     {
-                      "id": 1, 
-                      "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
+                      "id": 3, 
+                      "scheduledWateringTime": 536, 
+                      "computedWateringTime": 211.39361566705699, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
+                      "coefficient": 0.39439107400570333, 
+                      "percentage": 39.439107400570336, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 55, 
+                  "zones": [
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 105.23481492209324, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 105.23481492209324, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 105.23481492209324, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 134.70056310027934, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 125.22942975729094, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 623.69166977160592, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 134.70056310027934, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 192.93049402383758, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 219.94076318717487, 
+                      "availableWater": 0, 
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743, 
                       "wateringFlag": 0
                     }
                   ]
@@ -2069,35 +2640,273 @@ Returns daily statistics detauls about simulated watering starting with `date` w
                   "zones": [
                     {
                       "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 105.23481492209324, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.35078271640697745, 
+                      "percentage": 35.078271640697743
                     }
                   ]
                 }
               ]
             }, 
             {
-              "dayTimestamp": 1434524400, 
-              "day": "2015-06-17", 
-              "mint": 12.619999999999999, 
-              "maxt": 30.99, 
+              "dayTimestamp": 1479283200, 
+              "day": "2016-11-16", 
+              "mint": 12.220000000000001, 
+              "maxt": 16.670000000000002, 
+              "icon": 2, 
+              "programs": [
+                {
+                  "id": 55, 
+                  "zones": [
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 131.39982948132879, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442928, 
+                      "percentage": 43.799943160442929, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 131.39982948132877, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442922, 
+                      "percentage": 43.799943160442922, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 131.39982948132879, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 168.19178173610086, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 156.36579708278128, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 778.76298939267531, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 168.19178173610086, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 240.8996873824361, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442928, 
+                      "percentage": 43.799943160442929, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 274.6256436159772, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }
+              ], 
+              "simulatedPrograms": [
+                {
+                  "id": 1, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 131.39982948132879, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43799943160442933, 
+                      "percentage": 43.799943160442936
+                    }
+                  ]
+                }
+              ]
+            }, 
+            {
+              "dayTimestamp": 1479369600, 
+              "day": "2016-11-17", 
+              "mint": 10.56, 
+              "maxt": 17.219999999999999, 
               "icon": 3, 
               "programs": [
                 {
-                  "id": 1, 
+                  "id": 32, 
                   "zones": [
                     {
-                      "id": 1, 
-                      "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
+                      "id": 3, 
+                      "scheduledWateringTime": 536, 
+                      "computedWateringTime": 255.02746950817095, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.47579751773912493, 
+                      "percentage": 47.579751773912491, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 33, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 355.60000000000002, 
+                      "computedWateringTime": 155.52891390399023, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43737039905509062, 
+                      "percentage": 43.737039905509064, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 10, 
+                      "scheduledWateringTime": 510, 
+                      "computedWateringTime": 223.05890351809623, 
+                      "availableWater": 0, 
+                      "coefficient": 0.43737039905509062, 
+                      "percentage": 43.737039905509064, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 178.51761378111419, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 165.96559406212961, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 55, 
+                  "zones": [
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 139.46688576649547, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 139.46688576649547, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 139.46688576649547, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 826.57374297609658, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165162, 
+                      "percentage": 46.48896192216516, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 178.51761378111419, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 255.68929057190837, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 291.48579125197551, 
+                      "availableWater": 0, 
+                      "coefficient": 0.46488961922165156, 
+                      "percentage": 46.488961922165153, 
+                      "wateringFlag": 4
                     }
                   ]
                 }
@@ -2108,34 +2917,115 @@ Returns daily statistics detauls about simulated watering starting with `date` w
                   "zones": [
                     {
                       "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 139.46688576649549, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.46488961922165162, 
+                      "percentage": 46.48896192216516
                     }
                   ]
                 }
               ]
             }, 
             {
-              "dayTimestamp": 1434610800, 
-              "day": "2015-06-18", 
-              "mint": 12.72, 
-              "maxt": 29.74, 
+              "dayTimestamp": 1479456000, 
+              "day": "2016-11-18", 
+              "mint": 10.56, 
+              "maxt": 18.890000000000001, 
               "icon": 3, 
               "programs": [
                 {
-                  "id": 1, 
+                  "id": 55, 
                   "zones": [
                     {
-                      "id": 1, 
+                      "id": 4, 
                       "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
+                      "computedWateringTime": 146.01162487697948, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
+                      "coefficient": 0.4867054162565983, 
+                      "percentage": 48.67054162565983, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 146.01162487697948, 
+                      "availableWater": 0, 
+                      "coefficient": 0.4867054162565983, 
+                      "percentage": 48.67054162565983, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 146.01162487697951, 
+                      "availableWater": 0, 
+                      "coefficient": 0.48670541625659836, 
+                      "percentage": 48.670541625659837, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 186.89487984253375, 
+                      "availableWater": 0, 
+                      "coefficient": 0.4867054162565983, 
+                      "percentage": 48.67054162565983, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 173.75383360360561, 
+                      "availableWater": 0, 
+                      "coefficient": 0.48670541625659836, 
+                      "percentage": 48.670541625659837, 
+                      "wateringFlag": 0
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 865.36223010423191, 
+                      "availableWater": 0, 
+                      "coefficient": 0.48670541625659836, 
+                      "percentage": 48.670541625659837, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 186.89487984253375, 
+                      "availableWater": 0, 
+                      "coefficient": 0.4867054162565983, 
+                      "percentage": 48.67054162565983, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 267.68797894112907, 
+                      "availableWater": 0, 
+                      "coefficient": 0.4867054162565983, 
+                      "percentage": 48.67054162565983, 
+                      "wateringFlag": 0
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 305.16429599288716, 
+                      "availableWater": 0, 
+                      "coefficient": 0.48670541625659836, 
+                      "percentage": 48.670541625659837, 
                       "wateringFlag": 0
                     }
                   ]
@@ -2147,35 +3037,130 @@ Returns daily statistics detauls about simulated watering starting with `date` w
                   "zones": [
                     {
                       "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 146.01162487697951, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.48670541625659836, 
+                      "percentage": 48.670541625659837
                     }
                   ]
                 }
               ]
             }, 
             {
-              "dayTimestamp": 1434697200, 
-              "day": "2015-06-19", 
-              "mint": 12.369999999999999, 
-              "maxt": 29.02, 
-              "icon": 3, 
+              "dayTimestamp": 1479542400, 
+              "day": "2016-11-19", 
+              "mint": 13.33, 
+              "maxt": 18.329999999999998, 
+              "icon": 0, 
               "programs": [
                 {
-                  "id": 1, 
+                  "id": 32, 
                   "zones": [
                     {
-                      "id": 1, 
-                      "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
+                      "id": 3, 
+                      "scheduledWateringTime": 536, 
+                      "computedWateringTime": 213.83359827888614, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.39894328037105625, 
+                      "percentage": 39.894328037105623, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 55, 
+                  "zones": [
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 126.10271430818597, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 126.10271430818595, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728649, 
+                      "percentage": 42.034238102728651, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 126.10271430818597, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 161.41147431447803, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 150.0622300267413, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 747.3687534665155, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 161.41147431447803, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 231.18830956500761, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 263.55467290410866, 
+                      "availableWater": 0, 
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658, 
+                      "wateringFlag": 4
                     }
                   ]
                 }
@@ -2186,35 +3171,116 @@ Returns daily statistics detauls about simulated watering starting with `date` w
                   "zones": [
                     {
                       "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 126.10271430818597, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.42034238102728655, 
+                      "percentage": 42.034238102728658
                     }
                   ]
                 }
               ]
             }, 
             {
-              "dayTimestamp": 1434783600, 
-              "day": "2015-06-20", 
-              "mint": 12.95, 
-              "maxt": 32.22, 
-              "icon": 3, 
+              "dayTimestamp": 1479628800, 
+              "day": "2016-11-20", 
+              "mint": 13.33, 
+              "maxt": 17.780000000000001, 
+              "icon": 0, 
               "programs": [
                 {
-                  "id": 1, 
+                  "id": 55, 
                   "zones": [
                     {
-                      "id": 1, 
+                      "id": 4, 
                       "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
+                      "computedWateringTime": 113.26325391444779, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.37754417971482596, 
+                      "percentage": 37.754417971482596, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 5, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 113.26325391444777, 
+                      "availableWater": 0, 
+                      "coefficient": 0.3775441797148259, 
+                      "percentage": 37.754417971482589, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 113.2632539144478, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 39, 
+                  "zones": [
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 144.97696501049319, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 357, 
+                      "computedWateringTime": 134.78327215819289, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
+                    }
+                  ]
+                }, 
+                {
+                  "id": 31, 
+                  "zones": [
+                    {
+                      "id": 2, 
+                      "scheduledWateringTime": 1778, 
+                      "computedWateringTime": 671.2735515329606, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 3, 
+                      "scheduledWateringTime": 384, 
+                      "computedWateringTime": 144.97696501049319, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 4, 
+                      "scheduledWateringTime": 550, 
+                      "computedWateringTime": 207.64929884315427, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482596, 
+                      "percentage": 37.754417971482596, 
+                      "wateringFlag": 4
+                    }, 
+                    {
+                      "id": 6, 
+                      "scheduledWateringTime": 627, 
+                      "computedWateringTime": 236.72020068119591, 
+                      "availableWater": 0, 
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603, 
+                      "wateringFlag": 4
                     }
                   ]
                 }
@@ -2225,94 +3291,24 @@ Returns daily statistics detauls about simulated watering starting with `date` w
                   "zones": [
                     {
                       "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
+                      "scheduledWateringTime": 300, 
+                      "computedWateringTime": 113.2632539144478, 
                       "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
+                      "coefficient": 0.37754417971482601, 
+                      "percentage": 37.754417971482603
                     }
                   ]
                 }
               ]
             }, 
             {
-              "dayTimestamp": 1434870000, 
-              "day": "2015-06-21", 
-              "mint": 12.9, 
-              "maxt": 33.4, 
-              "icon": 3, 
-              "programs": [
-                {
-                  "id": 1, 
-                  "zones": [
-                    {
-                      "id": 1, 
-                      "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
-                      "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
-                    }
-                  ]
-                }
-              ], 
-              "simulatedPrograms": [
-                {
-                  "id": 1, 
-                  "zones": [
-                    {
-                      "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
-                      "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
-                    }
-                  ]
-                }
-              ]
-            }, 
-            {
-              "dayTimestamp": 1434956400, 
-              "day": "2015-06-22", 
-              "mint": 12.6, 
-              "maxt": 29.8, 
-              "icon": 1, 
-              "programs": [
-                {
-                  "id": 1, 
-                  "zones": [
-                    {
-                      "id": 1, 
-                      "scheduledWateringTime": 300, 
-                      "computedWateringTime": 300, 
-                      "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
-                    }
-                  ]
-                }
-              ], 
-              "simulatedPrograms": [
-                {
-                  "id": 1, 
-                  "zones": [
-                    {
-                      "id": 2, 
-                      "scheduledWateringTime": 60, 
-                      "computedWateringTime": 60, 
-                      "availableWater": 0, 
-                      "coefficient": 1, 
-                      "percentage": 100,
-                      "wateringFlag": 0
-                    }
-                  ]
-                }
-              ]
+              "dayTimestamp": 1479715200, 
+              "day": "2016-11-21", 
+              "mint": null, 
+              "maxt": null, 
+              "icon": null, 
+              "programs": [], 
+              "simulatedPrograms": []
             }
           ]
         }
@@ -2617,56 +3613,161 @@ Return all available mixer data
           "mixerData": [
             {
               "forecastInfo": {
-                "id": 217, 
-                "time": "2015-06-03 21:26:37"
+                "id": 1874, 
+                "time": "2016-11-15 23:23:10"
               }, 
               "dailyValues": [
                 {
-                  "day": "2015-06-03 00:00:00", 
-                  "temperature": 15.92, 
-                  "rh": 85.1, 
-                  "wind": 2.37, 
+                  "day": "2016-11-14 00:00:00", 
+                  "temperature": null, 
+                  "rh": null, 
+                  "wind": 0.053000000000000005, 
                   "solarRad": null, 
                   "skyCover": null, 
-                  "rain": null, 
+                  "rain": 0, 
                   "et0": null, 
-                  "pop": 0, 
-                  "qpf": 0, 
-                  "condition": 0, 
-                  "pressure": 101.17, 
-                  "dewPoint": 10.6, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 22.27, 
-                  "minRH": 47.1, 
-                  "maxRH": 84.75, 
-                  "et0calc": 4.7355358560658312, 
-                  "et0final": 4.74
+                  "pop": null, 
+                  "qpf": null, 
+                  "condition": null, 
+                  "pressure": null, 
+                  "dewPoint": null, 
+                  "minTemp": 14.699999999999999, 
+                  "maxTemp": 21.870000000000001, 
+                  "minRH": 69, 
+                  "maxRH": 91.329999999999998, 
+                  "et0calc": 1.5877145686989405, 
+                  "et0final": 0.79000000000000004
                 }, 
                 {
-                  "day": "2015-06-04 00:00:00", 
-                  "temperature": 15.84, 
-                  "rh": 68.59, 
-                  "wind": 2.71, 
+                  "day": "2016-11-15 00:00:00", 
+                  "temperature": 14.81, 
+                  "rh": null, 
+                  "wind": 0.246, 
                   "solarRad": null, 
                   "skyCover": null, 
                   "rain": null, 
                   "et0": null, 
-                  "pop": 3, 
+                  "pop": 12, 
+                  "qpf": 0, 
+                  "condition": 0, 
+                  "pressure": null, 
+                  "dewPoint": 12.51, 
+                  "minTemp": 13.33, 
+                  "maxTemp": 16.670000000000002, 
+                  "minRH": null, 
+                  "maxRH": 86, 
+                  "et0calc": 1.3350790186449562, 
+                  "et0final": 1.3400000000000001
+                }, 
+                {
+                  "day": "2016-11-16 00:00:00", 
+                  "temperature": 13.68, 
+                  "rh": 72, 
+                  "wind": 0.60400000000000009, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 4, 
+                  "qpf": 0, 
+                  "condition": 2, 
+                  "pressure": null, 
+                  "dewPoint": 8.5399999999999991, 
+                  "minTemp": 12.220000000000001, 
+                  "maxTemp": 16.670000000000002, 
+                  "minRH": 50, 
+                  "maxRH": 86, 
+                  "et0calc": 1.6670258366864579, 
+                  "et0final": 1.6699999999999999
+                }, 
+                {
+                  "day": "2016-11-17 00:00:00", 
+                  "temperature": 13.130000000000001, 
+                  "rh": 69, 
+                  "wind": 0.27599999999999997, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": 1, 
                   "qpf": 0, 
                   "condition": 3, 
-                  "pressure": 100.94, 
-                  "dewPoint": 9.69, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 23.19, 
-                  "minRH": 42.9, 
-                  "maxRH": 86.3, 
-                  "et0calc": 5.1318712729042166, 
-                  "et0final": 5.13
+                  "pressure": null, 
+                  "dewPoint": 7.4299999999999997, 
+                  "minTemp": 10.56, 
+                  "maxTemp": 17.219999999999999, 
+                  "minRH": 46, 
+                  "maxRH": 86, 
+                  "et0calc": 1.7693698907576059, 
+                  "et0final": 1.77
+                }, 
+                {
+                  "day": "2016-11-18 00:00:00", 
+                  "temperature": 14.050000000000001, 
+                  "rh": 71, 
+                  "wind": 0.31600000000000006, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": null, 
+                  "qpf": 0, 
+                  "condition": 3, 
+                  "pressure": null, 
+                  "dewPoint": 8.6500000000000004, 
+                  "minTemp": 10.56, 
+                  "maxTemp": 18.890000000000001, 
+                  "minRH": 47, 
+                  "maxRH": 86, 
+                  "et0calc": 1.8524008142726132, 
+                  "et0final": 1.8500000000000001
+                }, 
+                {
+                  "day": "2016-11-19 00:00:00", 
+                  "temperature": 15.42, 
+                  "rh": 76, 
+                  "wind": 0.52700000000000002, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": null, 
+                  "qpf": null, 
+                  "condition": 0, 
+                  "pressure": null, 
+                  "dewPoint": 11.25, 
+                  "minTemp": 13.33, 
+                  "maxTemp": 18.329999999999998, 
+                  "minRH": 58, 
+                  "maxRH": 86, 
+                  "et0calc": 1.5998231021898526, 
+                  "et0final": 1.6000000000000001
+                }, 
+                {
+                  "day": "2016-11-20 00:00:00", 
+                  "temperature": 15.140000000000001, 
+                  "rh": 80, 
+                  "wind": 0.27000000000000002, 
+                  "solarRad": null, 
+                  "skyCover": null, 
+                  "rain": null, 
+                  "et0": null, 
+                  "pop": null, 
+                  "qpf": null, 
+                  "condition": 0, 
+                  "pressure": null, 
+                  "dewPoint": 11.67, 
+                  "minTemp": 13.33, 
+                  "maxTemp": 17.780000000000001, 
+                  "minRH": 65, 
+                  "maxRH": 86, 
+                  "et0calc": 1.4369331479946277, 
+                  "et0final": 1.4399999999999999
                 }
-            ]
+              ]
             }
-            ]
-            }
+          ]
+        }
 
 
 ## GET /mixer/{date}
@@ -2677,57 +3778,133 @@ Returns mixer data starting from specified `date` until current day
         {
           "mixerDataByDate": [
             {
-              "forecastInfo": {
-                "id": 217, 
-                "time": "2015-06-03 21:26:37"
-              }, 
-              "dailyValues": [
-                {
-                  "day": "2015-06-03 00:00:00", 
-                  "temperature": 15.92, 
-                  "rh": 85.1, 
-                  "wind": 2.37, 
-                  "solarRad": null, 
-                  "skyCover": null, 
-                  "rain": null, 
-                  "et0": null, 
-                  "pop": 0, 
-                  "qpf": 0, 
-                  "condition": 0, 
-                  "pressure": 101.17, 
-                  "dewPoint": 10.6, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 22.27, 
-                  "minRH": 47.1, 
-                  "maxRH": 84.75, 
-                  "et0calc": 4.7355358560658312, 
-                  "et0final": 4.74
-                }, 
-                {
-                  "day": "2015-06-04 00:00:00", 
-                  "temperature": 15.84, 
-                  "rh": 68.59, 
-                  "wind": 2.71, 
-                  "solarRad": null, 
-                  "skyCover": null, 
-                  "rain": null, 
-                  "et0": null, 
-                  "pop": 3, 
-                  "qpf": 0, 
-                  "condition": 3, 
-                  "pressure": 100.94, 
-                  "dewPoint": 9.69, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 23.19, 
-                  "minRH": 42.9, 
-                  "maxRH": 86.3, 
-                  "et0calc": 5.1318712729042166, 
-                  "et0final": 5.13
-                }
-            ]
+              "day": "2016-11-15 00:00:00", 
+              "temperature": 14.81, 
+              "rh": null, 
+              "wind": 0.246, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 12, 
+              "qpf": 0, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 12.51, 
+              "minTemp": 13.33, 
+              "maxTemp": 16.670000000000002, 
+              "minRH": null, 
+              "maxRH": 86, 
+              "et0calc": 1.3350790186449562, 
+              "et0final": 1.3400000000000001
+            }, 
+            {
+              "day": "2016-11-16 00:00:00", 
+              "temperature": 13.68, 
+              "rh": 72, 
+              "wind": 0.60400000000000009, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 4, 
+              "qpf": 0, 
+              "condition": 2, 
+              "pressure": null, 
+              "dewPoint": 8.5399999999999991, 
+              "minTemp": 12.220000000000001, 
+              "maxTemp": 16.670000000000002, 
+              "minRH": 50, 
+              "maxRH": 86, 
+              "et0calc": 1.6670258366864579, 
+              "et0final": 1.6699999999999999
+            }, 
+            {
+              "day": "2016-11-17 00:00:00", 
+              "temperature": 13.130000000000001, 
+              "rh": 69, 
+              "wind": 0.27599999999999997, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 1, 
+              "qpf": 0, 
+              "condition": 3, 
+              "pressure": null, 
+              "dewPoint": 7.4299999999999997, 
+              "minTemp": 10.56, 
+              "maxTemp": 17.219999999999999, 
+              "minRH": 46, 
+              "maxRH": 86, 
+              "et0calc": 1.7693698907576059, 
+              "et0final": 1.77
+            }, 
+            {
+              "day": "2016-11-18 00:00:00", 
+              "temperature": 14.050000000000001, 
+              "rh": 71, 
+              "wind": 0.31600000000000006, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": 0, 
+              "condition": 3, 
+              "pressure": null, 
+              "dewPoint": 8.6500000000000004, 
+              "minTemp": 10.56, 
+              "maxTemp": 18.890000000000001, 
+              "minRH": 47, 
+              "maxRH": 86, 
+              "et0calc": 1.8524008142726132, 
+              "et0final": 1.8500000000000001
+            }, 
+            {
+              "day": "2016-11-19 00:00:00", 
+              "temperature": 15.42, 
+              "rh": 76, 
+              "wind": 0.52700000000000002, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": null, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 11.25, 
+              "minTemp": 13.33, 
+              "maxTemp": 18.329999999999998, 
+              "minRH": 58, 
+              "maxRH": 86, 
+              "et0calc": 1.5998231021898526, 
+              "et0final": 1.6000000000000001
+            }, 
+            {
+              "day": "2016-11-20 00:00:00", 
+              "temperature": 15.140000000000001, 
+              "rh": 80, 
+              "wind": 0.27000000000000002, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": null, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 11.67, 
+              "minTemp": 13.33, 
+              "maxTemp": 17.780000000000001, 
+              "minRH": 65, 
+              "maxRH": 86, 
+              "et0calc": 1.4369331479946277, 
+              "et0final": 1.4399999999999999
             }
-            ]
-            }
+          ]
+        }
 
 ## GET /mixer/{date}/{days}
 Returns mixer data starting from specified `date` for a number of specified `days`
@@ -2740,58 +3917,133 @@ Returns mixer data starting from specified `date` for a number of specified `day
         {
           "mixerDataByDate": [
             {
-              "forecastInfo": {
-                "id": 217, 
-                "time": "2015-06-03 21:26:37"
-              }, 
-              "dailyValues": [
-                {
-                  "day": "2015-06-03 00:00:00", 
-                  "temperature": 15.92, 
-                  "rh": 85.1, 
-                  "wind": 2.37, 
-                  "solarRad": null, 
-                  "skyCover": null, 
-                  "rain": null, 
-                  "et0": null, 
-                  "pop": 0, 
-                  "qpf": 0, 
-                  "condition": 0, 
-                  "pressure": 101.17, 
-                  "dewPoint": 10.6, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 22.27, 
-                  "minRH": 47.1, 
-                  "maxRH": 84.75, 
-                  "et0calc": 4.7355358560658312, 
-                  "et0final": 4.74
-                }, 
-                {
-                  "day": "2015-06-04 00:00:00", 
-                  "temperature": 15.84, 
-                  "rh": 68.59, 
-                  "wind": 2.71, 
-                  "solarRad": null, 
-                  "skyCover": null, 
-                  "rain": null, 
-                  "et0": null, 
-                  "pop": 3, 
-                  "qpf": 0, 
-                  "condition": 3, 
-                  "pressure": 100.94, 
-                  "dewPoint": 9.69, 
-                  "minTemp": 11.06, 
-                  "maxTemp": 23.19, 
-                  "minRH": 42.9, 
-                  "maxRH": 86.3, 
-                  "et0calc": 5.1318712729042166, 
-                  "et0final": 5.13
-                }
-            ]
+              "day": "2016-11-15 00:00:00", 
+              "temperature": 14.81, 
+              "rh": null, 
+              "wind": 0.246, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 12, 
+              "qpf": 0, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 12.51, 
+              "minTemp": 13.33, 
+              "maxTemp": 16.670000000000002, 
+              "minRH": null, 
+              "maxRH": 86, 
+              "et0calc": 1.3350790186449562, 
+              "et0final": 1.3400000000000001
+            }, 
+            {
+              "day": "2016-11-16 00:00:00", 
+              "temperature": 13.68, 
+              "rh": 72, 
+              "wind": 0.60400000000000009, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 4, 
+              "qpf": 0, 
+              "condition": 2, 
+              "pressure": null, 
+              "dewPoint": 8.5399999999999991, 
+              "minTemp": 12.220000000000001, 
+              "maxTemp": 16.670000000000002, 
+              "minRH": 50, 
+              "maxRH": 86, 
+              "et0calc": 1.6670258366864579, 
+              "et0final": 1.6699999999999999
+            }, 
+            {
+              "day": "2016-11-17 00:00:00", 
+              "temperature": 13.130000000000001, 
+              "rh": 69, 
+              "wind": 0.27599999999999997, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": 1, 
+              "qpf": 0, 
+              "condition": 3, 
+              "pressure": null, 
+              "dewPoint": 7.4299999999999997, 
+              "minTemp": 10.56, 
+              "maxTemp": 17.219999999999999, 
+              "minRH": 46, 
+              "maxRH": 86, 
+              "et0calc": 1.7693698907576059, 
+              "et0final": 1.77
+            }, 
+            {
+              "day": "2016-11-18 00:00:00", 
+              "temperature": 14.050000000000001, 
+              "rh": 71, 
+              "wind": 0.31600000000000006, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": 0, 
+              "condition": 3, 
+              "pressure": null, 
+              "dewPoint": 8.6500000000000004, 
+              "minTemp": 10.56, 
+              "maxTemp": 18.890000000000001, 
+              "minRH": 47, 
+              "maxRH": 86, 
+              "et0calc": 1.8524008142726132, 
+              "et0final": 1.8500000000000001
+            }, 
+            {
+              "day": "2016-11-19 00:00:00", 
+              "temperature": 15.42, 
+              "rh": 76, 
+              "wind": 0.52700000000000002, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": null, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 11.25, 
+              "minTemp": 13.33, 
+              "maxTemp": 18.329999999999998, 
+              "minRH": 58, 
+              "maxRH": 86, 
+              "et0calc": 1.5998231021898526, 
+              "et0final": 1.6000000000000001
+            }, 
+            {
+              "day": "2016-11-20 00:00:00", 
+              "temperature": 15.140000000000001, 
+              "rh": 80, 
+              "wind": 0.27000000000000002, 
+              "solarRad": null, 
+              "skyCover": null, 
+              "rain": null, 
+              "et0": null, 
+              "pop": null, 
+              "qpf": null, 
+              "condition": 0, 
+              "pressure": null, 
+              "dewPoint": 11.67, 
+              "minTemp": 13.33, 
+              "maxTemp": 17.780000000000001, 
+              "minRH": 65, 
+              "maxRH": 86, 
+              "et0calc": 1.4369331479946277, 
+              "et0final": 1.4399999999999999
             }
-            ]
-            }
-
+          ]
+        }
 
 # Group Diagnostics
 Software diagnostics, logs and device status
@@ -2925,12 +4177,12 @@ Available updateStatus codes:
           "packageDetails": [
             {
               "packageName": "rainmachine-app", 
-              "newVersion": "4.0.539", 
+              "newVersion": "4.0.840", 
               "oldVersion": "4.0.636"
             }
           ], 
           "update": true, 
-          "lastUpdateCheck": "2015-06-04 02:45:00", 
+          "lastUpdateCheck": "2016-11-16 02:45:00", 
           "updateStatus": 1
         }
 
@@ -2974,8 +4226,59 @@ Initiates a system reboot
 + Response 200 (application/json)
 
         { "statusCode": 0 }
+        
+        
+## /machine/shortdetection
+### GET
+
+For Mini-8 display detection and settings for valves shortcircuits
+
++ Response 200 (application/json)
+        
+        {
+          "load": 0, 
+          "short": 0, 
+          "settings": {
+            "retrymaxcount": 3, 
+            "tresholdaction": 63, 
+            "actionforload": 1, 
+            "dobuzzer": 0, 
+            "debouncebuf": 14, 
+            "maxperiod": 60000, 
+            "watchforload": 2, 
+            "debounceint": 2000, 
+            "retrymasterwait": 1500, 
+            "watchforshort": 1, 
+            "disabletime": 10000, 
+            "tresholdcheck": 57, 
+            "minperiod": 20000, 
+            "actionforshort": 1
+          }
+        }
 
 # Group Dev
+Developer and beta update options
+
+## /dev/timezonedb.json
+### GET
+
+Retrieves the Time Zone database available on the device. This database contains *all* available timezones and their Olson format
+
++ Response 200 (application/json)
+
+        { "America/Los_Angeles": "PST8PDT,M3.2.0,M11.1.0" }
+    
+
+
+## /dev/beta
+### GET
+
++ Response 200 (application/json)
+
+        {
+          "enabled": false
+        }
+
 ## /dev/import/parser
 ### POST
 Installs a new parser to the device. Parsers are written in python and follow [RainMachine Parser API](http://docs.rainmachineparsers.apiary.io/). 
