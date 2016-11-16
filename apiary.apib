@@ -238,7 +238,7 @@ Get device settings
         "programZonesShowInactive": false, 
         "standaloneMode": false, 
         "masterValveAfter": 0, 
-        "apiVersion": "4.0.0", 
+        "apiVersion": "4.3.0", 
         "selfTest": false, 
         "defaultZoneWateringDuration": 300, 
         "maxLEDBrightness": 80, 
@@ -884,85 +884,94 @@ Get all watering programs defined on device
         {
           "programs": [
             {
-              "uid": 1, 
-              "name": "Program1", 
+              "uid": 32, 
+              "name": "Afternoon two days", 
               "active": true, 
-              "startTime": "06:00", 
+              "startTime": "16:00", 
               "cycles": 0, 
               "soak": 0, 
               "cs_on": false, 
               "delay": 0, 
               "delay_on": false, 
-              "status": 0,
+              "status": 0, 
               "startTimeParams": {
-                "type": 2, 
-                "offsetMinutes": 190, 
-                "offsetSign": -1
-              },
-              "frequency": {
+                "offsetSign": 0, 
                 "type": 0, 
-                "param": "0"
+                "offsetMinutes": 0
+              }, 
+              "frequency": {
+                "type": 1, 
+                "param": "2"
               }, 
               "coef": 0.0, 
               "ignoreInternetWeather": false, 
               "futureField1": 0, 
               "freq_modified": 0, 
               "useWaterSense": false, 
-              "nextRun": "2015-06-17", 
+              "nextRun": "2016-11-17", 
+              "simulationExpired": false, 
               "wateringTimes": [
                 {
                   "id": 1, 
-                  "name": "Zone 1", 
-                  "duration": 300, 
-                  "active": true
+                  "name": "Lawn Front", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 2, 
-                  "name": "Zone 2", 
+                  "name": "Flowers on the back of the house", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 3, 
-                  "name": "Zone 3", 
+                  "name": "Bushes and trees on the shade", 
                   "duration": 0, 
-                  "active": false
+                  "active": true, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 4, 
-                  "name": "Zone 4", 
+                  "name": "Trees and bushes test", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 5, 
-                  "name": "Zone 5", 
+                  "name": "Lawn green front side of the porch", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 6, 
-                  "name": "Zone 6", 
+                  "name": "Citrus trees ", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 7, 
-                  "name": "Zone 7", 
+                  "name": "Grass on the right side of the house", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }, 
                 {
                   "id": 8, 
-                  "name": "Zone 8", 
+                  "name": "Back yard beautiful lawn area", 
                   "duration": 0, 
-                  "active": false
+                  "active": false, 
+                  "userPercentage": 1.0
                 }
               ]
             }
-          ]
-        }
-        
+            ]
+            }
+    
 ### POST
 Create a new Program (program id will be automatically generated)
 *Available on 1st gen. Response: "statusCode", "message".*
@@ -1001,47 +1010,92 @@ Get program with specified id
 
 + Response 200 (application/json)
 
-        {
-          "uid": 1, 
-          "name": "Program1", 
-          "active": true, 
-          "startTime": "06:00", 
-          "cycles": 0, 
-          "soak": 0, 
-          "cs_on": false, 
-          "delay": 0, 
-          "delay_on": false, 
-          "status": 0,
-          "startTimeParams": {
-                "type": 2, 
-                "offsetMinutes": 190, 
-                "offsetSign": -1
-          }, 
-          "frequency": {
-            "type": 0, 
-            "param": "0"
-          }, 
-          "coef": 0.0, 
-          "ignoreInternetWeather": false, 
-          "futureField1": 0, 
-          "freq_modified": 0, 
-          "useWaterSense": false, 
-          "nextRun": "2015-06-04", 
-          "wateringTimes": [
-            {
-              "id": 1, 
-              "name": "Zone 1", 
-              "duration": 300, 
-              "active": true
-            }, 
-            {
-              "id": 2, 
-              "name": "Zone 2", 
-              "duration": 0, 
-              "active": false
-            }, 
-          ]
-        }
+         {
+              "uid": 32, 
+              "name": "Afternoon two days", 
+              "active": true, 
+              "startTime": "16:00", 
+              "cycles": 0, 
+              "soak": 0, 
+              "cs_on": false, 
+              "delay": 0, 
+              "delay_on": false, 
+              "status": 0, 
+              "startTimeParams": {
+                "offsetSign": 0, 
+                "type": 0, 
+                "offsetMinutes": 0
+              }, 
+              "frequency": {
+                "type": 1, 
+                "param": "2"
+              }, 
+              "coef": 0.0, 
+              "ignoreInternetWeather": false, 
+              "futureField1": 0, 
+              "freq_modified": 0, 
+              "useWaterSense": false, 
+              "nextRun": "2016-11-17", 
+              "simulationExpired": false, 
+              "wateringTimes": [
+                {
+                  "id": 1, 
+                  "name": "Lawn Front", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 2, 
+                  "name": "Flowers on the back of the house", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 3, 
+                  "name": "Bushes and trees on the shade", 
+                  "duration": 0, 
+                  "active": true, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 4, 
+                  "name": "Trees and bushes test", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 5, 
+                  "name": "Lawn green front side of the porch", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 6, 
+                  "name": "Citrus trees ", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 7, 
+                  "name": "Grass on the right side of the house", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }, 
+                {
+                  "id": 8, 
+                  "name": "Back yard beautiful lawn area", 
+                  "duration": 0, 
+                  "active": false, 
+                  "userPercentage": 1.0
+                }
+              ]
+            }
 
 ### POST
 Update program parameters with specified id
@@ -1108,130 +1162,129 @@ Returns a list of *all* zones and their generic properties
 + Response 200 (application/json)
 
         {
-          "zones": [
-            {
-              "uid": 1, 
-              "name": "Zone 1", 
-              "state": 0,
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 2, 
-              "name": "Zone 2", 
-              "state": 0,
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 3, 
-              "name": "Zone 3", 
-              "state": 0, 
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 4, 
-              "name": "Zone 4", 
-              "state": 0,
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 5, 
-              "name": "Zone 5", 
-              "state": 0, 
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 6, 
-              "name": "Zone 6", 
-              "state": 0,
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 7, 
-              "name": "Zone 7", 
-              "state": 0, 
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
-            }, 
-            {
-              "uid": 8, 
-              "name": "Zone 8", 
-              "state": 0, 
-              "active": true,
-              "userDuration": 0, 
-              "machineDuration": 0, 
-              "remaining": 0, 
-              "cycle": 0, 
-              "noOfCycles": 0, 
-              "restriction": false, 
-              "type": 1, 
-              "master": false, 
-              "waterSense": false
+              "zones": [
+                {
+                  "uid": 1, 
+                  "name": "Lawn Front", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 2, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 2, 
+                  "name": "Flowers on the back of the house", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 4, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 3, 
+                  "name": "Bushes and trees on the shade", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 6, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 4, 
+                  "name": "Trees and bushes test", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 7, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 5, 
+                  "name": "Lawn green front side of the porch", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 2, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 6, 
+                  "name": "Citrus trees ", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 6, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 7, 
+                  "name": "Grass on the right side of the house", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 5, 
+                  "master": false, 
+                  "waterSense": false
+                }, 
+                {
+                  "uid": 8, 
+                  "name": "Back yard beautiful lawn area", 
+                  "state": 0, 
+                  "active": true, 
+                  "userDuration": 0, 
+                  "machineDuration": 0, 
+                  "remaining": 0, 
+                  "cycle": 0, 
+                  "noOfCycles": 0, 
+                  "restriction": false, 
+                  "type": 2, 
+                  "master": false, 
+                  "waterSense": false
+                }
+              ]
             }
-          ]
-        }
-        
 ## GET /zone/properties
 Returns advanced properties for *all* zones
 *Partial support on 1st gen: "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
@@ -1256,6 +1309,9 @@ Returns advanced properties for *all* zones
 | `fieldCapacity`               | *float*             | Decimal percentage that is used when defining a custom Soil type which is the amount of water remaining in the soil a few days after having been wetted and after free drainage has ceased | 
 | `currentFieldCapacity`        | *float*             | Current field capacity a read-only value that is computed by rainmachine from the sun, slope, soil and vegetation types parameters. This represent how much water in mm the zone can hold |
 | `referenceTime`               | *int*               | EPA Watersense suggested daily summer day watering time in seconds. This value is read-only and it's computed by RainMachine based on other zone parameters  |
+| `area`                        | *int*               | The zone area in square meters |
+| `flowRate`                    | *int*               | The zone flow debit in cubic meters per hour |
+
 
 ### Vegetation Type (`type`)
     NotSet = 0
@@ -1307,32 +1363,36 @@ Returns advanced properties for *all* zones
 + Response 200 (application/json)
 
         {
-          "zones": [
+            "zones": [
             {
               "uid": 1, 
-              "name": "Zone 1", 
+              "name": "Lawn Front", 
               "valveid": 1, 
-              "ETcoef": 1, 
+              "ETcoef": 0.80000000000000004, 
               "active": true, 
-              "type": 1, 
+              "type": 2, 
               "internet": true, 
-              "savings": 50, 
+              "savings": 70, 
               "slope": 1, 
               "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
+              "soil": 6, 
+              "group_id": 1, 
               "history": true, 
               "master": false, 
               "before": 0, 
               "after": 0, 
               "waterSense": {
-                "maxAllowedDepletion": 0.0, 
-                "precipitationRate": 0.0, 
-                "appEfficiency": 0.0, 
-                "allowedSurfaceAcc": 0.0, 
-                "rootDepth": 0, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 0.0, 
+                "fieldCapacity": 0.14000000000000001, 
+                "rootDepth": 203, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": false, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 9.1400000000000006, 
+                "maxAllowedDepletion": 0.40000000000000002, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 8.9299999999999997, 
+                "area": 92.900000000000006, 
+                "referenceTime": 440, 
                 "detailedMonthsKc": [
                   1.0, 
                   1.0, 
@@ -1347,293 +1407,39 @@ Returns advanced properties for *all* zones
                   1.0, 
                   1.0
                 ], 
-                "permWilting": 0.0, 
-                "fieldCapacity": 0.0
+                "flowrate": null, 
+                "soilIntakeRate": 12.699999999999999
               }
             }, 
             {
               "uid": 2, 
-              "name": "Zone 2", 
+              "name": "Flowers on the back of the house", 
               "valveid": 2, 
-              "ETcoef": 1, 
+              "ETcoef": 0.80000000000000004, 
               "active": true, 
-              "type": 1, 
+              "type": 4, 
               "internet": true, 
-              "savings": 50, 
+              "savings": 130, 
               "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
+              "sun": 3, 
+              "soil": 4, 
+              "group_id": 2, 
               "history": true, 
               "master": false, 
               "before": 0, 
               "after": 0, 
               "waterSense": {
+                "fieldCapacity": 0.26000000000000001, 
+                "rootDepth": 229, 
+                "appEfficiency": 0.65000000000000002, 
+                "isTallPlant": true, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 7.6200000000000001, 
                 "maxAllowedDepletion": 0.5, 
-                "precipitationRate": 40.64, 
-                "appEfficiency": 0.55000000000000012, 
-                "allowedSurfaceAcc": 6.35, 
-                "rootDepth": 254, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 8.8899999999999988, 
-                "detailedMonthsKc": [
-                  0.41, 
-                  0.46, 
-                  0.52, 
-                  0.56000000000000012, 
-                  0.6, 
-                  0.62, 
-                  0.62, 
-                  0.6, 
-                  0.56000000000000012, 
-                  0.5, 
-                  0.45, 
-                  0.4
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.2
-              }
-            }, 
-            {
-              "uid": 3, 
-              "name": "Zone 3", 
-              "valveid": 3, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.4, 
-                "precipitationRate": 40.64, 
-                "appEfficiency": 0.6, 
-                "allowedSurfaceAcc": 4.064, 
-                "rootDepth": 205.73999999999997, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 3.8099999999999994, 
-                "detailedMonthsKc": [
-                  0.52, 
-                  0.64, 
-                  0.7, 
-                  0.73, 
-                  0.73, 
-                  0.71, 
-                  0.69, 
-                  0.67000000000000012, 
-                  0.64, 
-                  0.6, 
-                  0.56999999999999988, 
-                  0.53
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.2
-              }
-            }, 
-            {
-              "uid": 4, 
-              "name": "Zone 4", 
-              "valveid": 4, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.5, 
-                "precipitationRate": 35.559999999999994, 
-                "appEfficiency": 0.7, 
-                "allowedSurfaceAcc": 6.604, 
-                "rootDepth": 508, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 12.7, 
-                "detailedMonthsKc": [
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012, 
-                  0.55000000000000012
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.12
-              }
-            }, 
-            {
-              "uid": 5, 
-              "name": "Zone 5", 
-              "valveid": 5, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.55000000000000012, 
-                "precipitationRate": 35.559999999999994, 
-                "appEfficiency": 0.75, 
-                "allowedSurfaceAcc": 6.0959999999999988, 
-                "rootDepth": 711.19999999999988, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 10.16, 
-                "detailedMonthsKc": [
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4, 
-                  0.4
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.16
-              }
-            }, 
-            {
-              "uid": 6, 
-              "name": "Zone 6", 
-              "valveid": 6, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.5, 
-                "precipitationRate": 5.08, 
-                "appEfficiency": 0.8, 
-                "allowedSurfaceAcc": 6.604, 
-                "rootDepth": 635, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 5.08, 
-                "detailedMonthsKc": [
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61, 
-                  0.61
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.21
-              }
-            }, 
-            {
-              "uid": 7, 
-              "name": "Zone 7", 
-              "valveid": 7, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.35, 
-                "precipitationRate": 8.8899999999999988, 
-                "appEfficiency": 0.65, 
-                "allowedSurfaceAcc": 2.54, 
-                "rootDepth": 233.68, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 2.54, 
-                "detailedMonthsKc": [
-                  0.52, 
-                  0.64, 
-                  0.7, 
-                  0.73, 
-                  0.73, 
-                  0.61, 
-                  0.69, 
-                  0.67000000000000012, 
-                  0.64, 
-                  0.6, 
-                  0.56999999999999988, 
-                  0.53
-                ], 
-                "permWilting": 0.03, 
-                "fieldCapacity": 0.2
-              }
-            }, 
-            {
-              "uid": 8, 
-              "name": "Zone 8", 
-              "valveid": 8, 
-              "ETcoef": 1, 
-              "active": true, 
-              "type": 1, 
-              "internet": true, 
-              "savings": 50, 
-              "slope": 1, 
-              "sun": 1, 
-              "soil": 1, 
-              "group_id": 0, 
-              "history": true, 
-              "master": false, 
-              "before": 0, 
-              "after": 0, 
-              "waterSense": {
-                "maxAllowedDepletion": 0.0, 
-                "precipitationRate": 0.0, 
-                "appEfficiency": 0.0, 
-                "allowedSurfaceAcc": 0.0, 
-                "rootDepth": 0, 
-                "isTallPlant": 0, 
-                "soilIntakeRate": 0.0, 
+                "precipitationRate": 8.8900000000000006, 
+                "currentFieldCapacity": 26.34, 
+                "area": 92.900000000000006, 
+                "referenceTime": 1778, 
                 "detailedMonthsKc": [
                   1.0, 
                   1.0, 
@@ -1648,13 +1454,294 @@ Returns advanced properties for *all* zones
                   1.0, 
                   1.0
                 ], 
-                "permWilting": 0.0, 
-                "fieldCapacity": 0.0
+                "flowrate": null, 
+                "soilIntakeRate": 8.8900000000000006
+              }
+            }, 
+            {
+              "uid": 3, 
+              "name": "Bushes and trees on the shade", 
+              "valveid": 3, 
+              "ETcoef": -1.0, 
+              "active": true, 
+              "type": 6, 
+              "internet": true, 
+              "savings": 150, 
+              "slope": 1, 
+              "sun": 3, 
+              "soil": 1, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.23999999999999999, 
+                "rootDepth": 1016, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": true, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 6.5999999999999996, 
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 106.68000000000001, 
+                "area": 92.900000000000006, 
+                "referenceTime": 268, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": 0.0, 
+                "soilIntakeRate": 5.0800000000000001
+              }
+            }, 
+            {
+              "uid": 4, 
+              "name": "Trees and bushes test", 
+              "valveid": 4, 
+              "ETcoef": 0.80000000000000004, 
+              "active": true, 
+              "type": 7, 
+              "internet": true, 
+              "savings": 100, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 2, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.22, 
+                "rootDepth": 711, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": true, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 5.8399999999999999, 
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 67.549999999999997, 
+                "area": 92.900000000000006, 
+                "referenceTime": 550, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": null, 
+                "soilIntakeRate": 3.8100000000000001
+              }
+            }, 
+            {
+              "uid": 5, 
+              "name": "Lawn green front side of the porch", 
+              "valveid": 5, 
+              "ETcoef": 0.80000000000000004, 
+              "active": true, 
+              "type": 2, 
+              "internet": true, 
+              "savings": 100, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.23999999999999999, 
+                "rootDepth": 203, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": false, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 6.5999999999999996, 
+                "maxAllowedDepletion": 0.40000000000000002, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 17.050000000000001, 
+                "area": 92.900000000000006, 
+                "referenceTime": 440, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": null, 
+                "soilIntakeRate": 5.0800000000000001
+              }
+            }, 
+            {
+              "uid": 6, 
+              "name": "Citrus trees ", 
+              "valveid": 6, 
+              "ETcoef": 0.80000000000000004, 
+              "active": true, 
+              "type": 6, 
+              "internet": true, 
+              "savings": 100, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.23999999999999999, 
+                "rootDepth": 1016, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": true, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 6.5999999999999996, 
+                "maxAllowedDepletion": 0.5, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 106.68000000000001, 
+                "area": 92.900000000000006, 
+                "referenceTime": 357, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": null, 
+                "soilIntakeRate": 5.0800000000000001
+              }
+            }, 
+            {
+              "uid": 7, 
+              "name": "Grass on the right side of the house", 
+              "valveid": 7, 
+              "ETcoef": 0.80000000000000004, 
+              "active": true, 
+              "type": 5, 
+              "internet": true, 
+              "savings": 100, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.23999999999999999, 
+                "rootDepth": 457, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": true, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 6.5999999999999996, 
+                "maxAllowedDepletion": 0.34999999999999998, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 33.590000000000003, 
+                "area": 92.900000000000006, 
+                "referenceTime": 633, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": null, 
+                "soilIntakeRate": 5.0800000000000001
+              }
+            }, 
+            {
+              "uid": 8, 
+              "name": "Back yard beautiful lawn area", 
+              "valveid": 8, 
+              "ETcoef": 0.80000000000000004, 
+              "active": true, 
+              "type": 2, 
+              "internet": true, 
+              "savings": 100, 
+              "slope": 1, 
+              "sun": 1, 
+              "soil": 1, 
+              "group_id": 1, 
+              "history": true, 
+              "master": false, 
+              "before": 0, 
+              "after": 0, 
+              "waterSense": {
+                "fieldCapacity": 0.23999999999999999, 
+                "rootDepth": 203, 
+                "appEfficiency": 0.69999999999999996, 
+                "isTallPlant": false, 
+                "permWilting": 0.029999999999999999, 
+                "allowedSurfaceAcc": 6.5999999999999996, 
+                "maxAllowedDepletion": 0.40000000000000002, 
+                "precipitationRate": 35.560000000000002, 
+                "currentFieldCapacity": 17.050000000000001, 
+                "area": 92.900000000000006, 
+                "referenceTime": 440, 
+                "detailedMonthsKc": [
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0, 
+                  1.0
+                ], 
+                "flowrate": 0.0, 
+                "soilIntakeRate": 5.0800000000000001
               }
             }
           ]
         }
-
 
 ## /zone/{id}
 + Parameters
@@ -1670,6 +1757,7 @@ Retrieve properties for zone with specified id.
           "uid": 1, 
           "name": "Zone 1", 
           "state": 0, 
+          "active": true,
           "userDuration": 0, 
           "machineDuration": 0, 
           "remaining": 0, 
@@ -1693,21 +1781,50 @@ Retrieve advanced properties for zone with specified id.
 
         {
           "uid": 1, 
-          "name": "Zone 1", 
+          "name": "Lawn Front", 
           "valveid": 1, 
-          "ETcoef": 1, 
+          "ETcoef": 0.80000000000000004, 
           "active": true, 
-          "type": 1, 
+          "type": 2, 
           "internet": true, 
-          "savings": 50, 
+          "savings": 70, 
           "slope": 1, 
           "sun": 1, 
-          "soil": 1, 
-          "group_id": 0, 
+          "soil": 6, 
+          "group_id": 1, 
           "history": true, 
           "master": false, 
-          "before": 10, 
-          "after": 10
+          "before": 0, 
+          "after": 0, 
+          "waterSense": {
+            "fieldCapacity": 0.14000000000000001, 
+            "rootDepth": 203, 
+            "appEfficiency": 0.69999999999999996, 
+            "isTallPlant": false, 
+            "permWilting": 0.029999999999999999, 
+            "allowedSurfaceAcc": 9.1400000000000006, 
+            "maxAllowedDepletion": 0.40000000000000002, 
+            "precipitationRate": 35.560000000000002, 
+            "currentFieldCapacity": 8.9299999999999997, 
+            "area": 92.900000000000006, 
+            "referenceTime": 440, 
+            "detailedMonthsKc": [
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0, 
+              1.0
+            ], 
+            "flowrate": null, 
+            "soilIntakeRate": 12.699999999999999
+          }
         }
 
 ### POST
@@ -1743,6 +1860,17 @@ Stop watering zone with id
 + Response 200 (application/json)
 
         { "statusCode": 0 }
+
+
+## POST /zone/simulate
+Returns the suggested watering duration in seconds and field capacity size in mm from the zone properties sent in the request body.
+
++ Response 200 (application/json)
+
+            {
+                "referenceTime": 460,
+                "currentFieldCapacity": 6.35
+            }
 
 # Group Watering
 Watering Information and Status including data for past water usage. The past water usage statistics are split in two parts 
