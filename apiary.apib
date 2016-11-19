@@ -3754,10 +3754,12 @@ Starts diagnostics upload to RainMachine support FTP server
 ##/diag/log
 ###GET
 Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>``
+
+
 + Response 200 (application/json)
 
         {
-            log: "YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>"
+            "log": "YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>"
         }
 
 ##/diag/log/level
@@ -3782,7 +3784,6 @@ Retrieves an archive with logs and databases from RainMachine
 
 + Response 200 (application/zip)
 
-            binary data
 
 
 # Group Machine
