@@ -2171,10 +2171,10 @@ Returns detalied water usage starting from specified `date` for a number of spec
                 "dateTimestamp": 1433314800, 
                 "programs": [
                   {
-                    "id": 1, 
+                    "id": 32, 
                     "zones": [
                       {
-                        "uid": 1, 
+                        "uid": 3, 
                         "flag": 0, 
                         "cycles": [
                           {
@@ -2215,7 +2215,7 @@ Returns detalied water usage starting from specified `date` for a number of spec
         }
         
 ## GET /watering/log/simulated/{date}/{days}
-Returns basic water usage data for the simulated program (doesn't actually water) starting from specified `date` for a number of specified `days`
+Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`
 
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
@@ -2236,7 +2236,7 @@ Returns basic water usage data for the simulated program (doesn't actually water
         }
 
 ## GET /watering/log/simulated/details/{date}/{days}
-Returns detalied water usage for the simulated program (doesn't actually water) starting from specified `date` for a number of specified `days`.
+Returns detalied water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
 
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
@@ -2352,7 +2352,7 @@ Returns defined hourly restrictions for watering
         {
           "hourlyRestrictions": [
             {
-              "interval": "2:0 - 3:0", 
+              "interval": "02:00 - 03:00", 
               "dayStartMinute": 120, 
               "uid": 1, 
               "minuteDuration": 60, 
@@ -2369,7 +2369,7 @@ Sets a new hourly restriction, will return a json with restriction details.
         {
         "restriction": 
             {
-            "interval": "2:0 - 3:0", 
+            "interval": "02:00 - 03:00", 
             "dayStartMinute": 120, 
             "uid": 2, 
             "minuteDuration": 60, 
@@ -2444,7 +2444,10 @@ Statistics are built from mixer and simulator data.
 | 5                          | Restriction Out Of Day               |
 | 6                          | Water Surplus                        |
 | 7                          | Stopped by Rain Sensor               |
-
+| 8                          | Software rain sensor restriction     |
+| 9                          | Month Restricted                     |
+| 10                         | Rain Delay set by user               |
+| 11                         | Program Rain Restriction             |
 
 *Partial support on 1st gen: "vibration" not available.*
 
