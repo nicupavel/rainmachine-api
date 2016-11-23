@@ -1993,31 +1993,34 @@ Returns the running watering program or empty list if no programs are currently 
         }
 
 ## GET /watering/queue
-Returns the current watering queue or empty list if no watering is taking place.
+Returns the current watering queue as a list of objects or empty list if no watering is taking place. Each object in the list will have the fields below:
+
+
+| **Field**        | **Type**  | **Description**                                                       |
+|------------------|-----------|-----------------------------------------------------------------------|
+| `availableWater`  | *int*     | The available water for the zone being watered                  |
+| `realDuration`    | *int/null*| The duration in seconds computed by RainMachine (0 if manual start) |
+| `running`         | *bool*    | If the zone is actually watering or only queued                |
+| `uid`             | *int/null*| UID of the record or null (ignored)                            |
+| `restriction`     | *bool*    | If under restriction or not                                    |
+| `manual`          | *boot*    | If the watering event was started manually                     |
+| `pid`             | *int/null*| The program ID for which this event belongs                    |
+| `flag`            | *int*     | Watering flag value, see description from GET dailystats call   |
+| `machineDuration` | *int*     | Duration (seconds) as computed by RainMachine                   |
+| `userDuration`    | *int*     | Duration (seconds) entered by user                              |
+| `zid`             | *int*     | The ID of the zone being watered                                |
+| `userStartTime`   | *date/time string* | eg: 2016-11-23 08:41:31                                |
+| `cycles`          | *int*     | The total number of cycles this watering event will have            |
+| `hwZid`           | *int*     | The actual hardware valve ID (this is equal to zone ID for now)     |
+| `remaining`       | *int*     | Remaining seconds to water for this event                           |
+| `realStartTime`   | *date/time string* | eg: 2016-11-23 08:41:31                                    |
+| `cycle`           | *int*     | The current cycle number                                            |
 
 + Response 200 (application/json)
 
         {
           "queue": [
-            {
-              "availableWater": 0, 
-              "realDuration": 0, 
-              "running": true, 
-              "uid": null, 
-              "restriction": false, 
-              "manual": true, 
-              "pid": 1, 
-              "flag": 0, 
-              "machineDuration": 300.0, 
-              "userDuration": 300.0, 
-              "zid": 1, 
-              "userStartTime": "2015-06-03 23:43:00", 
-              "cycles": 1, 
-              "hwZid": 1, 
-              "realStartTime": "2015-06-03 23:43:48", 
-              "cycle": 1,
-              "remaining": 360
-            }
+
           ]
         }
         
@@ -2181,9 +2184,17 @@ Returns detalied water usage starting from specified `date` for a number of spec
                             "id": 1, 
                             "startTime": "2015-06-03 06:00:00", 
                             "startTimestamp": 1433336400, 
-                            "userDuration": 300, 
-                            "machineDuration": 240.5214319229126, 
-                            "realDuration": 241
+                            "userDuration": 150, 
+                            "machineDuration": 120, 
+                            "realDuration": 120
+                          },
+                           {
+                            "id": 2, 
+                            "startTime": "2015-06-03 06:00:00", 
+                            "startTimestamp": 1433336400, 
+                            "userDuration": 150, 
+                            "machineDuration": 120, 
+                            "realDuration": 120
                           }
                         ]
                       }
