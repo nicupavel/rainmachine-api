@@ -3723,7 +3723,7 @@ Returns mixer data starting from specified `date` for a number of specified `day
 Software diagnostics, logs and device status
 ##/diag
 ###GET
-Returns software and device status
+Returns software and device diagnostics.
 
 + Response 200 (application/json)
 
@@ -3744,7 +3744,7 @@ Returns software and device status
               "wifiMode": "managed", 
               "gatewayAddress": "192.168.12.1", 
               "internetStatus": true,
-              "cloudStatus": -1,
+              "cloudStatus": 0,
               "weatherStatus": true
             }
 
