@@ -80,7 +80,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
 
 ## GET /apiVer
 Returns the software, hardware and api level versions.
-*Available on 1st gen. Response: "apiVer":"4.0.0", "hwVer":"1.0", "swVer":"3.63".*
+*Available on 1st gen.*
 + Response 200 (application/json)
 
         {
@@ -1996,8 +1996,8 @@ Returns the running watering program or empty list if no programs are currently 
 Returns the current watering queue as a list of objects or empty list if no watering is taking place. Each object in the list will have the fields below:
 
 
-| **Field**        | **Type**  | **Description**                                                       |
-|------------------|-----------|-----------------------------------------------------------------------|
+| Field             | Type      | Description                                                           |
+|-------------------|-----------|-----------------------------------------------------------------------|
 | `availableWater`  | *int*     | The available water for the zone being watered                  |
 | `realDuration`    | *int/null*| The duration in seconds computed by RainMachine (0 if manual start) |
 | `running`         | *bool*    | If the zone is actually watering or only queued                |
@@ -3824,7 +3824,8 @@ Changes the time on machine
         
 ## /machine/update/check
 ### POST
-Checks if there are any package updates. The status returned from /machine/update will be updated with new information.
+Request a check for available updates. The status returned from **GET /machine/update** will be updated with new information.
+This is usually followed by a  **GET /machine/update** call.
 
 + Response 200 (application/json)
 
@@ -3834,8 +3835,18 @@ Checks if there are any package updates. The status returned from /machine/updat
 
 ## /machine/update
 ### GET
-Returns software update status
-Available updateStatus codes:
+Returns software update status. If there is an available update the field **update** will be true and **packageDetails** field will 
+be a list of available packages in this update: 
+
+        "packageDetails": [
+            {
+              "packageName": "rainmachine-app", 
+              "newVersion": "4.0.840", 
+              "oldVersion": "4.0.636"
+            }
+          ]
+          
+Available **updateStatus** field codes:
 - STATUS_IDLE = 1
 - STATUS_CHECKING = 2
 - STATUS_DOWNLOADING = 3
@@ -3849,20 +3860,14 @@ Available updateStatus codes:
 
         {
           "lastUpdateCheckTimestamp": 1433411100, 
-          "packageDetails": [
-            {
-              "packageName": "rainmachine-app", 
-              "newVersion": "4.0.840", 
-              "oldVersion": "4.0.636"
-            }
-          ], 
-          "update": true, 
+          "packageDetails": [], 
+          "update": false, 
           "lastUpdateCheck": "2016-11-16 02:45:00", 
           "updateStatus": 1
         }
 
 ### POST
-Starts a software update (requires a *POST* call to /machine/update/check)
+Starts a software update (requires a **POST /machine/update/check** before)
 *Available on 1st gen.*
 
 + Response 200 (application/json)
@@ -3871,7 +3876,7 @@ Starts a software update (requires a *POST* call to /machine/update/check)
 
 ##/machine/sysupgrade
 ###POST
-Initiate a firmware download and install
+Initiate a firmware download and install. This is for developers only and for RainMachine Mini-8. Using bad data can brick your device.
 
 + Response 200 (application/json)
 
