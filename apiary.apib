@@ -414,7 +414,7 @@ Returns current WIFI configuration
         }
 
 ## GET /provision/wifi/scan
-Returns Access Points in range with RainMachine 
+Returns Access Points in range with RainMachine. This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
 + Response 200 (application/json)
 
         {
@@ -443,7 +443,8 @@ Returns Access Points in range with RainMachine
         }
 
 ## POST /provision/wifi/settings
-Sets the Access Point to which RainMachine will connect to and network settings such as ip, netmask, gateway unless networkType is set as dhcp
+Sets the Access Point to which RainMachine will connect to and network settings such as ip, netmask, gateway unless networkType is set as dhcp. 
+This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
 + Response 200 (application/json)
 
         {
