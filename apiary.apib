@@ -3071,18 +3071,20 @@ Returns detalied information about parser
     + id (required, number, `1`) ... Numeric `id` of the parser
 
 + Response 200 (application/json)
-
+        
         {
-              "lastRun": "2016-11-15 23:23:10", 
-              "lastKnownError": "", 
-              "hasForecast": true, 
-              "uid": 8, 
-              "hasHistorical": false, 
-              "description": "North America weather forecast from National Oceanic and Atmospheric Administration", 
-              "enabled": true, 
-              "custom": false, 
-              "isRunning": false, 
-              "name": "NOAA Parser"
+            "parser": {
+                "lastRun": "2017-02-21 00:52:42", 
+                "lastKnownError": "", 
+                "hasForecast": true, 
+                "uid": 8, 
+                "hasHistorical": false, 
+                "description": "North America weather forecast from National Oceanic and Atmospheric Administration", 
+                "enabled": true, 
+                "custom": false, 
+                "isRunning": false, 
+                "name": "NOAA Parser"
+            }
         }
 
 ## GET /parser/{id}/data
