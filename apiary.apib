@@ -2390,14 +2390,14 @@ Sets a new hourly restriction, will return a json with restriction details.
             "message": "OK", "statusCode": 0
         }
 
-## POST /restrictions/hourly/{id}/delete
+### POST /restrictions/hourly/{id}/delete
 Removes an hourly restriction with the specified id.
 
 + Response 200 (application/json)
 
         { "statusCode": 0 }
 
-##/restrictions/raindelay
+## Snooze [/restrictions/raindelay]
 ### GET
 Returns the number of seconds until the forced Rain Delay is finished
 *Available on 1st gen.*
@@ -2420,7 +2420,7 @@ Sets the number of days for which a Rain Delay is wanted, the Rain Delay will st
 Daily Statistics and Weather
 
 
-##/dailystats
+## Daily statistics [/dailystats]
 ### GET
 Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
 Statistics are built from mixer and simulator data. 
@@ -2626,7 +2626,7 @@ Statistics are built from mixer and simulator data.
           ]
         }
 
-##/dailystats/{date}
+## Daily statistics from date [/dailystats/{date}]
 ###GET
 Returns daily statistics about simulated watering starting from specified `date` per program per zone.
 *Partial support on 1st gen: "vibration" not available.*
@@ -2661,7 +2661,7 @@ Returns daily statistics about simulated watering starting from specified `date`
           ]
         }
         
-##/dailystats/details
+## Daily statistics details [/dailystats/details]
 ###GET
 Returns daily statistics detauls about simulated watering starting with `date` which is optional.
 *Partial support on 1st gen: "vibration" not available.*
@@ -2871,9 +2871,9 @@ Returns daily statistics detauls about simulated watering starting with `date` w
           ]
         }
 
-# Group Parsers
-Parsers information, data and parameters
-##/parser
+# Group Weather Services 
+Weather Services (parsers) that fetch data from different internet weather services.
+## Weather services [/parser]
 ###GET
 Returns information about all weather parsers available
 + Response 200 (application/json)
@@ -3064,7 +3064,7 @@ Returns information about all weather parsers available
           ]
         }
 
-##/parser/{id}
+## Weather service [/parser/{id}]
 ###GET 
 Returns detalied information about parser
 + Parameters
@@ -3087,7 +3087,7 @@ Returns detalied information about parser
             }
         }
 
-## GET /parser/{id}/data
+## Weather service data [GET /parser/{id}/data]
 Return all available parser weaher data
 
 + Response 200 (application/json)
@@ -3131,7 +3131,7 @@ Return all available parser weaher data
             }
 
 
-## GET /parser/{id}/data/{date}
+## Weather service data from date [GET /parser/{id}/data/{date}]
 Returns parser weather data starting from specified `date` until current day
 
 + Response 200 (application/json)
@@ -3174,7 +3174,7 @@ Returns parser weather data starting from specified `date` until current day
             ]
             }
 
-## GET /parser/{id}/data/{date}/{days}
+## Weather service data from date for a number of days [GET /parser/{id}/data/{date}/{days}]
 Returns parser weather data starting from specified `date` for a number of specified `days`
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
