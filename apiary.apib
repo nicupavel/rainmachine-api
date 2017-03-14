@@ -78,7 +78,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  
 # Group API versions
 
-## GET /apiVer
+## apiVer [GET /apiVer]
 Returns the software, hardware and api level versions.
 *Available on 1st gen.*
 + Response 200 (application/json)
@@ -91,7 +91,7 @@ Returns the software, hardware and api level versions.
 
 # Group Authentication
 <a name="post-auth-login"></a>
-## POST /auth/login
+## auth/login [POST /auth/login]
 Request auth with the device response will include a token to be used on subsequent calls
 *Available on 1st gen. Response: "access_token", "statusCode", "expires_in".*
 + Request 
@@ -2355,7 +2355,7 @@ Sets global watering restrictions
 
         { "statusCode": 0 }
 
-## /restrictions/hourly
+## Hourly Restrictions [/restrictions/hourly]
 ### GET
 Returns defined hourly restrictions for watering
 
