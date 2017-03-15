@@ -97,7 +97,7 @@ Request auth with the device response will include a token to be used on subsequ
 + Request 
 
         {
-            "pwd": "password",
+            "pwd": "{{PASSWORD}}",
             "remember": 1
         }
         
@@ -2871,8 +2871,8 @@ Returns daily statistics detauls about simulated watering starting with `date` w
           ]
         }
 
-# Group Parsers
-Parsers information, data and parameters
+# Group Weather Services
+Weather services (parsers) that fetch weather from different internet weather services.
 ##/parser
 ###GET
 Returns information about all weather parsers available
@@ -3256,6 +3256,13 @@ Sets the custom parameters for a parser
 ## POST /parser/run
 Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser
 
+| Variable                      | Type                | Description                                                                            |
+| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
+| `parserId`                    | *int*               | Which parser to run, empty or -1 means all parsers                                     |
+| `parser`                      | *bool*              | True means run parser(s), False doesn't run parser(s)                                  |
+| `mixer `                      | *bool*              | True means run mixer, False doesn't run mixer                                          |
+| `simulator`                   | *bool*              | True means run simulator, False doesn't run simulator                                  |
+
 + Request
 
         {
@@ -3264,14 +3271,7 @@ Forcefully runs parsers, mixer and simulator, this will delete all previous pars
             "simulator": true,
             "parserId": 1
         }
-    
-+ Parameters
- 
-    + id  (optional, number, ``) ... Which parser to run, empty means all parsers
-    + parser (optional, bool, `True`) ... True means run parser(s), False doesn't run parser(s)
-    + mixer (optional, bool, `True`) ... True means run mixer, False doesn't run mixer
-    + simulator (optional, bool, `True`) ... True means run simulator, False doesn't run simulator
-    
+
 + Response 200 (application/json)
 
         { 
@@ -3279,8 +3279,8 @@ Forcefully runs parsers, mixer and simulator, this will delete all previous pars
         }
 
 
-# Group Mixer
-Mixed weather data from running parsers.
+# Group Weather Mixer
+Weather Mixer aggregates data from multiple weather services (parsers).
 ## GET /mixer
 Return all available mixer data
 
