@@ -78,7 +78,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  
 # Group API versions
 
-## Version [GET /apiVer]
+## GET /apiVer
 Returns the software, hardware and api level versions.
 *Available on 1st gen.*
 + Response 200 (application/json)
@@ -91,13 +91,13 @@ Returns the software, hardware and api level versions.
 
 # Group Authentication
 <a name="post-auth-login"></a>
-## Authenticate [POST /auth/login]
+## POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
 *Available on 1st gen. Response: "access_token", "statusCode", "expires_in".*
 + Request 
 
         {
-            "pwd": "password",
+            "pwd": "{{PASSWORD}}",
             "remember": 1
         }
         
@@ -110,7 +110,7 @@ Request auth with the device response will include a token to be used on subsequ
             "statusCode": 0
         } 
 
-## Change password [POST /auth/change]
+## POST /auth/change
 Request a password change
 *Partial support on 1st gen: "newPass", "oldPass". Response: "statusCode", "message".*
 + Request
@@ -129,7 +129,7 @@ Request a password change
             "statusCode": 0
         }
 
-## Validate password [POST /auth/check]
+## POST /auth/check
 Request a password check.
 *Available on 1st gen. Response: "statusCode", "message".*
 
@@ -145,7 +145,7 @@ Request a password check.
             "statusCode": 0
         } 
 
-## Guest PIN [GET /auth/totp]
+## GET /auth/totp
 Generates a 6 characters Time-based One-time Password that can be used in subsequent auth calls for a limited duration guest login (1 day) 
 
 + Response 200 (application/json)
@@ -159,7 +159,7 @@ Generates a 6 characters Time-based One-time Password that can be used in subseq
 # Group Provision
 Device provision related functions
 
-## Provision [/provision]
+## /provision
 ### GET
 Get device settings
 #### System
@@ -384,7 +384,7 @@ Sets device provision settings. See above for parameter explanation. Settings ca
             "statusCode": 0 
         }
 
-## Device Name [/provision/name]
+## /provision/name
 ### GET
 Returns device name (shortcut to provision.system.netName)
 + Response 200 (application/json)
@@ -401,7 +401,7 @@ Sets device name
         }
 
 
-## Device WIFI [GET /provision/wifi]
+## GET /provision/wifi
 Returns current WIFI configuration 
 + Response 200 (application/json)
 
@@ -413,7 +413,7 @@ Returns current WIFI configuration
           "mode": "managed"
         }
 
-## Perform WIFI Scan [GET /provision/wifi/scan]
+## GET /provision/wifi/scan
 Returns Access Points in range with RainMachine. This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
 + Response 200 (application/json)
 
@@ -442,7 +442,7 @@ Returns Access Points in range with RainMachine. This won't work on RainMachine 
           ]
         }
 
-## Configure WIFI [POST /provision/wifi/settings]
+## POST /provision/wifi/settings
 Sets the Access Point to which RainMachine will connect to and network settings such as ip, netmask, gateway unless networkType is set as dhcp. 
 This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
 + Response 200 (application/json)
@@ -451,7 +451,7 @@ This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
             "statusCode": 0 
         }
         
-## Remote Access [GET /provision/cloud]
+## GET /provision/cloud
 Returns Remote Access status
 + Response 200 (application/json)
 
@@ -462,7 +462,7 @@ Returns Remote Access status
         }
         
 
-## Historical data [GET /provision/doy]
+## GET /provision/doy
 Returns locally stored (on device) seasonal data for the setup location
 
 + Response 200 (application/json)
@@ -837,7 +837,7 @@ Returns locally stored (on device) seasonal data for the setup location
 
 # Group Programs
 Watering Programs, each program can contain several Zones and rules that control the irrigation
-## Programs [/program]
+## /program
 ### GET
 Get all watering programs defined on device
 *Partial support on 1st gen: "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes".*
@@ -981,7 +981,7 @@ Create a new Program (program id will be automatically generated)
 
         { "statusCode": 0 }
 
-## Next run [GET /program/nextrun]
+## GET /program/nextrun
 Returns next running date/time for all active programs
 *Available on 1st gen.*
 
@@ -1000,7 +1000,7 @@ Returns next running date/time for all active programs
             ]
         }
 
-## Single program [/program/{id}]
+##/program/{id}
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
@@ -1105,7 +1105,7 @@ Update program parameters with specified id
 
         { "statusCode": 0 }
 
-## Program delete [POST /program/{id}/delete]
+## POST /program/{id}/delete
 Delete Program with id
 *Available on 1st gen. Response: "statusCode", "message".*
 
@@ -1116,7 +1116,7 @@ Delete Program with id
 
         { "statusCode": 0 }
         
-## Program start [POST /program/{id}/start]
+## POST /program/{id}/start
 Start watering Program with id
 *Available on 1st gen. Response: "statusCode", "message".*
 + Parameters
@@ -1126,7 +1126,7 @@ Start watering Program with id
 
         { "statusCode": 0 }
 
-## Program stop [POST /program/{id}/stop]
+## POST /program/{id}/stop
 Remove Program with id from watering queue
 *Available on 1st gen.*
 + Parameters
@@ -1138,7 +1138,7 @@ Remove Program with id from watering queue
 
 # Group Zones
 Irrigation zones, each zone corresponds to a valve connector on device
-## Zones [GET /zone]
+## GET /zone
 
 Returns a list of *all* zones and their generic properties
 *Partial support on 1st gen: "uid", "name", "state", "remaining", "type", "master".*
@@ -1286,7 +1286,7 @@ Returns a list of *all* zones and their generic properties
                 }
               ]
             }
-## Zone Properties [GET /zone/properties]
+## GET /zone/properties
 Returns advanced properties for *all* zones
 *Partial support on 1st gen: "uid", "name", "active", "type", "internet", "history", "master", "before", "after".*
 
@@ -1744,7 +1744,7 @@ Returns advanced properties for *all* zones
           ]
         }
 
-## Single zone [/zone/{id}]
+## /zone/{id}
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
@@ -1770,7 +1770,7 @@ Retrieve properties for zone with specified id.
           "waterSense": false
         }
         
-## Single zone properties [/zone/{id}/properties]
+## /zone/{id}/properties
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
 
@@ -1836,7 +1836,7 @@ Set properties for zone with id
 
         {  }
 
-## Zone start [POST /zone/{id}/start]
+## POST /zone/{id}/start
 Start watering zone with id
 *Available on 1st gen. Response: "statusCode", "message".*
 + Parameters
@@ -1852,7 +1852,7 @@ Start watering zone with id
 
         {}
         
-## Zone stop [POST /zone/{id}/stop]
+## POST /zone/{id}/stop
 Stop watering zone with id
 *Available on 1st gen. Response: "statusCode", "message".*
 + Parameters
@@ -1863,7 +1863,7 @@ Stop watering zone with id
         { "statusCode": 0 }
 
 
-## Zone simulate [POST /zone/simulate]
+## POST /zone/simulate
 Returns the suggested watering duration in seconds and field capacity size in mm from the zone properties sent in the request body.
 
 + Response 200 (application/json)
@@ -1873,13 +1873,12 @@ Returns the suggested watering duration in seconds and field capacity size in mm
                 "currentFieldCapacity": 6.35
             }
 
-
 # Group Watering
 Watering Information and Status including data for past water usage. The past water usage statistics are split in two parts 
 real data that comes from user programs (which could be daily or every 7 days) and user manual watering, and a simulated part that comes from a simulated daily program
 that is simulated each day.
 
-## Zone watering status [GET /watering/zone]
+## GET /watering/zone
 Returns status of watering on *all* zones
 + Response 200 (application/json)
 
@@ -1976,7 +1975,7 @@ Returns status of watering on *all* zones
           ]
         }
 
-## Program watering status [GET /watering/program]
+## GET /watering/program
 Returns the running watering program or empty list if no programs are currently running.
 
 + Response 200 (application/json)
@@ -1994,7 +1993,7 @@ Returns the running watering program or empty list if no programs are currently 
           ]
         }
 
-## Watering queue [GET /watering/queue]
+## GET /watering/queue
 Returns the current watering queue as a list of objects or empty list if no watering is taking place. Each object in the list will have the fields below:
 
 
@@ -2026,7 +2025,7 @@ Returns the current watering queue as a list of objects or empty list if no wate
           ]
         }
         
-## Program used values [GET /watering/past/{date}/{days}]
+## GET /watering/past/{date}/{days}
 Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.
 If no date/days parameters are sent the yesterday values are returned.
 
@@ -2057,7 +2056,7 @@ If no date/days parameters are sent the yesterday values are returned.
           ]
         }
 
-## Soil available water [GET /watering/available/{date}/{days}]
+## GET /watering/available/{date}/{days}
 Returns the available water in soil for each zone in each program for all days.
 
 + Parameters
@@ -2121,7 +2120,7 @@ Returns the available water in soil for each zone in each program for all days.
           ]
         }
 
-## Watering history [GET /watering/log]
+## GET /watering/log
 Return all basic past water usage
 
 + Response 200 (application/json)
@@ -2138,7 +2137,7 @@ Return all basic past water usage
           }
         }
 
-## Watering history with range [GET /watering/log/{date}/{days}]
+## GET /watering/log/{date}/{days}
 Returns basic water usage data starting from specified `date` for a number of specified `days`
 
 + Parameters
@@ -2159,7 +2158,7 @@ Returns basic water usage data starting from specified `date` for a number of sp
           }
         }
 
-## Watering history details with range [GET /watering/log/details/{date}/{days}]
+## GET /watering/log/details/{date}/{days}
 Returns detalied water usage starting from specified `date` for a number of specified `days`.
 
 + Parameters
@@ -2227,7 +2226,7 @@ Returns detalied water usage starting from specified `date` for a number of spec
           }
         }
         
-## Watering history simulated [GET /watering/log/simulated/{date}/{days}]
+## GET /watering/log/simulated/{date}/{days}
 Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`
 
 + Parameters
@@ -2248,7 +2247,7 @@ Returns basic water usage data for the simulated program (doesn't actually water
           }
         }
 
-## Watering history simulated details [GET /watering/log/simulated/details/{date}/{days}]
+## GET /watering/log/simulated/details/{date}/{days}
 Returns detalied water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
 
 + Parameters
@@ -2308,7 +2307,7 @@ Returns detalied water usage for the simulated program (doesn't actually water, 
           }
         }
 
-## Stop all watering [POST /watering/stopall]
+## POST /watering/stopall
 Stops all watering in progress including zones and programs that were started.
 
 + Response 200 (application/json)
@@ -2319,7 +2318,7 @@ Stops all watering in progress including zones and programs that were started.
 # Group Restrictions   
 Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay. New in 4.1: Rain Sensor
 
-## Current restrictions [/restrictions/currently]
+## /restrictions/currently
 ### GET
 Returns a summary of current restrictions on device. If any of the month, week day, hourly, freeze or rain delay restrictions are active a coresponding field in the reply is set to true.
 + Response 200 (application/json)
@@ -2334,9 +2333,9 @@ Returns a summary of current restrictions on device. If any of the month, week d
             "rainSensor": false
         }
 
-## Global restrictions [/restrictions/global]
+## /restrictions/global
 ### GET
-Returns global watering restrictions like freeze protect, snooze, month and week days.
+Returns global watering restrictions
 + Response 200 (application/json)
 
         {
@@ -2356,7 +2355,7 @@ Sets global watering restrictions
 
         { "statusCode": 0 }
 
-## Hourly Restrictions [/restrictions/hourly]
+## /restrictions/hourly
 ### GET
 Returns defined hourly restrictions for watering
 
@@ -2391,14 +2390,14 @@ Sets a new hourly restriction, will return a json with restriction details.
             "message": "OK", "statusCode": 0
         }
 
-### POST /restrictions/hourly/{id}/delete
+## POST /restrictions/hourly/{id}/delete
 Removes an hourly restriction with the specified id.
 
 + Response 200 (application/json)
 
         { "statusCode": 0 }
 
-## Snooze [/restrictions/raindelay]
+##/restrictions/raindelay
 ### GET
 Returns the number of seconds until the forced Rain Delay is finished
 *Available on 1st gen.*
@@ -2421,7 +2420,7 @@ Sets the number of days for which a Rain Delay is wanted, the Rain Delay will st
 Daily Statistics and Weather
 
 
-## Daily statistics [/dailystats]
+##/dailystats
 ### GET
 Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
 Statistics are built from mixer and simulator data. 
@@ -2627,7 +2626,7 @@ Statistics are built from mixer and simulator data.
           ]
         }
 
-## Daily statistics from date [/dailystats/{date}]
+##/dailystats/{date}
 ###GET
 Returns daily statistics about simulated watering starting from specified `date` per program per zone.
 *Partial support on 1st gen: "vibration" not available.*
@@ -2662,7 +2661,7 @@ Returns daily statistics about simulated watering starting from specified `date`
           ]
         }
         
-## Daily statistics details [/dailystats/details]
+##/dailystats/details
 ###GET
 Returns daily statistics detauls about simulated watering starting with `date` which is optional.
 *Partial support on 1st gen: "vibration" not available.*
@@ -2872,9 +2871,9 @@ Returns daily statistics detauls about simulated watering starting with `date` w
           ]
         }
 
-# Group Weather Services 
-Weather Services (parsers) that fetch data from different internet weather services.
-## Weather services [/parser]
+# Group Weather Services
+Weather services (parsers) that fetch weather from different internet weather services.
+##/parser
 ###GET
 Returns information about all weather parsers available
 + Response 200 (application/json)
@@ -3065,8 +3064,8 @@ Returns information about all weather parsers available
           ]
         }
 
-## Weather service [/parser/{id}]
-### Information [GET]
+##/parser/{id}
+###GET 
 Returns detalied information about parser
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the parser
@@ -3088,7 +3087,7 @@ Returns detalied information about parser
             }
         }
 
-## All data [GET /parser/{id}/data]
+## GET /parser/{id}/data
 Return all available parser weaher data
 
 + Response 200 (application/json)
@@ -3132,7 +3131,7 @@ Return all available parser weaher data
             }
 
 
-## Data from date [GET /parser/{id}/data/{date}]
+## GET /parser/{id}/data/{date}
 Returns parser weather data starting from specified `date` until current day
 
 + Response 200 (application/json)
@@ -3175,7 +3174,7 @@ Returns parser weather data starting from specified `date` until current day
             ]
             }
 
-## Data from date for a number of days [GET /parser/{id}/data/{date}/{days}]
+## GET /parser/{id}/data/{date}/{days}
 Returns parser weather data starting from specified `date` for a number of specified `days`
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
@@ -3221,7 +3220,7 @@ Returns parser weather data starting from specified `date` for a number of speci
             ]
             }
 
-## Activating [POST /parser/{id}/activate]
+## POST /parser/{id}/activate
 Activates or deactivates a parser. If a parser is not active it won't be run.
 
 + Request 
@@ -3236,7 +3235,7 @@ Activates or deactivates a parser. If a parser is not active it won't be run.
             "statusCode": 0 
         }
 
-## Reset to defaults [POST /parser/{id}/defaults]
+## POST /parser/{id}/defaults
 Sets the default parameters for a parser
 
 + Response 200 (application/json)
@@ -3245,7 +3244,7 @@ Sets the default parameters for a parser
             "statusCode": 0 
         }
 
-## Configuring [POST /parser/{id}/params]
+## POST /parser/{id}/params
 Sets the custom parameters for a parser
 
 + Response 200 (application/json)
@@ -3254,9 +3253,15 @@ Sets the custom parameters for a parser
             "statusCode": 0 
         }
 
-## Force run [POST /parser/run]
-Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser. 
-Specifying "parserId" will run only specified parser.
+## POST /parser/run
+Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser
+
+| Variable                      | Type                | Description                                                                            |
+| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |
+| `parserId`                    | *int*               | Which parser to run, empty or -1 means all parsers                                     |
+| `parser`                      | *bool*              | True means run parser(s), False doesn't run parser(s)                                  |
+| `mixer `                      | *bool*              | True means run mixer, False doesn't run mixer                                          |
+| `simulator`                   | *bool*              | True means run simulator, False doesn't run simulator                                  |
 
 + Request
 
@@ -3266,7 +3271,6 @@ Specifying "parserId" will run only specified parser.
             "simulator": true,
             "parserId": 1
         }
-    
 
 + Response 200 (application/json)
 
@@ -3276,8 +3280,8 @@ Specifying "parserId" will run only specified parser.
 
 
 # Group Weather Mixer
-Mixes weather data from multiple weather services(parsers)
-## All data [GET /mixer]
+Weather Mixer aggregates data from multiple weather services (parsers).
+## GET /mixer
 Return all available mixer data
 
 + Response 200 (application/json)
@@ -3464,7 +3468,7 @@ Return all available mixer data
         }
 
 
-## From date [GET /mixer/{date}]
+## GET /mixer/{date}
 Returns mixer data starting from specified `date` until current day
 
 + Response 200 (application/json)
@@ -3621,7 +3625,7 @@ Returns mixer data starting from specified `date` until current day
           ]
         }
 
-## From date for a number of days [GET /mixer/{date}/{days}]
+## GET /mixer/{date}/{days}
 Returns mixer data starting from specified `date` for a number of specified `days`
 + Parameters
     + date (required, date, `2014-10-11`) ... Date for which the data is wanted
@@ -3783,7 +3787,7 @@ Returns mixer data starting from specified `date` for a number of specified `day
 
 # Group Diagnostics
 Software diagnostics, logs and device status
-## Diagnostics [/diag]
+##/diag
 ###GET
 Returns software and device diagnostics.
 
@@ -3810,8 +3814,8 @@ Returns software and device diagnostics.
               "weatherStatus": true
             }
 
-## Diagnostics upload [/diag/upload]
-### Status [GET]
+##/diag/upload
+###GET
 Returns diagnostics upload status
 
 + Response 200 (application/json)
@@ -3820,15 +3824,15 @@ Returns diagnostics upload status
           "status": 0
         }
 
-### Start upload [POST]
+###POST
 Starts diagnostics upload to RainMachine support FTP server
 
 + Response 200 (application/json)
 
         { "statusCode": 0 }
 
-## Device logs [/diag/log]
-### Retrieve [GET]
+##/diag/log
+###GET
 Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>``
 
 
@@ -3838,7 +3842,7 @@ Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS -
             "log": "YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>"
         }
 
-##Set log level [/diag/log/level]
+##/diag/log/level
 ###POST
 Sets the log level for the application. Log level is numeric and can take values:
 - 10 : Debug
@@ -3853,7 +3857,7 @@ Sets the log level for the application. Log level is numeric and can take values
             "statusCode": 0 
         }
 
-## Download [/diag/download]
+##/diag/download
 ###GET
 Retrieves an archive with logs and databases from RainMachine
 *Only Available on 1st gen.*
@@ -3863,7 +3867,7 @@ Retrieves an archive with logs and databases from RainMachine
 
 
 # Group Machine
-## Date and Time [/machine/time]
+## /machine/time
 ### GET
 Returns the time on machine in format ``YYYY-MM-DD HH:MM:SS``
 *Available on 1st gen.*
@@ -3884,7 +3888,7 @@ Changes the time on machine
             "statusCode": 0 
         }
         
-## Check for updates [/machine/update/check]
+## /machine/update/check
 ### POST
 Request a check for available updates. The status returned from **GET /machine/update** will be updated with new information.
 This is usually followed by a  **GET /machine/update** call.
@@ -3895,7 +3899,7 @@ This is usually followed by a  **GET /machine/update** call.
             "statusCode": 0 
         }
 
-## Update status [/machine/update]
+## /machine/update
 ### GET
 Returns software update status. If there is an available update the field **update** will be true and **packageDetails** field will 
 be a list of available packages in this update: 
@@ -3928,7 +3932,7 @@ Available **updateStatus** field codes:
           "updateStatus": 1
         }
 
-### Perform update [POST]
+### POST
 Starts a software update (requires a **POST /machine/update/check** before)
 *Available on 1st gen.*
 
@@ -3936,15 +3940,15 @@ Starts a software update (requires a **POST /machine/update/check** before)
 
         { "statusCode": 0 }
 
-## Firmware Change [/machine/sysupgrade]
+##/machine/sysupgrade
 ###POST
-Initiate a firmware download and install. This is for developers only and for RainMachine Mini-8. Using bad data will brick your device.
+Initiate a firmware download and install. This is for developers only and for RainMachine Mini-8. Using bad data can brick your device.
 
 + Response 200 (application/json)
 
         { "statusCode": 0 }
 
-## SSH [/machine/ssh]
+## /machine/ssh
 ### POST
 Disables/Enables SSH daemon, the daemon will also be stopped/started accordingly.
 
@@ -3952,7 +3956,7 @@ Disables/Enables SSH daemon, the daemon will also be stopped/started accordingly
 
         { "statusCode": 0 }
     
-## Touch [/machine/touch]
+## /machine/touch
 ### POST
 Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons
 
@@ -3960,7 +3964,7 @@ Disable/Enable touch interface. Use if you want a 3rd party application to contr
 
         { "statusCode": 0 }
         
-## Reboot [/machine/reboot]
+## /machine/reboot
 ### POST
 Initiates a system reboot
 *Available on 1st gen.*
@@ -3970,7 +3974,7 @@ Initiates a system reboot
         { "statusCode": 0 }
         
         
-## Valve short detection [/machine/shortdetection]
+## /machine/shortdetection
 ### GET
 
 For Mini-8 display detection and settings for valves shortcircuits
@@ -4001,7 +4005,7 @@ For Mini-8 display detection and settings for valves shortcircuits
 # Group Dev
 Developer and beta update options
 
-## Timezones [/dev/timezonedb.json]
+## /dev/timezonedb.json
 ### GET
 
 Retrieves the Time Zone database available on the device. This database contains *all* available timezones and their Olson format
@@ -4012,7 +4016,7 @@ Retrieves the Time Zone database available on the device. This database contains
     
 
 
-## Beta participation [/dev/beta]
+## /dev/beta
 ### GET
 
 + Response 200 (application/json)
@@ -4021,7 +4025,7 @@ Retrieves the Time Zone database available on the device. This database contains
           "enabled": false
         }
 
-## Import weather service [/dev/import/parser]
+## /dev/import/parser
 ### POST
 Installs a new parser to the device. Parsers are written in python and follow [RainMachine Parser API](http://docs.rainmachineparsers.apiary.io/). 
 
@@ -4030,10 +4034,10 @@ Installs a new parser to the device. Parsers are written in python and follow [R
 
         { "statusCode": 0 }
     
-## Import watering history [/dev/import/waterlog]
+## /dev/import/waterlog
 ### POST
 Imports a waterlog database from another RainMachine device
 
 + Response 200 (application/json)
 
-        { "statusCode": 0 }
+        { "statusCode": 0 }ld
