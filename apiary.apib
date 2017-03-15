@@ -3,7 +3,7 @@ FORMAT: X-1A
 HOST: https://device.ip:8080/api/4/
 
 # RainMachine
-RainMachine API version 4.3 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.5.
+RainMachine API version 4.3 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.6.
 
 ### Compatible devices
 
@@ -31,6 +31,22 @@ For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-min
 - 501 `Exception Occured` - Exception occured while processing the call
 - 540 `Database Error` - Error saving data to database
 - 541 `Provision Failed` - Cannot provision unit 
+
+### Typical Server Responses Message Bodies
+
+    - Success                 : '{ "statusCode":  0,  "message": "OK"                         }'
+    - ExceptionOccurred       : '{ "statusCode":  1,  "message": "Exception occurred !"       }'
+    - NotAuthenticated        : '{ "statusCode":  2,  "message": "Not Authenticated !"        }'
+    - InvalidRequest          : '{ "statusCode":  3,  "message": "Invalid request !"          }'
+    - NotImplemented          : '{ "statusCode":  4,  "message": "Not implemented yet !"      }'
+    - NotFound                : '{ "statusCode":  5,  "message": "Not found !"                }'
+    - DBError                 : '{ "statusCode":  6,  "message": "DB Error !"                 }'
+    - ProvisionFailed         : '{ "statusCode":  7,  "message": "Cannot provision unit"      }'
+    - PasswordNotChanged      : '{ "statusCode":  8,  "message": "Cannot change password"     }'
+    - ProgramValidationFailed : '{ "statusCode":  9,  "message": "Invalid program constraints"}'
+    - ServiceUnavailable      : '{ "statusCode":  10,  "message": "Service unavailable, data not ready, retry later."}'
+    - WrongParserFormat       : '{ "statusCode":  11,  "message": "Wrong parser format, cannot be loaded."}'
+
 
 ### Authentication
 
@@ -977,6 +993,52 @@ Get all watering programs defined on device
 Create a new Program (program id will be automatically generated)
 *Available on 1st gen. Response: "statusCode", "message".*
 
++ Request (application/json)
+
+        {
+          "name": "New Program",
+          "active": true,
+          "startTime": "16:00",
+          "cycles": 0,
+          "soak": 0,
+          "cs_on": false,
+          "delay": 0,
+          "delay_on": false,
+          "status": 0,
+          "startTimeParams": {
+            "offsetSign": 0,
+            "type": 0,
+            "offsetMinutes": 0
+          },
+          "frequency": {
+            "type": 1,
+            "param": "2"
+          },
+          "coef": 0.0,
+          "ignoreInternetWeather": false,
+          "futureField1": 0,
+          "freq_modified": 0,
+          "useWaterSense": false,
+          "nextRun": "2016-11-17",
+          "simulationExpired": false,
+          "wateringTimes": [
+            {
+              "id": 1,
+              "name": "Lawn Front",
+              "duration": 0,
+              "active": false,
+              "userPercentage": 1.0
+            },
+            {
+              "id": 2,
+              "name": "Flowers on the back of the house",
+              "duration": 0,
+              "active": false,
+              "userPercentage": 1.0
+            },
+          ]
+        }
+
 + Response 200 (application/json)
 
         { "statusCode": 0 }
@@ -1011,7 +1073,7 @@ Get program with specified id
 
 + Response 200 (application/json)
 
-         {
+            {
               "uid": 32, 
               "name": "Afternoon two days", 
               "active": true, 
@@ -1101,6 +1163,55 @@ Get program with specified id
 ### POST
 Update program parameters with specified id
 *Partial support on 1st gen: "uid", "name", "active", "startTime", "cycles", "soak", "cs_on", "delay", "delay_on", "status", "frequency", "ignoreInternetWeather", "futureField1", "freq_modified", "nextRun", "wateringTimes". Response: "statusCode", "message".*
+
++ Request (application/json)
+
+        {
+              "uid": 1
+              "name": "Program With Changed Name",
+              "active": true,
+              "startTime": "16:00",
+              "cycles": 0,
+              "soak": 0,
+              "cs_on": false,
+              "delay": 0,
+              "delay_on": false,
+              "status": 0,
+              "startTimeParams": {
+                "offsetSign": 0,
+                "type": 0,
+                "offsetMinutes": 0
+              },
+              "frequency": {
+                "type": 1,
+                "param": "2"
+              },
+              "coef": 0.0,
+              "ignoreInternetWeather": false,
+              "futureField1": 0,
+              "freq_modified": 0,
+              "useWaterSense": false,
+              "nextRun": "2016-11-17",
+              "simulationExpired": false,
+              "wateringTimes": [
+                {
+                  "id": 1,
+                  "name": "Lawn Front",
+                  "duration": 0,
+                  "active": false,
+                  "userPercentage": 1.0
+                },
+                {
+                  "id": 2,
+                  "name": "Flowers on the back of the house",
+                  "duration": 0,
+                  "active": false,
+                  "userPercentage": 1.0
+                },
+              ]
+            }
+
+
 + Response 200 (application/json)
 
         { "statusCode": 0 }
@@ -2030,8 +2141,8 @@ Returns the et0 and qpf values used on the last runs of programs, including the 
 If no date/days parameters are sent the yesterday values are returned.
 
 + Parameters
-    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 + Response 200 (application/json)
 
@@ -2060,8 +2171,8 @@ If no date/days parameters are sent the yesterday values are returned.
 Returns the available water in soil for each zone in each program for all days.
 
 + Parameters
-    + date (optional, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 
 + Response 200 (application/json)
@@ -2141,8 +2252,8 @@ Return all basic past water usage
 Returns basic water usage data starting from specified `date` for a number of specified `days`
 
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 + Response 200 (application/json)
 
@@ -2162,8 +2273,8 @@ Returns basic water usage data starting from specified `date` for a number of sp
 Returns detalied water usage starting from specified `date` for a number of specified `days`.
 
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 + Response 200 (application/json)
 
@@ -2230,8 +2341,8 @@ Returns detalied water usage starting from specified `date` for a number of spec
 Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`
 
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 + Response 200 (application/json)
 
@@ -2248,11 +2359,11 @@ Returns basic water usage data for the simulated program (doesn't actually water
         }
 
 ## GET /watering/log/simulated/details/{date}/{days}
-Returns detalied water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
+Returns detailed water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
 
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
 
 + Response 200 (application/json)
 
@@ -2335,7 +2446,7 @@ Returns a summary of current restrictions on device. If any of the month, week d
 
 ## /restrictions/global
 ### GET
-Returns global watering restrictions
+Returns global watering restrictions like freeze protect, snooze, months and week days restrictions.
 + Response 200 (application/json)
 
         {
@@ -2357,7 +2468,7 @@ Sets global watering restrictions
 
 ## /restrictions/hourly
 ### GET
-Returns defined hourly restrictions for watering
+Returns defined hourly watering restrictions (no watering in specified hour intervals)
 
 + Response 200 (application/json)
     
@@ -2422,8 +2533,8 @@ Daily Statistics and Weather
 
 ##/dailystats
 ### GET
-Returns daily statistics about simulated watering. It has 14 historical days (older negative id) and 7 days in the future (pozitive id, id 0 is today). 
-Statistics are built from mixer and simulator data. 
+Returns daily statistics about simulated watering. It contains how much the programs will water for the next 7 days (pozitive id, id 0 is today).
+
 
 | Variable for Basic Stats   | Type          | Description                                                                        |
 | ---------------------------|---------------|----------------------------------------------------------------------------------- |
@@ -2631,7 +2742,8 @@ Statistics are built from mixer and simulator data.
 Returns daily statistics about simulated watering starting from specified `date` per program per zone.
 *Partial support on 1st gen: "vibration" not available.*
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    
 + Response 200 (application/json)
 
         {
@@ -2875,7 +2987,7 @@ Returns daily statistics detauls about simulated watering starting with `date` w
 Weather services (parsers) that fetch weather from different internet weather services.
 ##/parser
 ###GET
-Returns information about all weather parsers available
+Returns information about all weather parsers available (active or not)
 + Response 200 (application/json)
 
          {
@@ -3177,8 +3289,8 @@ Returns parser weather data starting from specified `date` until current day
 ## GET /parser/{id}/data/{date}/{days}
 Returns parser weather data starting from specified `date` for a number of specified `days`
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
     
 + Response 200 (application/json)
 
@@ -3628,8 +3740,8 @@ Returns mixer data starting from specified `date` until current day
 ## GET /mixer/{date}/{days}
 Returns mixer data starting from specified `date` for a number of specified `days`
 + Parameters
-    + date (required, date, `2014-10-11`) ... Date for which the data is wanted
-    + days (optional, int, `30`) ... How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + days: `30` (number) - How many days to return
     
 + Response 200 (application/json)
 
@@ -3816,7 +3928,7 @@ Returns software and device diagnostics.
 
 ##/diag/upload
 ###GET
-Returns diagnostics upload status
+Returns the status of diagnostics upload progress. Diagnostics are uploaded to RainMachine server for support inspection.
 
 + Response 200 (application/json)
 
@@ -3834,7 +3946,6 @@ Starts diagnostics upload to RainMachine support FTP server
 ##/diag/log
 ###GET
 Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>``
-
 
 + Response 200 (application/json)
 
@@ -3958,7 +4069,8 @@ Disables/Enables SSH daemon, the daemon will also be stopped/started accordingly
     
 ## /machine/touch
 ### POST
-Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons
+Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons.
+Only for Mini-8 devices.
 
 + Response 200 (application/json)
 
@@ -3977,7 +4089,7 @@ Initiates a system reboot
 ## /machine/shortdetection
 ### GET
 
-For Mini-8 display detection and settings for valves shortcircuits
+For Mini-8 display detection and settings for valves short circuit protection and reporting.
 
 + Response 200 (application/json)
         
@@ -4017,6 +4129,9 @@ Retrieves the Time Zone database available on the device. This database contains
 
 
 ## /dev/beta
+
+Get the status of beta updates subscription.
+
 ### GET
 
 + Response 200 (application/json)
