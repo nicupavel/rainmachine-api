@@ -1216,32 +1216,41 @@ Update program parameters with specified id
 
         { "statusCode": 0 }
 
-## POST /program/{id}/delete
-Delete Program with id
-*Available on 1st gen. Response: "statusCode", "message".*
+## /program/{id}/delete
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
-    
+
+### POST    
+Delete Program with id
+*Available on 1st gen. Response: "statusCode", "message".*
+
+   
 + Response 200 (application/json)
 
         { "statusCode": 0 }
         
-## POST /program/{id}/start
-Start watering Program with id
-*Available on 1st gen. Response: "statusCode", "message".*
+## /program/{id}/start
+
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
+
+### POST
+Start watering Program with id
+*Available on 1st gen. Response: "statusCode", "message".*
 
 + Response 200 (application/json)
 
         { "statusCode": 0 }
 
-## POST /program/{id}/stop
-Remove Program with id from watering queue
-*Available on 1st gen.*
+## /program/{id}/stop
+
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the program to retrieve
+
+### POST
+Remove Program with id from watering queue
+*Available on 1st gen.*
     
 + Response 200 (application/json)
 
@@ -1947,11 +1956,14 @@ Set properties for zone with id
 
         {  }
 
-## POST /zone/{id}/start
-Start watering zone with id
-*Available on 1st gen. Response: "statusCode", "message".*
+## /zone/{id}/start
+
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the zone to water
+
+### POST    
+Start watering zone with id
+*Available on 1st gen. Response: "statusCode", "message".*
     
 + Request
 
@@ -1963,11 +1975,14 @@ Start watering zone with id
 
         {}
         
-## POST /zone/{id}/stop
+## /zone/{id}/stop
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the zone to water
+
+### POST
 Stop watering zone with id
 *Available on 1st gen. Response: "statusCode", "message".*
-+ Parameters
-    + id (required, number, `1`) ... Numeric `id` of the zone to stop watering
 
 + Response 200 (application/json)
 
@@ -2136,13 +2151,17 @@ Returns the current watering queue as a list of objects or empty list if no wate
           ]
         }
         
-## GET /watering/past/{date}/{days}
-Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.
-If no date/days parameters are sent the yesterday values are returned.
+## /watering/past/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+
+
+### GET
+Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.
+If no date/days parameters are sent the yesterday values are returned.
+
 
 + Response 200 (application/json)
 
@@ -2167,13 +2186,14 @@ If no date/days parameters are sent the yesterday values are returned.
           ]
         }
 
-## GET /watering/available/{date}/{days}
-Returns the available water in soil for each zone in each program for all days.
+## /watering/available/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
 
+### GET
+Returns the available water in soil for each zone in each program for all days.
 
 + Response 200 (application/json)
 
@@ -2248,12 +2268,14 @@ Return all basic past water usage
           }
         }
 
-## GET /watering/log/{date}/{days}
-Returns basic water usage data starting from specified `date` for a number of specified `days`
+## /watering/log/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+ 
+### GET
+Returns basic water usage data starting from specified `date` for a number of specified `days`
 
 + Response 200 (application/json)
 
@@ -2269,12 +2291,15 @@ Returns basic water usage data starting from specified `date` for a number of sp
           }
         }
 
-## GET /watering/log/details/{date}/{days}
-Returns detalied water usage starting from specified `date` for a number of specified `days`.
+## /watering/log/details/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+
+### GET
+Returns detalied water usage starting from specified `date` for a number of specified `days`.
+
 
 + Response 200 (application/json)
 
@@ -2337,12 +2362,15 @@ Returns detalied water usage starting from specified `date` for a number of spec
           }
         }
         
-## GET /watering/log/simulated/{date}/{days}
-Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`
+## /watering/log/simulated/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+
+### GET
+Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`
+
 
 + Response 200 (application/json)
 
@@ -2358,12 +2386,14 @@ Returns basic water usage data for the simulated program (doesn't actually water
           }
         }
 
-## GET /watering/log/simulated/details/{date}/{days}
-Returns detailed water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
+## /watering/log/simulated/details/{date}/{days}
 
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+
+### GET
+Returns detailed water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.
 
 + Response 200 (application/json)
 
@@ -2738,11 +2768,14 @@ Returns daily statistics about simulated watering. It contains how much the prog
         }
 
 ##/dailystats/{date}
+
++ Parameters        
+    + date: `2017-03-15` (string) - Date string, in YYYY-MM-DD format, from which the data is wanted.
+
 ###GET
+
 Returns daily statistics about simulated watering starting from specified `date` per program per zone.
 *Partial support on 1st gen: "vibration" not available.*
-+ Parameters
-    + date: `2017-03-15` (string) - Date for which the data is wanted
     
 + Response 200 (application/json)
 
@@ -2986,6 +3019,7 @@ Returns daily statistics detauls about simulated watering starting with `date` w
 # Group Weather Services
 Weather services (parsers) that fetch weather from different internet weather services.
 ##/parser
+
 ###GET
 Returns information about all weather parsers available (active or not)
 + Response 200 (application/json)
@@ -3177,10 +3211,12 @@ Returns information about all weather parsers available (active or not)
         }
 
 ##/parser/{id}
-###GET 
-Returns detalied information about parser
+
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the parser
+
+### GET 
+Returns detalied information about parser
 
 + Response 200 (application/json)
         
@@ -3199,7 +3235,12 @@ Returns detalied information about parser
             }
         }
 
-## GET /parser/{id}/data
+## /parser/{id}/data
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser
+
+### GET
 Return all available parser weaher data
 
 + Response 200 (application/json)
@@ -3243,7 +3284,13 @@ Return all available parser weaher data
             }
 
 
-## GET /parser/{id}/data/{date}
+## /parser/{id}/data/{date}
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser.
+    + date: `2017-03-15` (string) - Date string, in YYYY-MM-DD format, from which the data is wanted.
+
+### GET
 Returns parser weather data starting from specified `date` until current day
 
 + Response 200 (application/json)
@@ -3286,11 +3333,15 @@ Returns parser weather data starting from specified `date` until current day
             ]
             }
 
-## GET /parser/{id}/data/{date}/{days}
-Returns parser weather data starting from specified `date` for a number of specified `days`
+## /parser/{id}/data/{date}/{days}
+
 + Parameters
-    + date: `2017-03-15` (string) - Date for which the data is wanted
+    + id (required, number, `1`) ... Numeric `id` of the parser.
+    + date: `2017-03-15` (string) - Date string, in YYYY-MM-DD format, from which the data is wanted.
     + days: `30` (number) - How many days to return
+    
+### GET    
+Returns parser weather data starting from specified `date` for a number of specified `days`
     
 + Response 200 (application/json)
 
@@ -3332,7 +3383,12 @@ Returns parser weather data starting from specified `date` for a number of speci
             ]
             }
 
-## POST /parser/{id}/activate
+## /parser/{id}/activate
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser.
+
+### POST
 Activates or deactivates a parser. If a parser is not active it won't be run.
 
 + Request 
@@ -3347,7 +3403,13 @@ Activates or deactivates a parser. If a parser is not active it won't be run.
             "statusCode": 0 
         }
 
-## POST /parser/{id}/defaults
+## /parser/{id}/defaults
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser.
+
+### POST
+
 Sets the default parameters for a parser
 
 + Response 200 (application/json)
@@ -3356,7 +3418,12 @@ Sets the default parameters for a parser
             "statusCode": 0 
         }
 
-## POST /parser/{id}/params
+## /parser/{id}/params
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the parser.
+
+### POST
 Sets the custom parameters for a parser
 
 + Response 200 (application/json)
@@ -3580,7 +3647,12 @@ Return all available mixer data
         }
 
 
-## GET /mixer/{date}
+## /mixer/{date}
+
++ Parameters
+    + date: `2017-03-15` (string) - Date string, in YYYY-MM-DD format, from which the data is wanted.
+
+### GET
 Returns mixer data starting from specified `date` until current day
 
 + Response 200 (application/json)
@@ -3737,11 +3809,16 @@ Returns mixer data starting from specified `date` until current day
           ]
         }
 
-## GET /mixer/{date}/{days}
-Returns mixer data starting from specified `date` for a number of specified `days`
+
+## /mixer/{date}/{days}
+
 + Parameters
     + date: `2017-03-15` (string) - Date for which the data is wanted
     + days: `30` (number) - How many days to return
+
+### GET    
+Returns mixer data starting from specified `date` for a number of specified `days`
+
     
 + Response 200 (application/json)
 
