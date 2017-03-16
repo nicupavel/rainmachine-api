@@ -11,9 +11,16 @@ RainMachine API version 4.3 for accesing [RainMachine](http://www.rainmachine.co
 - [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support
 - [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support
 
-For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80. Use of HTTPS is highly recommended.
-
 For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.
+A typical URL when accessing the machine directly should look like this: 
+
+**https://device.ip:8080/api/4/**
+
+When accessing the device though *RainMachine Remote Access* service the URL should look like this:
+
+**https://my.rainmachine.com/**
+
+*For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80.*
 
 ### Allowed HTTPS requests
 
@@ -34,23 +41,25 @@ For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-min
 
 ### Typical Server Responses Message Bodies
 
-    - Success                 : '{ "statusCode":  0,  "message": "OK"                         }'
-    - ExceptionOccurred       : '{ "statusCode":  1,  "message": "Exception occurred !"       }'
-    - NotAuthenticated        : '{ "statusCode":  2,  "message": "Not Authenticated !"        }'
-    - InvalidRequest          : '{ "statusCode":  3,  "message": "Invalid request !"          }'
-    - NotImplemented          : '{ "statusCode":  4,  "message": "Not implemented yet !"      }'
-    - NotFound                : '{ "statusCode":  5,  "message": "Not found !"                }'
-    - DBError                 : '{ "statusCode":  6,  "message": "DB Error !"                 }'
-    - ProvisionFailed         : '{ "statusCode":  7,  "message": "Cannot provision unit"      }'
-    - PasswordNotChanged      : '{ "statusCode":  8,  "message": "Cannot change password"     }'
-    - ProgramValidationFailed : '{ "statusCode":  9,  "message": "Invalid program constraints"}'
-    - ServiceUnavailable      : '{ "statusCode":  10,  "message": "Service unavailable, data not ready, retry later."}'
-    - WrongParserFormat       : '{ "statusCode":  11,  "message": "Wrong parser format, cannot be loaded."}'
+These are contained in the responses as response body.
+
+- `Success`                 : `{ "statusCode":  0,  "message": "OK"                         }`
+- `ExceptionOccurred`       : `{ "statusCode":  1,  "message": "Exception occurred !"       }`
+- `NotAuthenticated`        : `{ "statusCode":  2,  "message": "Not Authenticated !"        }`
+- `InvalidRequest`          : `{ "statusCode":  3,  "message": "Invalid request !"          }`
+- `NotImplemented`          : `{ "statusCode":  4,  "message": "Not implemented yet !"      }`
+- `NotFound`                : `{ "statusCode":  5,  "message": "Not found !"                }`
+- `DBError`                 : `{ "statusCode":  6,  "message": "DB Error !"                 }`
+- `ProvisionFailed`         : `{ "statusCode":  7,  "message": "Cannot provision unit"      }`
+- `PasswordNotChanged`      : `{ "statusCode":  8,  "message": "Cannot change password"     }`
+- `ProgramValidationFailed` : `{ "statusCode":  9,  "message": "Invalid program constraints"}`
+- `ServiceUnavailable`      : `{ "statusCode":  10,  "message": "Service unavailable, data not ready, retry later."}`
+- `WrongParserFormat`       : `{ "statusCode":  11,  "message": "Wrong parser format, cannot be loaded."}`
 
 
 ### Authentication
 
-After authenticating using `POST /auth/login` [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
+After authenticating [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.
 Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
 
 ### Changes from API 4.0 to API 4.1
@@ -107,7 +116,101 @@ Returns the software, hardware and api level versions.
 
 # Group Authentication
 <a name="post-auth-login"></a>
-## POST /auth/login
+Authenticating with the device it's possible though our *remote access service* or *directly* with the device.
+The *direct* method can be used if you can access the device with a real IP, either on local LAN or though router 
+forwarding. The *remote access service* provided by RainMachine is provided by https://my.rainmachine.com host 
+and can be accessed from any location with internet access.
+
+## Group Authenticate using https://my.rainmachine.com
+
+The following calls in the section should be prepended with **https://my.rainmachine.com/** as the URL.
+
+If authentication succeeds the `errorType` field from the returned JSON should be 0 and contain `access_token` and 
+`sprinklerId` that will be used for further API calls.
+
+Other values for `errorType` are:
+
+- 0 - success
+- 1 - the user has multiple sprinklers use the **/get-sprinklers** call below to auth
+- 1 - the email has not been validated for any on the user’s sprinklers => display message
+- 2 - no devices are connected to the cloud 
+- 3 - the password provided is wrong
+- 4 - internal server error
+
+
+### POST /login/auth
+
++ Request 
+
+        {
+            "user": 
+                {
+                    "email": "{{EMAIL_ACCOUNT}}", 
+                    "pwd": "{{PASSWORD}}", 
+                    "remember": true
+                }
+        }
++ Response 200 (application/json)
+
+        {
+            access_token: ‘string’, 
+            errorType: 0, 
+            sprinklerId: ‘string’
+        }
+        
+        
+### POST /devices/get-sprinklers
+Authenticaticate when user has multiple sprinkler installed under his account.
+
++ Request 
+
+        {
+            "user": 
+                {
+                    "email": "{{EMAIL_ACCOUNT}}", 
+                    "pwd": "{{PASSWORD}}", 
+                    "remember": true
+                }
+        }
++ Response 200 (application/json)
+
+        {
+            "sprinklers": 
+            [
+                {
+                    "sprinklerId": "avs6hrm",
+                    "mac": "A8:30:38:21:6B:14",
+                    "name": "RainMachine 1"
+                },
+                {
+                    "sprinklerId": "Xu3jrahd",
+                    "mac": "10:FD:CD:1B:35:05",
+                    "name": "RainMachine 2"
+                }
+            ]
+        }
+
+### POST /devices/login-sprinkler
+Used when *sprinklerId* is known beforehand. `errorType` is either 0 for *success* or 3 for *invalid credentials*
+
++ Request
+
+        {
+            "sprinklerId": "{{SPRINKLERID}}", 
+            "pwd": "{{PASSWORD}}"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "access_token": "68d56b3e368758ac6f8d6a848e831c1f92cd27e2fe44c21bc76db653",
+            "errorType": 0,
+            "sprinklerId": "{{SPRINKLERID}}"
+        }
+
+## Group Authenticate directly with device
+These calls can be used directly with the device by using the device standard URL: **https://device.ip:8080/api/4/**
+### POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
 *Available on 1st gen. Response: "access_token", "statusCode", "expires_in".*
 + Request 
@@ -126,7 +229,7 @@ Request auth with the device response will include a token to be used on subsequ
             "statusCode": 0
         } 
 
-## POST /auth/change
+### POST /auth/change
 Request a password change
 *Partial support on 1st gen: "newPass", "oldPass". Response: "statusCode", "message".*
 + Request
@@ -145,7 +248,7 @@ Request a password change
             "statusCode": 0
         }
 
-## POST /auth/check
+### POST /auth/check
 Request a password check.
 *Available on 1st gen. Response: "statusCode", "message".*
 
@@ -161,7 +264,7 @@ Request a password check.
             "statusCode": 0
         } 
 
-## GET /auth/totp
+### GET /auth/totp
 Generates a 6 characters Time-based One-time Password that can be used in subsequent auth calls for a limited duration guest login (1 day) 
 
 + Response 200 (application/json)
