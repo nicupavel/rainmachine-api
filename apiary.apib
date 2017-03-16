@@ -140,7 +140,7 @@ Other values for `errorType` are:
 
 ### POST /login/auth
 
-+ Request 
++ Request (application/json)
 
         {
             "user": 
@@ -162,7 +162,7 @@ Other values for `errorType` are:
 ### POST /devices/get-sprinklers
 Authenticaticate when user has multiple sprinkler installed under his account.
 
-+ Request 
++ Request (application/json)
 
         {
             "user": 
@@ -193,7 +193,7 @@ Authenticaticate when user has multiple sprinkler installed under his account.
 ### POST /devices/login-sprinkler
 Used when *sprinklerId* is known beforehand. `errorType` is either 0 for *success* or 3 for *invalid credentials*
 
-+ Request
++ Request (application/json)
 
         {
             "sprinklerId": "{{SPRINKLERID}}", 
@@ -213,7 +213,7 @@ These calls can be used directly with the device by using the device standard UR
 ### POST /auth/login
 Request auth with the device response will include a token to be used on subsequent calls
 *Available on 1st gen. Response: "access_token", "statusCode", "expires_in".*
-+ Request 
++ Request (application/json)
 
         {
             "pwd": "{{PASSWORD}}",
