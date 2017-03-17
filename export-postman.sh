@@ -1,0 +1,2 @@
+#!/bin/sh
+python /usr/local/lib/python2.7/dist-packages/apiary2postman/apiary2postman.py --pretty --no-names --single-collection --url-suffix "?{{ACCESS_TOKEN}}" blueprint apiary.apib > rainmachine-postman.json
