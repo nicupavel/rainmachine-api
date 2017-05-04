@@ -129,6 +129,7 @@ The API client should set this order correctly for all zones involved in a progr
 - **MODIFICATION**  - `/program` - Added *startDate* which holds the start date of a program. The format is *YYYY-MM-DD*.
 - **MODIFICATION**  - `/program` - Added *endDate* which holds the end date of a program run. The format is *YYYY-MM-DD*. This is uses to have programs valid in certain months, for example programs that run from May till August.
 - **MODIFICATION**  - `/program` - Added *yearlyRecurring* which specifies if the program should repeat or not in the next years.
+- **MODIFICATION**  - `/machine/time` - Added *timestamp* and *timezone* fields to return the local time as unix timestamp and local timezone
 
 - **NEW** - `POST /watering/available` - This allows setting current Available Water value per program per zone.
  
