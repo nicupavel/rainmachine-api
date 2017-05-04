@@ -36,6 +36,23 @@
 			"item": [
 				{
 					"name": "/auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"if (jsonData.access_token) {",
+									"    var access_token = jsonData.access_token;",
+									"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", \"access_token=\" + access_token );",
+									"}",
+									""
+								]
+							}
+						}
+					],
 					"request": {
 						"url": "{{HOST}}/auth/login?{{ACCESS_TOKEN}}",
 						"method": "POST",
