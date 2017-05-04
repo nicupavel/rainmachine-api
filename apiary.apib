@@ -3,7 +3,7 @@ FORMAT: X-1A
 HOST: https://device.ip:8080/api/4/
 
 # RainMachine
-RainMachine API version 4.3 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.6.
+RainMachine API version 4.4 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.7.
 
 ### Compatible devices
 
@@ -56,6 +56,14 @@ These are contained in the responses as response body.
 - `ServiceUnavailable`      : `{ "statusCode":  10,  "message": "Service unavailable, data not ready, retry later."}`
 - `WrongParserFormat`       : `{ "statusCode":  11,  "message": "Wrong parser format, cannot be loaded."}`
 
+### Measurement units
+
+RainMachine uses International System of Units (metric). All parameters sent by API are expected to be in metric system.
+ - `mm` being used for length, precipitation quantity (mm/m^2)
+ - `m` is used for area (m^2), wind speed (m/s)
+ - `celsius` is used for everything related to temperatures
+ - `seconds` is used for durations unless specifically noted otherwise 
+
 
 ### Authentication
 
@@ -100,6 +108,30 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /zone/*/properties` Added *area* and *flowrate* fields for galons/liters calculations.
  - **MODIFICATION** - `GET /programs/*` Added *userPercentage* field (float) which represent the user increase or decrease of the referenceTime for the zone.
  - **MODIFICATION** - `GET /programs/*` *futureField1* field now holds the QPF restriction for the program (to be renamed).
+
+### Changes from API 4.3 to API 4.4 (beta)
+ - **MODIFICATION**  - `/provision` - Added *useBonjourService* to enable/disable the use of Bonjour discovery of RainMachine services (on by default)
+ - **MODIFICATION**  - `/provision` - Added *rainSensorSnoozeDuration* to configure how the snooze should be scheduled after rain was detected. Values:
+ 
+        -1: Until midnight today
+        0: No snooze added it will stop watering only for the period that rain sensor detects rain
+        >0: Number of seconds to snooze
+ 
+- **MODIFICATION**  - `/provision` - Added *rainSensorRainStart* which holds the timestamp of the last recorded rain start. A *null* value means that rain was never detected.
+- **MODIFICATION**  - `/zone/properties` - Added more soil types: **SandyClay(8), SiltLoam (9), Silt(10)**
+- **MODIFICATION**  - `/zone/properties` - Added *minRuntime* which holds per zone minimum watering time in seconds.
+- **MODIFICATION**  - `/program` - Added *minRuntimeCoef* in *wateringTimes* object. Each zone from *wateringTimes* can have this coefficient which changes the zone *minWatering* setting. This allows programs to have different minimum watering times than the ones set in zone properties.
+- **MODIFICATION**  - `/program` - Added *order* in *wateringTimes* object and it's used to specify the order in which the zones in this program will start watering. 
+By default *order* is the same with zone *id* (meaning zone 1 will start first and then zone 2). With *order* parameter it's possible to set *order: 2* for zone 1 and *order: 1* for zone 2 to reverse their starting order. 
+When watering RainMachine will sort zones by *order* value (if multiple zones have same order they will be schedule one after another). 
+The API client should set this order correctly for all zones involved in a program.
+
+- **MODIFICATION**  - `/program` - Added *startDate* which holds the start date of a program. The format is *YYYY-MM-DD*.
+- **MODIFICATION**  - `/program` - Added *endDate* which holds the end date of a program run. The format is *YYYY-MM-DD*. This is uses to have programs valid in certain months, for example programs that run from May till August.
+- **MODIFICATION**  - `/program` - Added *yearlyRecurring* which specifies if the program should repeat or not in the next years.
+- **MODIFICATION**  - `/machine/time` - Added *timestamp* and *timezone* fields to return the local time as unix timestamp and local timezone
+
+- **NEW** - `POST /watering/available` - This allows setting current Available Water value per program per zone.
  
 # Group API versions
 
@@ -330,6 +362,9 @@ Get device settings
 | `useCorrectionForPast`        | *boolean*  | If watering algorithm should also consider past weather data                           |
 | `useMasterValve`              | *boolean*  | If a Master Valve is connected to Valve 1                                              |
 | `maxWateringCoef`             | *integer*  | How much over-watering is allowed                                                      |
+| `rainSensorSnoozeDuration`    | *integer*  | configures how the snooze should be scheduled after rain was detected. **Values:** **-1**: Until midnight today, **0**: No snooze added it will stop watering only for the period that rain sensor detects rain, **>0**: Number of seconds to snooze.|
+| `rainSensorRainStart`         | *integer*  | Timestamp of last rain event. *null* means rain was never detected                     |
+| `useBonjourService`           | *integer*  | Enables or disables the Apple Bonjour discovery service                                |
 
 #### Location
 
@@ -362,6 +397,7 @@ Get device settings
         {
         "system": {
         "httpEnabled": true, 
+        "rainSensorSnoozeDuration": 0,
         "programSingleSchedule": false, 
         "mixerHistorySize": 365, 
         "programZonesShowInactive": false, 
@@ -379,7 +415,8 @@ Get device settings
         "waterLogHistorySize": 365, 
         "netName": "RainMachine Demo", 
         "touchSleepTimeout": 10, 
-        "touchAdvanced": false, 
+        "touchAdvanced": false,
+        "useBonjourService": true,
         "hardwareVersion": 2, 
         "touchLongPressTimeout": 3, 
         "parserDataSizeInDays": 6, 
@@ -392,7 +429,8 @@ Get device settings
         "useCommandLineArguments": false, 
         "databasePath": "/rainmachine-app/DB/Default", 
         "touchCyclePrograms": true, 
-        "zoneListShowInactive": true, 
+        "zoneListShowInactive": true,
+        "rainSensorRainStart": null,
         "zoneDuration": [
         300, 
         300, 
@@ -1043,58 +1081,74 @@ Get all watering programs defined on device
               "wateringTimes": [
                 {
                   "id": 1, 
+                  "order": 1,
                   "name": "Lawn Front", 
                   "duration": 0, 
                   "active": false, 
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
                   "id": 2, 
+                  "order": 2,
                   "name": "Flowers on the back of the house", 
                   "duration": 0, 
-                  "active": false, 
+                  "active": false,
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
-                  "id": 3, 
+                  "id": 3,
+                  "order": 3,
                   "name": "Bushes and trees on the shade", 
                   "duration": 0, 
                   "active": true, 
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
                   "id": 4, 
+                  "order": 4,
                   "name": "Trees and bushes test", 
                   "duration": 0, 
                   "active": false, 
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
-                  "id": 5, 
+                  "id": 5,
+                  "order": 5,
                   "name": "Lawn green front side of the porch", 
                   "duration": 0, 
-                  "active": false, 
+                  "active": false,
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
                   "id": 6, 
+                  "order": 6,
                   "name": "Citrus trees ", 
                   "duration": 0, 
-                  "active": false, 
+                  "active": false,
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
-                  "id": 7, 
+                  "id": 7,
+                  "order": 7,
                   "name": "Grass on the right side of the house", 
                   "duration": 0, 
-                  "active": false, 
+                  "active": false,
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }, 
                 {
-                  "id": 8, 
+                  "id": 8,
+                  "order": 8,
                   "name": "Back yard beautiful lawn area", 
                   "duration": 0, 
                   "active": false, 
+                  "minRuntimeCoef": 1,
                   "userPercentage": 1.0
                 }
               ]
@@ -1548,50 +1602,68 @@ Returns advanced properties for *all* zones
 
 
 ### Vegetation Type (`type`)
-    NotSet = 0
-    NotSetOld = 1
-    Grass = 2
-    FruitTrees = 3
-    Flowers = 4
-    Vegetables = 5
-    Citrus = 6
-    Bushes = 7
-    Xeriscape = 9
-    Other = 99 (Use advanced values)
+
+        Numerical Values Used:
+        
+        Not Set = 0
+        Not Set Old = 1
+        Grass = 2
+        FruitTrees = 3
+        Flowers = 4
+        Vegetables = 5
+        Citrus = 6
+        Bushes = 7
+        Xeriscape = 9
+        Other = 99 (Use advanced values)
 
 ### Soil Type (`soil`)    
-    NotSet = 0
-    ClayLoam = 1
-    SiltyClay = 2
-    Clay = 3
-    Loam = 4
-    SandyLoam = 5
-    LoamySand = 6
-    Sand = 7
-    Other = 99 (Use advanced values)
+
+        Numerical Values Used:
+        
+        NotSet = 0
+        ClayLoam = 1
+        SiltyClay = 2
+        Clay = 3
+        Loam = 4
+        SandyLoam = 5
+        LoamySand = 6
+        Sand = 7
+        SandyClay = 8
+        SiltLoam =  9
+        Silt =      10
+        Other = 99 (Use advanced values)
     
 ### Sprinkler Type (`group_id`)
-    NotSet = 0
-    PopupSpray = 1
-    Rotors = 2
-    SurfaceDrip = 3
-    Bubblers = 4
-    Other = 99 (Use advanced values)
+
+        Numerical Values Used:
+        
+        NotSet = 0
+        PopupSpray = 1
+        Rotors = 2
+        SurfaceDrip = 3
+        Bubblers = 4
+        Other = 99 (Use advanced values)
 
 ### Slope Type (`slope`)
-    NotSet = 0
-    Flat = 1
-    Moderate = 2
-    High = 3
-    VeryHigh = 4
-    Other = 99 (Use advanced values)
+
+        Numerical Values Used:
+        
+        NotSet = 0
+        Flat = 1
+        Moderate = 2
+        High = 3
+        VeryHigh = 4
+        Other = 99 (Use advanced values)
 
 
 ### Sun Exposure (`sun`)
-    NotSet = 0
-    FullSun = 1
-    PartialShade = 2
-    FullShade = 3
+
+        Numerical Values Used:
+        
+        NotSet = 0
+        FullSun = 1
+        PartialShade = 2
+        FullShade = 3
 
 
 + Response 200 (application/json)
@@ -2302,8 +2374,30 @@ If no date/days parameters are sent the yesterday values are returned.
 ## /watering/available/{date}/{days}
 
 + Parameters
-    + date: `2017-03-15` (string) - Date for which the data is wanted
-    + days: `30` (number) - How many days to return
+    + date: `2017-03-15` (string) - Date for which the data is wanted (optional)
+    + days: `30` (number) - How many days to return (optional)
+
+### POST
+Sets a zone available water in the specified program. If program id (pid) is set to -1, then this zone is set
+in all available programs. The available water is set as decimal percentage from 0%(0) to 100%(1) from the zone
+field capacity value (the actual value is computed internally after the POST call) .
+
++ Request (application/json)
+    + Body
+    
+                {
+                  "availableWaterValues": [
+                        {
+                            pid: -1,
+                            zid: 1,
+                            percentage: 0.5,
+                        },
+                    ]
+                }
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
 
 ### GET
 Returns the available water in soil for each zone in each program for all days.
@@ -2590,6 +2684,7 @@ Returns a summary of current restrictions on device. If any of the month, week d
 ## /restrictions/global
 ### GET
 Returns global watering restrictions like freeze protect, snooze, months and week days restrictions.
+
 + Response 200 (application/json)
 
         {
