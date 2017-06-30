@@ -2178,6 +2178,46 @@ Stop watering zone with id
 ## POST /zone/simulate
 Returns the suggested watering duration in seconds and field capacity size in mm from the zone properties sent in the request body.
 
++ Request 
+
+        {
+              "ETcoef": 1,
+              "type": 2,
+              "internet": true,
+              "savings": 50,
+              "slope": 1,
+              "sun": 1,
+              "soil": 1,
+              "group_id": 1,
+              "history": true,
+              "waterSense": {
+                "fieldCapacity": 0.0,
+                "rootDepth": 0,
+                "appEfficiency": 0.0,
+                "isTallPlant": 0,
+                "permWilting": 0.0,
+                "maxAllowedDepletion": 0.0,
+                "precipitationRate": 0.0,
+                "allowedSurfaceAcc": 0.0,
+                "referenceTime": 661,
+                "detailedMonthsKc": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "soilIntakeRate": 0.0
+            }
+        }
+
 + Response 200 (application/json)
 
             {
