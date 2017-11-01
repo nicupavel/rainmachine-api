@@ -109,7 +109,7 @@ Example: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`
  - **MODIFICATION** - `GET /programs/*` Added *userPercentage* field (float) which represent the user increase or decrease of the referenceTime for the zone.
  - **MODIFICATION** - `GET /programs/*` *futureField1* field now holds the QPF restriction for the program (to be renamed).
 
-### Changes from API 4.3 to API 4.4 (beta)
+### Changes from API 4.3 to API 4.4
  - **MODIFICATION**  - `/provision` - Added *uiUnitsMetric* (boolean) as a way to save on device the measurement units set by different clients
  - **MODIFICATION**  - `/provision` - Added *useBonjourService* to enable/disable the use of Bonjour discovery of RainMachine services (on by default)
  - **MODIFICATION**  - `/provision` - Added *rainSensorSnoozeDuration* to configure how the snooze should be scheduled after rain was detected. Values:
@@ -1026,7 +1026,7 @@ Get all watering programs defined on device
 | `coef`                        | *float*             | unused   |
 | `ignoreInternetWeather`       | *boolean*           |  If program should ignore all weather dataa |
 | `futureField1`                | *integer*           |  Hold the forecasted rain amount which will restrict program watering (this overwrites RainMachine algorithm decision) |
-| `freq_modified`               | *integer*           |  unused |
+| `freq_modified`               | *integer*           |  Used to hold the percentage (0-100) that will trigger a watering skip, when the watering percentage is below this number  |
 | `useWaterSense`               | *boolean*           | WaterSense algorithm that automatically determines the time to be watered for each zone  |
 | `nextRun`                     | *string*            | Next scheduled run in YYYY-MM-DD format |
 | `wateringTimes`               | *array of objects*  | List of zones and their watering times for this program |
