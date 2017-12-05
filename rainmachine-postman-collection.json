@@ -1,10 +1,9 @@
 {
-	"variables": [],
 	"info": {
 		"name": "RainMachine",
 		"_postman_id": "1010a430-d6ce-eac4-1c7b-507c1dc0f1ca",
-		"description": "RainMachine API version 4.3 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 1.6.\n\n### Compatible devices\n\n- 1st generation RainMachine: `hwVer: 1.0` partial support where noted\n\n- [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support\n\n- [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support\n\nFor the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.\nA typical URL when accessing the machine directly should look like this: \n\n**https://device.ip:8080/api/4/**\n\nWhen accessing the device though *RainMachine Remote Access* service the URL should look like this:\n\n**https://my.rainmachine.com/**\n\n*For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80.*\n\n### Allowed HTTPS requests\n\n- `POST` - Creates or updates a resource\n\n- `GET` - Retrieves a resource or list of resources\n\n### Typical Server Responses\n\n- 200 `OK` - The request was successful\n\n- 400 `Bad Request` - The request could not be understood or was missing required parameters.\n\n- 401 `Unauthorized` - Authentication failed or user does not have permissions for the requested operation.\n\n- 404 `Not Found` - Resource was not found.\n\n- 405 `Method Not Allowed` - Requested method is not supported for the specified resource.\n\n- 460 `Cannot Change Password` - Cannot change password\n\n- 501 `Exception Occured` - Exception occured while processing the call\n\n- 540 `Database Error` - Error saving data to database\n\n- 541 `Provision Failed` - Cannot provision unit \n\n### Typical Server Responses Message Bodies\n\nThese are contained in the responses as response body.\n\n- `Success`                 : `{ \"statusCode\":  0,  \"message\": \"OK\"                         }`\n\n- `ExceptionOccurred`       : `{ \"statusCode\":  1,  \"message\": \"Exception occurred !\"       }`\n\n- `NotAuthenticated`        : `{ \"statusCode\":  2,  \"message\": \"Not Authenticated !\"        }`\n\n- `InvalidRequest`          : `{ \"statusCode\":  3,  \"message\": \"Invalid request !\"          }`\n\n- `NotImplemented`          : `{ \"statusCode\":  4,  \"message\": \"Not implemented yet !\"      }`\n\n- `NotFound`                : `{ \"statusCode\":  5,  \"message\": \"Not found !\"                }`\n\n- `DBError`                 : `{ \"statusCode\":  6,  \"message\": \"DB Error !\"                 }`\n\n- `ProvisionFailed`         : `{ \"statusCode\":  7,  \"message\": \"Cannot provision unit\"      }`\n\n- `PasswordNotChanged`      : `{ \"statusCode\":  8,  \"message\": \"Cannot change password\"     }`\n\n- `ProgramValidationFailed` : `{ \"statusCode\":  9,  \"message\": \"Invalid program constraints\"}`\n\n- `ServiceUnavailable`      : `{ \"statusCode\":  10,  \"message\": \"Service unavailable, data not ready, retry later.\"}`\n\n- `WrongParserFormat`       : `{ \"statusCode\":  11,  \"message\": \"Wrong parser format, cannot be loaded.\"}`\n\n\n### Authentication\n\nAfter authenticating [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.\nExample: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`\n\n### Changes from API 4.0 to API 4.1\n\n - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.\n\n - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.\n\n - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. \n\n - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.\n\n - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates\n\n - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server\n\n - **MODIFICATION** - `GET /watering/log` Added *userDuration* field\n\n - **MODIFICATION** - `GET /zone` Added *active* field\n\n - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields\n\n - **MODIFICATION** - `GET /watering/available` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run\n\n - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields\n \n\n### Changes from API 4.1 to API 4.2\n\n - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values\n\n - **NEW**  - `GET /auth/totp` Generates a timebased one time password for guest/support access with 1 day valability\n \n\n - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.\n\n - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. \n\n - **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program\n\n### Changes from API 4.2 to API 4.3\n\n - **NEW**  - `POST /zone/simulate` Calculate values of Base Watering Time and Field Capacity with the specified zone parameters\n\n - **NEW**  - `GET /provision/doy` Show the local stored EvapoTranspiratio values used when no weather is available\n\n - **MODIFICATION** - Added more values for water log flag: \n    zwfRainSensorSoftware = 8\n    zwfRestrictionMonth = 9\n    zwfRestrictionRainDelay = 10\n    \n\n - **MODIFICATION** - 'GET /watering/queue' - Added *remaining* for zone timers including master valve, soak and delay events.\n\n - **MODIFICATION** - `GET /dailystats/details` Added *wateringFlag* field that list the day restrictions if they exists\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *referenceTime* and *currentFieldCapacity* fields which represent calculated values from zone properties.\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *area* and *flowrate* fields for galons/liters calculations.\n\n - **MODIFICATION** - `GET /programs/*` Added *userPercentage* field (float) which represent the user increase or decrease of the referenceTime for the zone.\n\n - **MODIFICATION** - `GET /programs/*` *futureField1* field now holds the QPF restriction for the program (to be renamed).\n \n",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"description": "RainMachine API version 4.5 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 2.0.\n\n### Compatible devices\n\n- 1st generation RainMachine: `hwVer: 1.0` partial support where noted\n\n- [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support\n\n- [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support\n\nFor the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.\nA typical URL when accessing the machine directly should look like this: \n\n**https://device.ip:8080/api/4/**\n\nWhen accessing the device though *RainMachine Remote Access* service the URL should look like this:\n\n**https://my.rainmachine.com/**\n\n*For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80.*\n\n### Allowed HTTPS requests\n\n- `POST` - Creates or updates a resource\n\n- `GET` - Retrieves a resource or list of resources\n\n### Typical Server Responses\n\n- 200 `OK` - The request was successful\n\n- 400 `Bad Request` - The request could not be understood or was missing required parameters.\n\n- 401 `Unauthorized` - Authentication failed or user does not have permissions for the requested operation.\n\n- 404 `Not Found` - Resource was not found.\n\n- 405 `Method Not Allowed` - Requested method is not supported for the specified resource.\n\n- 460 `Cannot Change Password` - Cannot change password\n\n- 501 `Exception Occured` - Exception occured while processing the call\n\n- 540 `Database Error` - Error saving data to database\n\n- 541 `Provision Failed` - Cannot provision unit \n\n### Typical Server Responses Message Bodies\n\nThese are contained in the responses as response body.\n\n- `Success`                 : `{ \"statusCode\":  0,  \"message\": \"OK\"                         }`\n\n- `ExceptionOccurred`       : `{ \"statusCode\":  1,  \"message\": \"Exception occurred !\"       }`\n\n- `NotAuthenticated`        : `{ \"statusCode\":  2,  \"message\": \"Not Authenticated !\"        }`\n\n- `InvalidRequest`          : `{ \"statusCode\":  3,  \"message\": \"Invalid request !\"          }`\n\n- `NotImplemented`          : `{ \"statusCode\":  4,  \"message\": \"Not implemented yet !\"      }`\n\n- `NotFound`                : `{ \"statusCode\":  5,  \"message\": \"Not found !\"                }`\n\n- `DBError`                 : `{ \"statusCode\":  6,  \"message\": \"DB Error !\"                 }`\n\n- `ProvisionFailed`         : `{ \"statusCode\":  7,  \"message\": \"Cannot provision unit\"      }`\n\n- `PasswordNotChanged`      : `{ \"statusCode\":  8,  \"message\": \"Cannot change password\"     }`\n\n- `ProgramValidationFailed` : `{ \"statusCode\":  9,  \"message\": \"Invalid program constraints\"}`\n\n- `ServiceUnavailable`      : `{ \"statusCode\":  10,  \"message\": \"Service unavailable, data not ready, retry later.\"}`\n\n- `WrongParserFormat`       : `{ \"statusCode\":  11,  \"message\": \"Wrong parser format, cannot be loaded.\"}`\n\n\n### Authentication\n\nAfter authenticating [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.\nExample: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`\n\n### Changes from API 4.0 to API 4.1\n\n - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.\n\n - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.\n\n - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. \n\n - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.\n\n - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates\n\n - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server\n\n - **MODIFICATION** - `GET /watering/log` Added *userDuration* field\n\n - **MODIFICATION** - `GET /zone` Added *active* field\n\n - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields\n\n - **MODIFICATION** - `GET /watering/available` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run\n\n - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields\n \n\n### Changes from API 4.1 to API 4.2\n\n - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values\n\n - **NEW**  - `GET /auth/totp` Generates a timebased one time password for guest/support access with 1 day valability\n \n\n - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.\n\n - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. \n\n - **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program\n\n### Changes from API 4.2 to API 4.3\n\n - **NEW**  - `POST /zone/simulate` Calculate values of Base Watering Time and Field Capacity with the specified zone parameters\n\n - **NEW**  - `GET /provision/doy` Show the local stored EvapoTranspiratio values used when no weather is available\n\n - **MODIFICATION** - Added more values for water log flag: \n    zwfRainSensorSoftware = 8\n    zwfRestrictionMonth = 9\n    zwfRestrictionRainDelay = 10\n    \n\n - **MODIFICATION** - 'GET /watering/queue' - Added *remaining* for zone timers including master valve, soak and delay events.\n\n - **MODIFICATION** - `GET /dailystats/details` Added *wateringFlag* field that list the day restrictions if they exists\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *referenceTime* and *currentFieldCapacity* fields which represent calculated values from zone properties.\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *area* and *flowrate* fields for galons/liters calculations.\n\n - **MODIFICATION** - `GET /programs/*` Added *userPercentage* field (float) which represent the user increase or decrease of the referenceTime for the zone.\n\n - **MODIFICATION** - `GET /programs/*` *futureField1* field now holds the QPF restriction for the program (to be renamed).\n\n### Changes from API 4.3 to API 4.4\n - **MODIFICATION**  - `/provision` - Added *uiUnitsMetric* (boolean) as a way to save on device the measurement units set by different clients\n - **MODIFICATION**  - `/provision` - Added *useBonjourService* to enable/disable the use of Bonjour discovery of RainMachine services (on by default)\n - **MODIFICATION**  - `/provision` - Added *rainSensorSnoozeDuration* to configure how the snooze should be scheduled after rain was detected. Values:\n \n        -1: Until midnight today\n        0: No snooze added it will stop watering only for the period that rain sensor detects rain\n        >0: Number of seconds to snooze\n \n- **MODIFICATION**  - `/provision` - Added *rainSensorRainStart* which holds the timestamp of the last recorded rain start. A *null* value means that rain was never detected.\n- **MODIFICATION**  - `/zone/properties` - Added more soil types: **SandyClay(8), SiltLoam (9), Silt(10)**\n- **MODIFICATION**  - `/zone/properties` - Added *minRuntime* which holds per zone minimum watering time in seconds.\n- **MODIFICATION**  - `/program` - Added *minRuntimeCoef* in *wateringTimes* object. Each zone from *wateringTimes* can have this coefficient which changes the zone *minWatering* setting. This allows programs to have different minimum watering times than the ones set in zone properties.\n- **MODIFICATION**  - `/program` - Added *order* in *wateringTimes* object and it's used to specify the order in which the zones in this program will start watering. \nBy default *order* is the same with zone *id* (meaning zone 1 will start first and then zone 2). With *order* parameter it's possible to set *order: 2* for zone 1 and *order: 1* for zone 2 to reverse their starting order. \nWhen watering RainMachine will sort zones by *order* value (if multiple zones have same order they will be schedule one after another). \nThe API client should set this order correctly for all zones involved in a program.\n\n- **MODIFICATION**  - `/program` - Added *startDate* which holds the start date of a program. The format is *YYYY-MM-DD*.\n- **MODIFICATION**  - `/program` - Added *endDate* which holds the end date of a program run. The format is *YYYY-MM-DD*. This is uses to have programs valid in certain months, for example programs that run from May till August.\n- **MODIFICATION**  - `/program` - Added *yearlyRecurring* which specifies if the program should repeat or not in the next years.\n- **MODIFICATION**  - `/program` - The *freq_modified*  field is now parsed and contains the integer percentage for adaptive frequency.\n- **MODIFICATION**  - `/machine/time` - Added *timestamp* and *timezone* fields to return the local time as unix timestamp and local timezone\n\n- **NEW** - `POST /watering/available` - This allows setting current Available Water value per program per zone.\n\n### Changes from API 4.4 to API 4.5\n - **MODIFICATION**  - `/provision` - Added *automaticUpdates* (boolean) to enable or disable automatic updates.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -14,16 +13,29 @@
 				{
 					"name": "/apiVer",
 					"request": {
-						"url": "{{HOST}}/apiVer?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/apiVer?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"apiVer"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the software, hardware and api level versions.\n*Available on 1st gen.*\n"
 					},
 					"response": []
@@ -54,23 +66,36 @@
 						}
 					],
 					"request": {
-						"url": "{{HOST}}/auth/login?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"pwd\": \"{{PASSWORD}}\",\n    \"remember\": 1\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/login?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Request auth with the device response will include a token to be used on subsequent calls\n*Available on 1st gen. Response: \"access_token\", \"statusCode\", \"expires_in\".*\n"
 					},
@@ -79,18 +104,32 @@
 				{
 					"name": "/auth/change",
 					"request": {
-						"url": "{{HOST}}/auth/change?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n        newPass: \"newPass\",\n        oldPass: \"oldPass\" \n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/change?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"change"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Request a password change\n*Partial support on 1st gen: \"newPass\", \"oldPass\". Response: \"statusCode\", \"message\".*\n"
 					},
@@ -99,18 +138,32 @@
 				{
 					"name": "/auth/check",
 					"request": {
-						"url": "{{HOST}}/auth/check?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"pwd\": \"password\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/check?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"check"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Request a password check.\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n\n"
 					},
@@ -119,16 +172,30 @@
 				{
 					"name": "/auth/totp",
 					"request": {
-						"url": "{{HOST}}/auth/totp?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/auth/totp?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"totp"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Generates a 6 characters Time-based One-time Password that can be used in subsequent auth calls for a limited duration guest login (1 day) \n\n"
 					},
 					"response": []
@@ -163,23 +230,36 @@
 						}
 					],
 					"request": {
-						"url": "{{HOST}}/login/auth?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user\": \n        {\n            \"email\": \"{{EMAIL_ACCOUNT}}\", \n            \"pwd\": \"{{PASSWORD}}\", \n            \"remember\": true\n        }\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/login/auth?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"login",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Authenticate with the RainMachine associated with an account. This call should only be used if the account has only\none RainMachine associated otherwise the `errorType` field from response will return -1 (see below).\n\nIf authentication succeeds the `errorType` field from the returned JSON should be 0 and contain `access_token` and \n`sprinklerId` that will be used for further API calls.\n\nOther values for `errorType` are:\n\n- 0 - success\n\n- -1 - the user has multiple sprinklers use the **/get-sprinklers** call below to retrieve the list\n\n- 1 - the email has not been validated\n\n- 2 - no devices are connected to the cloud \n\n- 3 - the password provided is wrong\n\n- 4 - internal server error\n\n\n"
 					},
@@ -187,24 +267,59 @@
 				},
 				{
 					"name": "/devices/login-sprinkler",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "509e562e-e6a2-423f-8ce2-4d9661283634",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"if (jsonData.errorType === 0 && jsonData.sprinklerId && jsonData.access_token) {",
+									"",
+									"    var id = jsonData.sprinklerId;",
+									"    var access_token = jsonData.access_token;",
+									"    ",
+									"    postman.setEnvironmentVariable(\"HOST\", \"https://my.rainmachine.com/s/\" + id + \"/api/4\" );",
+									"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", \"access_token=\" + access_token );",
+									"}"
+								]
+							}
+						}
+					],
 					"request": {
-						"url": "{{HOST}}/devices/login-sprinkler?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"sprinklerId\": \"{{SPRINKLERID}}\", \n    \"pwd\": \"{{PASSWORD}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/devices/login-sprinkler?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"devices",
+								"login-sprinkler"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": "",
+									"equals": false
+								}
+							]
 						},
 						"description": "Authenticate with a RainMachine when knowning its  *sprinklerId*. `errorType` is either 0 for *success* or 3 for *invalid credentials*\nTo retrieve a list of RainMachine devices and their *sprinklerId* use the **/devices/get-sprinklers** API call (see below)\n\n"
 					},
@@ -213,23 +328,36 @@
 				{
 					"name": "/devices/get-sprinklers",
 					"request": {
-						"url": "{{HOST}}/devices/get-sprinklers?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user\": \n        {\n            \"email\": \"{{EMAIL_ACCOUNT}}\", \n            \"pwd\": \"{{PASSWORD}}\", \n            \"remember\": true\n        }\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/devices/get-sprinklers?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"devices",
+								"get-sprinklers"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Retrieve the list of RainMachine devices associated with the accound. To authenticate with a certain RainMachine the **/devices/login-sprinkler**\ncall should be used.\n\n"
 					},
@@ -238,9 +366,101 @@
 			]
 		},
 		{
-			"name": "Authentication",
+			"name": "Authentication using new remote API",
 			"description": "<a name=\"post-auth-login\"></a>\nAuthenticating with the device it's possible though our *remote access service* or *directly* with the device.\nThe *direct* method can be used if you can access the device with a real IP, either on local LAN or though router \nforwarding. The *remote access service* provided by RainMachine is provided by https://my.rainmachine.com host \nand can be accessed from any location with internet access.\n\n",
-			"item": []
+			"item": [
+				{
+					"name": "/v1/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"if (!jsonData.error && jsonData.token) {",
+									"    var token = jsonData.token;",
+									"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", token );",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"{{EMAIL_ACCOUNT}}\",\n\t\"password\": \"{{PASSWORD}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/auth",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"auth"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/v1/device/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"",
+									"if (!jsonData.error && jsonData.sprinklers.length > 0) {",
+									"    tests[\"Has sprinklers\"] = jsonData.sprinklers.length > 0;",
+									"    postman.setEnvironmentVariable(\"DEVICE_URL\", jsonData.sprinklers[0].sprinklerUrl);",
+									"}",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/v1/device/list?access_token={{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"device",
+								"list"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{ACCESS_TOKEN}}"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Daily Stats",
@@ -249,16 +469,29 @@
 				{
 					"name": "/dailystats",
 					"request": {
-						"url": "{{HOST}}/dailystats?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dailystats?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dailystats"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns daily statistics about simulated watering. It contains how much the programs will water for the next 7 days (pozitive id, id 0 is today).\n\n\n| Variable for Basic Stats   | Type          | Description                                                                        |\n| ---------------------------|---------------|----------------------------------------------------------------------------------- |\n| `id`                       | *int*         | Day offset relative to today which is 0.                                           |\n| `wateringFlag`             | *int*         | See below                                                                          |\n| `day`                      | *string*      | Day in YYYY-MM-DD format                                                           |\n| `mint`                     | *float*       | Minimum temperature of the day                                                     |\n| `maxt`                     | *float*       | Maximum temperature of the day                                                     |\n| `icon`                     | *int*         | Weather icon for that day (see icon definitions)                                   |\n| `percentage`               | *int*         | How much it actually waters                                                        |\n| `simulatedPercentage`      | *int*         | How much it would water if a daily program would be configured                     |\n| `vibration`                | *array of int*| How the watering `percetage` varies with historical and future weather predictions |\n| `simulatedVibration`       | *array of int*| As above but if a daily program would be configured                                |\n\n| Variable for Detailed Stats | Type          | Description                                         |\n| ----------------------------|---------------|---------------------------------------------------- |\n| `scheduledWateringTime`     | *int*         | User specified watering time for this zone          |\n| `computedWateringTime`      | *int*         | Calculated watering time for this zone              |\n| `availableWater`            | *float*       | Available water for this zone                       |\n| `coefficient`               | *float*       | Zone watering coefficient (see zones documentation) |\n\n\n| Watering Flag Value        | Description                          |\n| ---------------------------|------------------------------------- |\n| 0                          | Normal watering                      |\n| 1                          | Interrupted by user                  |\n| 2                          | Restriction Threshold                |\n| 3                          | Restriction Freeze Protect           |\n| 4                          | Restriction Day                      |\n| 5                          | Restriction Out Of Day               |\n| 6                          | Water Surplus                        |\n| 7                          | Stopped by Rain Sensor               |\n| 8                          | Software rain sensor restriction     |\n| 9                          | Month Restricted                     |\n| 10                         | Rain Delay set by user               |\n| 11                         | Program Rain Restriction             |\n\n*Partial support on 1st gen: \"vibration\" not available.*\n\n"
 					},
 					"response": []
@@ -266,16 +499,30 @@
 				{
 					"name": "/dailystats/{date}",
 					"request": {
-						"url": "{{HOST}}/dailystats/2017-03-15?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dailystats/2017-03-15?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dailystats",
+								"2017-03-15"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns daily statistics about simulated watering starting from specified `date` per program per zone.\n*Partial support on 1st gen: \"vibration\" not available.*\n    \n"
 					},
 					"response": []
@@ -283,16 +530,30 @@
 				{
 					"name": "/dailystats/details",
 					"request": {
-						"url": "{{HOST}}/dailystats/details?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dailystats/details?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dailystats",
+								"details"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns daily statistics detauls about simulated watering starting with `date` which is optional.\n*Partial support on 1st gen: \"vibration\" not available.*\n\n"
 					},
 					"response": []
@@ -306,16 +567,30 @@
 				{
 					"name": "/dev/timezonedb.json",
 					"request": {
-						"url": "{{HOST}}/dev/timezonedb.json?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dev/timezonedb.json?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dev",
+								"timezonedb.json"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Retrieves the Time Zone database available on the device. This database contains *all* available timezones and their Olson format\n\n"
 					},
 					"response": []
@@ -323,16 +598,30 @@
 				{
 					"name": "/dev/beta",
 					"request": {
-						"url": "{{HOST}}/dev/beta?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dev/beta?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dev",
+								"beta"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": ""
 					},
 					"response": []
@@ -340,16 +629,31 @@
 				{
 					"name": "/dev/import/parser",
 					"request": {
-						"url": "{{HOST}}/dev/import/parser?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dev/import/parser?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dev",
+								"import",
+								"parser"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Installs a new parser to the device. Parsers are written in python and follow [RainMachine Parser API](http://docs.rainmachineparsers.apiary.io/). \n\n\n"
 					},
 					"response": []
@@ -357,16 +661,31 @@
 				{
 					"name": "/dev/import/waterlog",
 					"request": {
-						"url": "{{HOST}}/dev/import/waterlog?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/dev/import/waterlog?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"dev",
+								"import",
+								"waterlog"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Imports a waterlog database from another RainMachine device\n\n"
 					},
 					"response": []
@@ -380,16 +699,29 @@
 				{
 					"name": "/diag",
 					"request": {
-						"url": "{{HOST}}/diag?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns software and device diagnostics.\n\n"
 					},
 					"response": []
@@ -397,16 +729,30 @@
 				{
 					"name": "/diag/upload",
 					"request": {
-						"url": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the status of diagnostics upload progress. Diagnostics are uploaded to RainMachine server for support inspection.\n\n"
 					},
 					"response": []
@@ -414,16 +760,30 @@
 				{
 					"name": "/diag/upload",
 					"request": {
-						"url": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Starts diagnostics upload to RainMachine support FTP server\n\n"
 					},
 					"response": []
@@ -431,16 +791,30 @@
 				{
 					"name": "/diag/log",
 					"request": {
-						"url": "{{HOST}}/diag/log?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag/log?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag",
+								"log"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Retrieves the entire application log with the format: ``YYYY-MM-DD HH:MM:SS,MS - <LOGLEVEL> - <COMPONENT>:<LINE>``\n\n"
 					},
 					"response": []
@@ -448,16 +822,31 @@
 				{
 					"name": "/diag/log/level",
 					"request": {
-						"url": "{{HOST}}/diag/log/level?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag/log/level?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag",
+								"log",
+								"level"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets the log level for the application. Log level is numeric and can take values:\n\n- 10 : Debug\n\n- 20 : Info (default)\n\n- 30 : Warning\n\n- 40 : Errors\n\n- 50 : No logging\n\n"
 					},
 					"response": []
@@ -465,16 +854,30 @@
 				{
 					"name": "/diag/download",
 					"request": {
-						"url": "{{HOST}}/diag/download?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/zip",
-								"description": ""
+								"value": "application/zip"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/diag/download?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"diag",
+								"download"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Retrieves an archive with logs and databases from RainMachine\n*Only Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -488,16 +891,30 @@
 				{
 					"name": "/machine/time",
 					"request": {
-						"url": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"time"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the time on machine in format ``YYYY-MM-DD HH:MM:SS``\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -505,16 +922,30 @@
 				{
 					"name": "/machine/time",
 					"request": {
-						"url": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"time"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Changes the time on machine\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -522,16 +953,31 @@
 				{
 					"name": "/machine/update/check",
 					"request": {
-						"url": "{{HOST}}/machine/update/check?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/update/check?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"update",
+								"check"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Request a check for available updates. The status returned from **GET /machine/update** will be updated with new information.\nThis is usually followed by a  **GET /machine/update** call.\n\n"
 					},
 					"response": []
@@ -539,16 +985,30 @@
 				{
 					"name": "/machine/update",
 					"request": {
-						"url": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"update"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns software update status. If there is an available update the field **update** will be true and **packageDetails** field will \nbe a list of available packages in this update: \n\n        \"packageDetails\": [\n            {\n              \"packageName\": \"rainmachine-app\", \n              \"newVersion\": \"4.0.840\", \n              \"oldVersion\": \"4.0.636\"\n            }\n          ]\n          \n\nAvailable **updateStatus** field codes:\n\n- STATUS_IDLE = 1\n\n- STATUS_CHECKING = 2\n\n- STATUS_DOWNLOADING = 3\n\n- STATUS_UPGRADING = 4\n\n- STATUS_ERROR = 5\n\n- STATUS_REBOOT = 6\n    \n\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -556,16 +1016,30 @@
 				{
 					"name": "/machine/update",
 					"request": {
-						"url": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"update"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Starts a software update (requires a **POST /machine/update/check** before)\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -573,16 +1047,30 @@
 				{
 					"name": "/machine/sysupgrade",
 					"request": {
-						"url": "{{HOST}}/machine/sysupgrade?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/sysupgrade?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"sysupgrade"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Initiate a firmware download and install. This is for developers only and for RainMachine Mini-8. Using bad data can brick your device.\n\n"
 					},
 					"response": []
@@ -590,16 +1078,30 @@
 				{
 					"name": "/machine/ssh",
 					"request": {
-						"url": "{{HOST}}/machine/ssh?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/ssh?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"ssh"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Disables/Enables SSH daemon, the daemon will also be stopped/started accordingly.\n\n"
 					},
 					"response": []
@@ -607,16 +1109,30 @@
 				{
 					"name": "/machine/touch",
 					"request": {
-						"url": "{{HOST}}/machine/touch?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/touch?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"touch"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Disable/Enable touch interface. Use if you want a 3rd party application to control the leds/touch buttons.\nOnly for Mini-8 devices.\n\n"
 					},
 					"response": []
@@ -624,16 +1140,30 @@
 				{
 					"name": "/machine/reboot",
 					"request": {
-						"url": "{{HOST}}/machine/reboot?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/reboot?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"reboot"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Initiates a system reboot\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -641,16 +1171,30 @@
 				{
 					"name": "/machine/shortdetection",
 					"request": {
-						"url": "{{HOST}}/machine/shortdetection?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/machine/shortdetection?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"machine",
+								"shortdetection"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "For Mini-8 display detection and settings for valves short circuit protection and reporting.\n\n"
 					},
 					"response": []
@@ -664,16 +1208,29 @@
 				{
 					"name": "/program",
 					"request": {
-						"url": "{{HOST}}/program?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Get all watering programs defined on device\n*Partial support on 1st gen: \"uid\", \"name\", \"active\", \"startTime\", \"cycles\", \"soak\", \"cs_on\", \"delay\", \"delay_on\", \"status\", \"frequency\", \"ignoreInternetWeather\", \"futureField1\", \"freq_modified\", \"nextRun\", \"wateringTimes\".*\n\n| Variable                      | Type                | Description                                                                            |\n| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |\n| `uid`                         | *integer*           | Program unique ID. Automatically generated when a new program is created               |\n| `name`                        | *string*            | Program Name                                                                           |\n| `active`                      | *boolean*           | If program is not active it won't be started                                           |\n| `startTime`                   | *string*            | Program start time in HH:MM format                                                     |\n| `cycles`                      | *integer*           | The number of cycles that the duration of each zone will be split into                 |\n| `soak`                        | *integer*           | How many seconds to wait before starting next cycle for same zone                      |\n| `cs_on`                       | *boolean*           | If cycle and soak settings are enabled or not for this program                         |\n| `delay`                       | *integer*           | The delay between starting next zone (to build water pressure)                         |\n| `delay_on`                    | *boolean*           | If the delay between zones is enabled or not                                           |\n| `status`                      | *integer*           | Watering status: 0 - not running, 1 - running, 2 - queued                                               |\n| `frequency`                   | *object*            | Frequency of this program (see below)   |\n| `coef`                        | *float*             | unused   |\n| `ignoreInternetWeather`       | *boolean*           |  If program should ignore all weather dataa |\n| `futureField1`                | *integer*           |  Hold the forecasted rain amount which will restrict program watering (this overwrites RainMachine algorithm decision) |\n| `freq_modified`               | *integer*           |  unused |\n| `useWaterSense`               | *boolean*           | WaterSense algorithm that automatically determines the time to be watered for each zone  |\n| `nextRun`                     | *string*            | Next scheduled run in YYYY-MM-DD format |\n| `wateringTimes`               | *array of objects*  | List of zones and their watering times for this program |\n| `startTimeParams`             | *object*            | Used to set program start time at sunrise/sunset. Start hour, minute is automatically computed every time the program starts (see below)  |\n| `simulationExpired`           | *boolean*           | True if simulation data for that program has expired and a new one is being run\n\n\n| **frequency** Object keys       | Type                | Description                                                   |\n| ------------------------------|---------------------|-------------------------------------------------------------- |\n| `type`                        | *integer*           | Daily: 0, Every N days: 1, Weekday: 2, Odd/Even day: 4        |\n| `param`                       | *integer*           | Odd days: 1, Even days: 0, EveryNFormat: days,  Weekday: \"SSFTWTM0\" |\n\n\n\n\n|**startTimeParams** Object keys   | Type                | Description                                                   |\n| ------------------------------|---------------------|-------------------------------------------------------------- |\n| `type`                        | *integer*           | Normal start time: 0, Sunrise: 1, Sunset: 2        |\n| `offsetMinutes`               | *integer*           | Minutes after/before sunrise/sunset        |\n| `offsetSign`                  | *integer*           | -1 offsetMinutes are before selected type, 1 means after |\n\n"
 					},
 					"response": []
@@ -681,23 +1238,35 @@
 				{
 					"name": "/program",
 					"request": {
-						"url": "{{HOST}}/program?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"New Program\",\n  \"active\": true,\n  \"startTime\": \"16:00\",\n  \"cycles\": 0,\n  \"soak\": 0,\n  \"cs_on\": false,\n  \"delay\": 0,\n  \"delay_on\": false,\n  \"status\": 0,\n  \"startTimeParams\": {\n    \"offsetSign\": 0,\n    \"type\": 0,\n    \"offsetMinutes\": 0\n  },\n  \"frequency\": {\n    \"type\": 1,\n    \"param\": \"2\"\n  },\n  \"coef\": 0.0,\n  \"ignoreInternetWeather\": false,\n  \"futureField1\": 0,\n  \"freq_modified\": 0,\n  \"useWaterSense\": false,\n  \"nextRun\": \"2016-11-17\",\n  \"simulationExpired\": false,\n  \"wateringTimes\": [\n    {\n      \"id\": 1,\n      \"name\": \"Lawn Front\",\n      \"duration\": 0,\n      \"active\": false,\n      \"userPercentage\": 1.0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Flowers on the back of the house\",\n      \"duration\": 0,\n      \"active\": false,\n      \"userPercentage\": 1.0\n    },\n  ]\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/program?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Create a new Program (program id will be automatically generated)\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n\n"
 					},
@@ -706,16 +1275,30 @@
 				{
 					"name": "/program/nextrun",
 					"request": {
-						"url": "{{HOST}}/program/nextrun?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program/nextrun?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"nextrun"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns next running date/time for all active programs\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -723,16 +1306,30 @@
 				{
 					"name": "/program/{id}",
 					"request": {
-						"url": "{{HOST}}/program/1?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program/1?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"1"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Get program with specified id\n*Partial support on 1st gen: \"uid\", \"name\", \"active\", \"startTime\", \"cycles\", \"soak\", \"cs_on\", \"delay\", \"delay_on\", \"status\", \"frequency\", \"ignoreInternetWeather\", \"futureField1\", \"freq_modified\", \"nextRun\", \"wateringTimes\".*\n\n"
 					},
 					"response": []
@@ -740,23 +1337,36 @@
 				{
 					"name": "/program/{id}",
 					"request": {
-						"url": "{{HOST}}/program/1?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n      \"uid\": 1\n      \"name\": \"Program With Changed Name\",\n      \"active\": true,\n      \"startTime\": \"16:00\",\n      \"cycles\": 0,\n      \"soak\": 0,\n      \"cs_on\": false,\n      \"delay\": 0,\n      \"delay_on\": false,\n      \"status\": 0,\n      \"startTimeParams\": {\n        \"offsetSign\": 0,\n        \"type\": 0,\n        \"offsetMinutes\": 0\n      },\n      \"frequency\": {\n        \"type\": 1,\n        \"param\": \"2\"\n      },\n      \"coef\": 0.0,\n      \"ignoreInternetWeather\": false,\n      \"futureField1\": 0,\n      \"freq_modified\": 0,\n      \"useWaterSense\": false,\n      \"nextRun\": \"2016-11-17\",\n      \"simulationExpired\": false,\n      \"wateringTimes\": [\n        {\n          \"id\": 1,\n          \"name\": \"Lawn Front\",\n          \"duration\": 0,\n          \"active\": false,\n          \"userPercentage\": 1.0\n        },\n        {\n          \"id\": 2,\n          \"name\": \"Flowers on the back of the house\",\n          \"duration\": 0,\n          \"active\": false,\n          \"userPercentage\": 1.0\n        },\n      ]\n    }\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/program/1?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"1"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Update program parameters with specified id\n*Partial support on 1st gen: \"uid\", \"name\", \"active\", \"startTime\", \"cycles\", \"soak\", \"cs_on\", \"delay\", \"delay_on\", \"status\", \"frequency\", \"ignoreInternetWeather\", \"futureField1\", \"freq_modified\", \"nextRun\", \"wateringTimes\". Response: \"statusCode\", \"message\".*\n\n"
 					},
@@ -765,16 +1375,31 @@
 				{
 					"name": "/program/{id}/delete",
 					"request": {
-						"url": "{{HOST}}/program/1/delete?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program/1/delete?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"1",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Delete Program with id\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n\n   \n"
 					},
 					"response": []
@@ -782,16 +1407,31 @@
 				{
 					"name": "/program/{id}/start",
 					"request": {
-						"url": "{{HOST}}/program/1/start?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program/1/start?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"1",
+								"start"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Start watering Program with id\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n\n"
 					},
 					"response": []
@@ -799,16 +1439,31 @@
 				{
 					"name": "/program/{id}/stop",
 					"request": {
-						"url": "{{HOST}}/program/1/stop?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/program/1/stop?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"program",
+								"1",
+								"stop"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Remove Program with id from watering queue\n*Available on 1st gen.*\n    \n"
 					},
 					"response": []
@@ -822,16 +1477,29 @@
 				{
 					"name": "/provision",
 					"request": {
-						"url": "{{HOST}}/provision?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Get device settings\n\n#### System\n\n| Variable                      | Type       | Description          |\n| ------------------------------|------------|--------------------- |\n| `httpEnabled`                 | *boolean*  | If the HTTP server is enabled                                                          |\n| `programSingleSchedule`       | *boolean*  | Allows multiple runs of same program in the same day (eg: rescheduled to another hour) |\n| `mixerHistorySize`            | *integer*  | The number of days mixer will save in it's history                                     |\n| `programZonesShowInactive`    | *boolean*  | List program inactive zones in queries                                                 |\n| `standaloneMode`              | *boolean*  | If the device is configured but left in Access Point mode (no internet weather)        |\n| `masterValveAfter`            | *integer*  | Seconds for which the master valve will open after each zone                           |\n| `apiVersion`                  | *string*   | Version of software API                                                                |\n| `selfTest`                    | *boolean*  | Reserved                                                                               |\n| `defaultZoneWateringDuration` | *integer*  | Default seconds that a zone will be watered when started manually                      |\n| `maxLEDBrightness`            | *integer*  | Maximum brightness for the front panel leds (0 - 255)                                  |\n| `simulatorHistorySize`        | *integer*  | How many days to keep simulated data in database (default 0)                           |\n| `masterValveBefore`           | *integer*  | Seconds for which the master valve will open before each zone                          |\n| `touchProgramToRun`           | *integer*  | Which program can be run from touch interface on Mini 8 (id of program)                |\n| `useRainSensor`               | *boolean*  | Set to true if you have a rain sensor connected. Will stop watering if rain is detected|\n| `wizardHasRun`                | *boolean*  | Indicates if the wizard from a mobile device has been run                              |\n| `waterLogHistorySize`         | *integer*  | How many days to keep watering information in database (default 365)                   |\n| `netName`                     | *string*   | Device Name                                                                            |\n| `touchSleepTimeout`           | *integer*  | After how many seconds of inactivity to close the leds on Mini 8                       |\n| `touchAdvanced`               | *boolean*  | Activate touch panel advanced usage that allows queueing of zones on Mini 8            |\n| `hardwareVersion`             | *integer*  | Hardware version of the device  (same as hwVer from /apiVer call)                      |\n| `touchLongPressTimeout`       | *integer*  | After how many seconds a long touch will register automatically on Mini 8              |\n| `parserDataSizeInDays`        | *integer*  | How many days of forecast parsers should get                                           |\n| `programListShowInactive`     | *boolean*  | List inactive programs in queries                                                      |\n| `parserHistorySize`           | *integer*  | How many past days the parsers will keep in database                                   |\n| `minLEDBrightness`            | *integer*  | Minimum brightness for the front panel leds                                            |\n| `minWateringDurationThreshold`| *integer*  | If calculated watering duration in seconds is lower that this the zone won't be started|\n| `localValveCount`             | *integer*  | Number of valves this device has available                                             |\n| `touchAPSeconds`              | *integer*  | Delay after which the user won't be alloed to login when device is in setup mode       |\n| `useCommandLineArguments`     | *boolean*  | If the application was started with extra arguments                                    |\n| `databasePath`                | *string*   | File system path to the databases                                                      |\n| `touchCyclePrograms`          | *string*   | If the local touch interface on Mini 8 should also allow program start besides zones   |\n| `zoneListShowInactive`        | *boolean*  | List inactive zones in queries                                                         |\n| `zoneDuration`                | *int array*| Default list of zone durations for manual running                                      |\n| `useCorrectionForPast`        | *boolean*  | If watering algorithm should also consider past weather data                           |\n| `useMasterValve`              | *boolean*  | If a Master Valve is connected to Valve 1                                              |\n| `maxWateringCoef`             | *integer*  | How much over-watering is allowed                                                      |\n\n#### Location\n\n| Variable                      | Type       | Description                                                                            |\n| ------------------------------|------------|--------------------------------------------------------------------------------------- |\n| `stationID`                   | *integer*  | The closest weather station ID                                                         |\n| `elevation`                   | *float*    | Terrain elevation in meters                                                            |\n| `doyDownloaded`               | *boolean*  | If et0 data for each day of year has been downloaded for this location                 |\n| `zip`                         | *integer*  | Location ZIP  ( **obsolete** )                                                         |\n| `windSensitivity`             | *float*    | Sensitivity to wind speed (as percentage in float)                                     |\n| `krs`                         | *float*    | Adjustment coefficient used in ET0 ASCE formula                                        |\n| `state`                       | *string*   | Location state                                                                         |\n| `stationSource`               | *string*   | Where the weather station list comes from, station list or grid list                   |\n| `et0Average`                  | *float*    | The average ET0 value for this location                                                |\n| `latitude`                    | *float*    | Location latitude                                                                      |\n| `windElevation`               | *integer*  | The elevation at which wind is measured for this location used in ET0 ASCE formula     |\n| `stationName`                 | *string*   | Weather station name                                                                   |\n| `wsDays`                      | *integer*  | For how many days the water savings are taken in account                               |\n| `stationDownloaded`           | *boolean*  | If nearby weather stations had been downloaded                                         |\n| `address`                     | *string*   | Location address                                                                       |\n| `rainSensitivity`             | *float*    | How much precipitation influences ET0 formula, as percentage represented in float      |\n| `timezone`                    | *string*   | Timezone description                                                                   |\n| `longitude`                   | *float*    | Location longitude                                                                     |\n| `name`                        | *string*   | Location name                                                                          |\n\n\n\n"
 					},
 					"response": []
@@ -839,23 +1507,35 @@
 				{
 					"name": "/provision",
 					"request": {
-						"url": "{{HOST}}/provision?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\"system\": {\n\"httpEnabled\": true, \n\"programSingleSchedule\": false, \n\"mixerHistorySize\": 365, \n\"programZonesShowInactive\": false, \n\"standaloneMode\": false, \n\"masterValveAfter\": 0, \n\"apiVersion\": \"4.0.0\", \n\"selfTest\": false, \n\"defaultZoneWateringDuration\": 300, \n\"maxLEDBrightness\": 80, \n\"simulatorHistorySize\": 0, \n\"masterValveBefore\": 0, \n\"touchProgramToRun\": null, \n\"useRainSensor\": false, \n\"wizardHasRun\": true, \n\"waterLogHistorySize\": 365, \n\"netName\": \"RainMachine\", \n\"touchSleepTimeout\": 10, \n\"touchAdvanced\": false, \n\"hardwareVersion\": 2, \n\"touchLongPressTimeout\": 3, \n\"parserDataSizeInDays\": 6, \n\"programListShowInactive\": true, \n\"parserHistorySize\": 365, \n\"minLEDBrightness\": 0, \n\"minWateringDurationThreshold\": 0, \n\"localValveCount\": 8, \n\"touchAuthAPSeconds\": 60, \n\"useCommandLineArguments\": false, \n\"databasePath\": \"/rainmachine-app/DB/Default\", \n\"touchCyclePrograms\": true, \n\"zoneListShowInactive\": true, \n\"zoneDuration\": [\n300, \n300, \n300, \n300, \n300, \n300, \n300, \n300\n], \n\"useCorrectionForPast\": false, \n\"useMasterValve\": false, \n\"maxWateringCoef\": 2\n},\n\n\"location\": {\n\"stationID\": 9234, \n\"elevation\": 106.87275695799999, \n\"doyDownloaded\": true, \n\"zip\": null, \n\"windSensitivity\": 0.5, \n\"krs\": 0.19, \n\"state\": \"Default\", \n\"stationSource\": \"station\", \n\"et0Average\": 6, \n\"latitude\": 37.662431199999994, \n\"windElevation\": 2, \n\"stationName\": \"European Southern Observatory\", \n\"wsDays\": 2, \n\"stationDownloaded\": true, \n\"address\": \"Default\", \n\"rainSensitivity\": 0.8, \n\"timezone\": \"America/Los_Angeles\", \n\"longitude\": -121.87467890000001, \n\"name\": \"Proxima B, Proxima Centauri, Centaurus\"\n}\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/provision?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Sets device provision settings. See above for parameter explanation. Settings can be sent in full list, multiple keys/values or just one key/value.\n\n"
 					},
@@ -864,16 +1544,30 @@
 				{
 					"name": "/provision/name",
 					"request": {
-						"url": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"name"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns device name (shortcut to provision.system.netName)\n"
 					},
 					"response": []
@@ -881,16 +1575,30 @@
 				{
 					"name": "/provision/name",
 					"request": {
-						"url": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"name"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets device name\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n"
 					},
 					"response": []
@@ -898,16 +1606,30 @@
 				{
 					"name": "/provision/wifi",
 					"request": {
-						"url": "{{HOST}}/provision/wifi?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/wifi?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"wifi"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns current WIFI configuration \n"
 					},
 					"response": []
@@ -915,16 +1637,31 @@
 				{
 					"name": "/provision/wifi/scan",
 					"request": {
-						"url": "{{HOST}}/provision/wifi/scan?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/wifi/scan?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"wifi",
+								"scan"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns Access Points in range with RainMachine. This won't work on RainMachine HD-12/16 as WIFI is handled by local interface\n"
 					},
 					"response": []
@@ -932,16 +1669,31 @@
 				{
 					"name": "/provision/wifi/settings",
 					"request": {
-						"url": "{{HOST}}/provision/wifi/settings?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/wifi/settings?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"wifi",
+								"settings"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets the Access Point to which RainMachine will connect to and network settings such as ip, netmask, gateway unless networkType is set as dhcp. \nThis won't work on RainMachine HD-12/16 as WIFI is handled by local interface\n"
 					},
 					"response": []
@@ -949,16 +1701,30 @@
 				{
 					"name": "/provision/cloud",
 					"request": {
-						"url": "{{HOST}}/provision/cloud?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/cloud?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"cloud"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns Remote Access status\n"
 					},
 					"response": []
@@ -966,16 +1732,30 @@
 				{
 					"name": "/provision/doy",
 					"request": {
-						"url": "{{HOST}}/provision/doy?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/provision/doy?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"provision",
+								"doy"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns locally stored (on device) seasonal data for the setup location\n\n"
 					},
 					"response": []
@@ -989,16 +1769,30 @@
 				{
 					"name": "/restrictions/currently",
 					"request": {
-						"url": "{{HOST}}/restrictions/currently?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/currently?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"currently"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns a summary of current restrictions on device. If any of the month, week day, hourly, freeze or rain delay restrictions are active a coresponding field in the reply is set to true.\n"
 					},
 					"response": []
@@ -1006,16 +1800,30 @@
 				{
 					"name": "/restrictions/global",
 					"request": {
-						"url": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"global"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns global watering restrictions like freeze protect, snooze, months and week days restrictions.\n"
 					},
 					"response": []
@@ -1023,16 +1831,30 @@
 				{
 					"name": "/restrictions/global",
 					"request": {
-						"url": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"global"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets global watering restrictions\n\n"
 					},
 					"response": []
@@ -1040,16 +1862,30 @@
 				{
 					"name": "/restrictions/hourly",
 					"request": {
-						"url": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"hourly"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns defined hourly watering restrictions (no watering in specified hour intervals)\n\n"
 					},
 					"response": []
@@ -1057,16 +1893,30 @@
 				{
 					"name": "/restrictions/hourly",
 					"request": {
-						"url": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"hourly"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets a new hourly restriction, will return a json with restriction details.\n\n"
 					},
 					"response": []
@@ -1074,16 +1924,32 @@
 				{
 					"name": "/restrictions/hourly/{id}/delete",
 					"request": {
-						"url": "{{HOST}}/restrictions/hourly/{id}/delete?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/hourly/{id}/delete?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"hourly",
+								"{id}",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Removes an hourly restriction with the specified id.\n\n"
 					},
 					"response": []
@@ -1091,16 +1957,30 @@
 				{
 					"name": "/restrictions/raindelay",
 					"request": {
-						"url": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"raindelay"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the number of seconds until the forced Rain Delay is finished\n*Available on 1st gen.*\n"
 					},
 					"response": []
@@ -1108,16 +1988,30 @@
 				{
 					"name": "/restrictions/raindelay",
 					"request": {
-						"url": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"restrictions",
+								"raindelay"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets the number of days for which a Rain Delay is wanted, the Rain Delay will start at the time of POST request being register.\n*Available on 1st gen.*\n\n"
 					},
 					"response": []
@@ -1131,16 +2025,30 @@
 				{
 					"name": "/watering/zone",
 					"request": {
-						"url": "{{HOST}}/watering/zone?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/zone?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"zone"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns status of watering on *all* zones\n"
 					},
 					"response": []
@@ -1148,16 +2056,30 @@
 				{
 					"name": "/watering/program",
 					"request": {
-						"url": "{{HOST}}/watering/program?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/program?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"program"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the running watering program or empty list if no programs are currently running.\n\n"
 					},
 					"response": []
@@ -1165,16 +2087,30 @@
 				{
 					"name": "/watering/queue",
 					"request": {
-						"url": "{{HOST}}/watering/queue?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/queue?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"queue"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the current watering queue as a list of objects or empty list if no watering is taking place. Each object in the list will have the fields below:\n\n\n| Field             | Type      | Description                                                           |\n|-------------------|-----------|-----------------------------------------------------------------------|\n| `availableWater`  | *int*     | The available water for the zone being watered                  |\n| `realDuration`    | *int/null*| The duration in seconds computed by RainMachine (0 if manual start) |\n| `running`         | *bool*    | If the zone is actually watering or only queued                |\n| `uid`             | *int/null*| UID of the record or null (ignored)                            |\n| `restriction`     | *bool*    | If under restriction or not                                    |\n| `manual`          | *boot*    | If the watering event was started manually                     |\n| `pid`             | *int/null*| The program ID for which this event belongs                    |\n| `flag`            | *int*     | Watering flag value, see description from GET dailystats call   |\n| `machineDuration` | *int*     | Duration (seconds) as computed by RainMachine                   |\n| `userDuration`    | *int*     | Duration (seconds) entered by user                              |\n| `zid`             | *int*     | The ID of the zone being watered                                |\n| `userStartTime`   | *date/time string* | eg: 2016-11-23 08:41:31                                |\n| `cycles`          | *int*     | The total number of cycles this watering event will have            |\n| `hwZid`           | *int*     | The actual hardware valve ID (this is equal to zone ID for now)     |\n| `remaining`       | *int*     | Remaining seconds to water for this event                           |\n| `realStartTime`   | *date/time string* | eg: 2016-11-23 08:41:31                                    |\n| `cycle`           | *int*     | The current cycle number                                            |\n\n"
 					},
 					"response": []
@@ -1182,16 +2118,32 @@
 				{
 					"name": "/watering/past/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/past/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/past/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"past",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the et0 and qpf values used on the last runs of programs, including the date on which the programs started.\nIf no date/days parameters are sent the yesterday values are returned.\n\n\n"
 					},
 					"response": []
@@ -1199,16 +2151,32 @@
 				{
 					"name": "/watering/available/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/available/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/available/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"available",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the available water in soil for each zone in each program for all days.\n\n"
 					},
 					"response": []
@@ -1216,16 +2184,30 @@
 				{
 					"name": "/watering/log",
 					"request": {
-						"url": "{{HOST}}/watering/log?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/log?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"log"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Return all basic past water usage\n\n"
 					},
 					"response": []
@@ -1233,16 +2215,32 @@
 				{
 					"name": "/watering/log/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/log/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/log/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"log",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns basic water usage data starting from specified `date` for a number of specified `days`\n\n"
 					},
 					"response": []
@@ -1250,16 +2248,33 @@
 				{
 					"name": "/watering/log/details/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/log/details/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/log/details/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"log",
+								"details",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns detalied water usage starting from specified `date` for a number of specified `days`.\n\n\n"
 					},
 					"response": []
@@ -1267,16 +2282,33 @@
 				{
 					"name": "/watering/log/simulated/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/log/simulated/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/log/simulated/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"log",
+								"simulated",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns basic water usage data for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`\n\n\n"
 					},
 					"response": []
@@ -1284,16 +2316,34 @@
 				{
 					"name": "/watering/log/simulated/details/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/watering/log/simulated/details/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/log/simulated/details/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"log",
+								"simulated",
+								"details",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns detailed water usage for the simulated program (doesn't actually water, used for Daily Water Needs graphs) starting from specified `date` for a number of specified `days`.\n\n"
 					},
 					"response": []
@@ -1301,16 +2351,30 @@
 				{
 					"name": "/watering/stopall",
 					"request": {
-						"url": "{{HOST}}/watering/stopall?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/watering/stopall?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"watering",
+								"stopall"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Stops all watering in progress including zones and programs that were started.\n\n"
 					},
 					"response": []
@@ -1324,16 +2388,29 @@
 				{
 					"name": "/mixer",
 					"request": {
-						"url": "{{HOST}}/mixer?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/mixer?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"mixer"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Return all available mixer data\n\n"
 					},
 					"response": []
@@ -1341,16 +2418,30 @@
 				{
 					"name": "/mixer/{date}",
 					"request": {
-						"url": "{{HOST}}/mixer/2017-03-15?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/mixer/2017-03-15?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"mixer",
+								"2017-03-15"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns mixer data starting from specified `date` until current day\n\n"
 					},
 					"response": []
@@ -1358,16 +2449,31 @@
 				{
 					"name": "/mixer/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/mixer/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/mixer/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"mixer",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns mixer data starting from specified `date` for a number of specified `days`\n\n    \n"
 					},
 					"response": []
@@ -1381,16 +2487,29 @@
 				{
 					"name": "/parser",
 					"request": {
-						"url": "{{HOST}}/parser?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns information about all weather parsers available (active or not)\n"
 					},
 					"response": []
@@ -1398,16 +2517,30 @@
 				{
 					"name": "/parser/{id}",
 					"request": {
-						"url": "{{HOST}}/parser/1?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns detalied information about parser\n\n"
 					},
 					"response": []
@@ -1415,16 +2548,31 @@
 				{
 					"name": "/parser/{id}/data",
 					"request": {
-						"url": "{{HOST}}/parser/1/data?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1/data?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"data"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Return all available parser weaher data\n\n"
 					},
 					"response": []
@@ -1432,16 +2580,32 @@
 				{
 					"name": "/parser/{id}/data/{date}",
 					"request": {
-						"url": "{{HOST}}/parser/1/data/2017-03-15?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1/data/2017-03-15?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"data",
+								"2017-03-15"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns parser weather data starting from specified `date` until current day\n\n"
 					},
 					"response": []
@@ -1449,16 +2613,33 @@
 				{
 					"name": "/parser/{id}/data/{date}/{days}",
 					"request": {
-						"url": "{{HOST}}/parser/1/data/2017-03-15/30?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1/data/2017-03-15/30?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"data",
+								"2017-03-15",
+								"30"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns parser weather data starting from specified `date` for a number of specified `days`\n    \n"
 					},
 					"response": []
@@ -1466,18 +2647,33 @@
 				{
 					"name": "/parser/{id}/activate",
 					"request": {
-						"url": "{{HOST}}/parser/1/activate?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"activate\": true,\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/parser/1/activate?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"activate"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Activates or deactivates a parser. If a parser is not active it won't be run.\n\n"
 					},
@@ -1486,16 +2682,31 @@
 				{
 					"name": "/parser/{id}/defaults",
 					"request": {
-						"url": "{{HOST}}/parser/1/defaults?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1/defaults?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"defaults"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets the default parameters for a parser\n\n"
 					},
 					"response": []
@@ -1503,16 +2714,31 @@
 				{
 					"name": "/parser/{id}/params",
 					"request": {
-						"url": "{{HOST}}/parser/1/params?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/parser/1/params?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"1",
+								"params"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Sets the custom parameters for a parser\n\n"
 					},
 					"response": []
@@ -1520,18 +2746,32 @@
 				{
 					"name": "/parser/run",
 					"request": {
-						"url": "{{HOST}}/parser/run?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"parser\": true,\n    \"mixer\": true,\n    \"simulator\": true,\n    \"parserId\": 1\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/parser/run?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"parser",
+								"run"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Forcefully runs parsers, mixer and simulator, this will delete all previous parser data for the specified parser\n\n| Variable                      | Type                | Description                                                                            |\n| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |\n| `parserId`                    | *int*               | Which parser to run, empty or -1 means all parsers                                     |\n| `parser`                      | *bool*              | True means run parser(s), False doesn't run parser(s)                                  |\n| `mixer `                      | *bool*              | True means run mixer, False doesn't run mixer                                          |\n| `simulator`                   | *bool*              | True means run simulator, False doesn't run simulator                                  |\n\n"
 					},
@@ -1546,16 +2786,29 @@
 				{
 					"name": "/zone",
 					"request": {
-						"url": "{{HOST}}/zone?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns a list of *all* zones and their generic properties\n*Partial support on 1st gen: \"uid\", \"name\", \"state\", \"remaining\", \"type\", \"master\".*\n\n| Variable                      | Type                | Description                                                                            |\n| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |\n| `uid`                         | *integer*           | Zone unique ID Usually from 1 to max number of valves                                  |\n| `name`                        | *string*            | Name of the zone                                                                       |\n| `state`                       | *integer*           | Watering status: 0 - not running, 1 - running, 2 - queued                              |\n| `active`                      | *boolean*           | If zone is active (can be watered and added to watering programs |\n| `userDuration`                | *integer*           | Duration in seconds that was set by user for this zone                                 |\n| `machineDuration`             | *integer*           | Duration of actual watering that was calculated by RainMachine                         |\n| `remaining`                   | *integer*           | Remaining duration when watering has started                                           |\n| `cycle`                       | *integer*           | The current cycle for this zone (if running from a program with cycles enabled)        |\n| `noOfCycles`                  | *integer*           | Total number of cycles for this zone for running program                               |\n| `restriction`                 | *boolean*           | If the zone is in any current restrictions                                             |\n| `type`                        | *integer*           | Vegetation Type (see below)                                                           |\n| `master`                      | *boolean*           | If the zone is set as master valve                                                     |\n| `watersense`                  | *boolean*           | NO LONGER USED in API 4.3                  |\n\n\n"
 					},
 					"response": []
@@ -1563,16 +2816,30 @@
 				{
 					"name": "/zone/properties",
 					"request": {
-						"url": "{{HOST}}/zone/properties?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/properties?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"properties"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns advanced properties for *all* zones\n*Partial support on 1st gen: \"uid\", \"name\", \"active\", \"type\", \"internet\", \"history\", \"master\", \"before\", \"after\".*\n\n| Variable                      | Type                | Description                                                                            |\n| ------------------------------|---------------------|--------------------------------------------------------------------------------------- |\n| `ETcoef`                      | *float*             | The custom (Other) vegetation coeficient set by user for this zone\n| `savings`                     | *int*               | The percentage that increase or decrease the Field Capacity of this zone\n| `slope`                       | *int*               | The slope of the zone (see below)\n| `sun`                         | *int*               | The sun exposure of the zone (see below)\n| `soil`                        | *int*               | The soil type (see below)\n| `group_id`                    | *int*               | The sprinkler head type (see below)\n| `maxAllowedDepletion`         | *float*             | The maximum allowed depletion\n| `precipitationRate`           | *float*             | Sprinkler head precipiration rate (mm/h)\n| `appEfficiency`               | *float*             | Sprinkler head application efficiency (percent)\n| `allowedSurfaceAcc`           | *float*             | Soil allowed surface accumulation (mm)\n| `rootDepth`                   | *int*               | Average Root depth of the plants in the zone (mm)\n| `isTallPlant `                | *bool*              | True/False if plant is above 20cm\n| `soilIntakeRate`              | *float*             | Soil intake rate (mm/h)\n| `detailedMonthsKc`            | *string*            | String with format \"[0.4, 0.3,....12th Value]\" expressing the crop coeficient for each year month\n| `permWilting`                 | *float*             | Permanent wilting point (percent of the plant root depth)\n| `fieldCapacity`               | *float*             | Decimal percentage that is used when defining a custom Soil type which is the amount of water remaining in the soil a few days after having been wetted and after free drainage has ceased | \n| `currentFieldCapacity`        | *float*             | Current field capacity a read-only value that is computed by rainmachine from the sun, slope, soil and vegetation types parameters. This represent how much water in mm the zone can hold |\n| `referenceTime`               | *int*               | EPA Watersense suggested daily summer day watering time in seconds. This value is read-only and it's computed by RainMachine based on other zone parameters  |\n| `area`                        | *int*               | The zone area in square meters |\n| `flowRate`                    | *int*               | The zone flow debit in cubic meters per hour |\n\n\n### Vegetation Type (`type`)\n\n    NotSet = 0\n    NotSetOld = 1\n    Grass = 2\n    FruitTrees = 3\n    Flowers = 4\n    Vegetables = 5\n    Citrus = 6\n    Bushes = 7\n    Xeriscape = 9\n    Other = 99 (Use advanced values)\n\n### Soil Type (`soil`)    \n\n    NotSet = 0\n    ClayLoam = 1\n    SiltyClay = 2\n    Clay = 3\n    Loam = 4\n    SandyLoam = 5\n    LoamySand = 6\n    Sand = 7\n    Other = 99 (Use advanced values)\n    \n\n### Sprinkler Type (`group_id`)\n\n    NotSet = 0\n    PopupSpray = 1\n    Rotors = 2\n    SurfaceDrip = 3\n    Bubblers = 4\n    Other = 99 (Use advanced values)\n\n### Slope Type (`slope`)\n\n    NotSet = 0\n    Flat = 1\n    Moderate = 2\n    High = 3\n    VeryHigh = 4\n    Other = 99 (Use advanced values)\n\n\n### Sun Exposure (`sun`)\n\n    NotSet = 0\n    FullSun = 1\n    PartialShade = 2\n    FullShade = 3\n\n\n"
 					},
 					"response": []
@@ -1580,16 +2847,30 @@
 				{
 					"name": "/zone/{id}",
 					"request": {
-						"url": "{{HOST}}/zone/1?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/1?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"1"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Retrieve properties for zone with specified id.\n*Partial support on 1st gen*\n\n"
 					},
 					"response": []
@@ -1597,16 +2878,31 @@
 				{
 					"name": "/zone/{id}/properties",
 					"request": {
-						"url": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"1",
+								"properties"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Retrieve advanced properties for zone with specified id.\n*Partial support on 1st gen*\n\n"
 					},
 					"response": []
@@ -1614,16 +2910,31 @@
 				{
 					"name": "/zone/{id}/properties",
 					"request": {
-						"url": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"1",
+								"properties"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Set properties for zone with id\n*Partial support on 1st gen. Response: \"statusCode\", \"message\".*\n\n"
 					},
 					"response": []
@@ -1631,18 +2942,33 @@
 				{
 					"name": "/zone/{id}/start",
 					"request": {
-						"url": "{{HOST}}/zone/1/start?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"time\": 60\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/zone/1/start?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"1",
+								"start"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
 						},
 						"description": "Start watering zone with id\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n    \n"
 					},
@@ -1651,16 +2977,31 @@
 				{
 					"name": "/zone/{id}/stop",
 					"request": {
-						"url": "{{HOST}}/zone/1/stop?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/1/stop?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"1",
+								"stop"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Stop watering zone with id\n*Available on 1st gen. Response: \"statusCode\", \"message\".*\n\n"
 					},
 					"response": []
@@ -1668,16 +3009,30 @@
 				{
 					"name": "/zone/simulate",
 					"request": {
-						"url": "{{HOST}}/zone/simulate?{{ACCESS_TOKEN}}",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{HOST}}/zone/simulate?{{ACCESS_TOKEN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"zone",
+								"simulate"
+							],
+							"query": [
+								{
+									"key": "{{ACCESS_TOKEN}}",
+									"value": ""
+								}
+							]
+						},
 						"description": "Returns the suggested watering duration in seconds and field capacity size in mm from the zone properties sent in the request body.\n\n"
 					},
 					"response": []
