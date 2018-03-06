@@ -212,6 +212,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "d01cddda-29c6-4bf4-9abf-3b3a94c3854c",
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
@@ -221,10 +222,12 @@
 									"    var id = jsonData.sprinklerId;",
 									"    var access_token = jsonData.access_token;",
 									"    ",
-									"    postman.setEnvironmentVariable(\"HOST\", \"https://my.rainmachine.com/s/\" + id + \"/api/4\" );",
+									"    postman.setEnvironmentVariable(\"HOST\", postman.getEnvironmentVariable(\"HOST\") + \"/s/\" + id + \"/api/4\" );",
 									"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", \"access_token=\" + access_token );",
-									"}",
-									""
+									"} else if (jsonData.errorType === -1 && jsonData.access_token) {",
+									"    var access_token = jsonData.access_token;",
+									"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", \"access_token=\" + access_token );",
+									"}"
 								]
 							}
 						}
@@ -257,7 +260,8 @@
 							"query": [
 								{
 									"key": "{{ACCESS_TOKEN}}",
-									"value": ""
+									"value": "",
+									"equals": false
 								}
 							]
 						},
@@ -305,12 +309,11 @@
 							"raw": "{\n    \"sprinklerId\": \"{{SPRINKLERID}}\", \n    \"pwd\": \"{{PASSWORD}}\"\n}\n"
 						},
 						"url": {
-							"raw": "{{HOST}}/devices/login-sprinkler?{{ACCESS_TOKEN}}",
+							"raw": "{{HOST}}/login-sprinkler?{{ACCESS_TOKEN}}",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"devices",
 								"login-sprinkler"
 							],
 							"query": [
@@ -327,7 +330,26 @@
 				},
 				{
 					"name": "/devices/get-sprinklers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6afcd60-1b31-4696-932b-78809e77e7e0",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"if (jsonData.errorType === 0 && jsonData.sprinklers && jsonData.sprinklers.length > 0) {",
+									"    postman.setEnvironmentVariable(\"SPRINKLERID\", jsonData.sprinklers[0].sprinklerId);",
+									"}"
+								]
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -355,7 +377,8 @@
 							"query": [
 								{
 									"key": "{{ACCESS_TOKEN}}",
-									"value": ""
+									"value": "",
+									"equals": false
 								}
 							]
 						},
