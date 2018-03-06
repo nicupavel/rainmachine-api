@@ -1,14 +1,14 @@
 {
 	"info": {
 		"name": "RainMachine",
-		"_postman_id": "1010a430-d6ce-eac4-1c7b-507c1dc0f1ca",
+		"_postman_id": "11b91317-f9c5-4444-9b0c-4aa4c561878c",
 		"description": "RainMachine API version 4.5 for accesing [RainMachine](http://www.rainmachine.com) devices. Document revision 2.0.\n\n### Compatible devices\n\n- 1st generation RainMachine: `hwVer: 1.0` partial support where noted\n\n- [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support\n\n- [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support\n\nFor the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.\nA typical URL when accessing the machine directly should look like this: \n\n**https://device.ip:8080/api/4/**\n\nWhen accessing the device though *RainMachine Remote Access* service the URL should look like this:\n\n**https://my.rainmachine.com/**\n\n*For 1st generation RainMachine the RESTful interface is accessible via HTTPS on port 443 or via HTTP on port 80.*\n\n### Allowed HTTPS requests\n\n- `POST` - Creates or updates a resource\n\n- `GET` - Retrieves a resource or list of resources\n\n### Typical Server Responses\n\n- 200 `OK` - The request was successful\n\n- 400 `Bad Request` - The request could not be understood or was missing required parameters.\n\n- 401 `Unauthorized` - Authentication failed or user does not have permissions for the requested operation.\n\n- 404 `Not Found` - Resource was not found.\n\n- 405 `Method Not Allowed` - Requested method is not supported for the specified resource.\n\n- 460 `Cannot Change Password` - Cannot change password\n\n- 501 `Exception Occured` - Exception occured while processing the call\n\n- 540 `Database Error` - Error saving data to database\n\n- 541 `Provision Failed` - Cannot provision unit \n\n### Typical Server Responses Message Bodies\n\nThese are contained in the responses as response body.\n\n- `Success`                 : `{ \"statusCode\":  0,  \"message\": \"OK\"                         }`\n\n- `ExceptionOccurred`       : `{ \"statusCode\":  1,  \"message\": \"Exception occurred !\"       }`\n\n- `NotAuthenticated`        : `{ \"statusCode\":  2,  \"message\": \"Not Authenticated !\"        }`\n\n- `InvalidRequest`          : `{ \"statusCode\":  3,  \"message\": \"Invalid request !\"          }`\n\n- `NotImplemented`          : `{ \"statusCode\":  4,  \"message\": \"Not implemented yet !\"      }`\n\n- `NotFound`                : `{ \"statusCode\":  5,  \"message\": \"Not found !\"                }`\n\n- `DBError`                 : `{ \"statusCode\":  6,  \"message\": \"DB Error !\"                 }`\n\n- `ProvisionFailed`         : `{ \"statusCode\":  7,  \"message\": \"Cannot provision unit\"      }`\n\n- `PasswordNotChanged`      : `{ \"statusCode\":  8,  \"message\": \"Cannot change password\"     }`\n\n- `ProgramValidationFailed` : `{ \"statusCode\":  9,  \"message\": \"Invalid program constraints\"}`\n\n- `ServiceUnavailable`      : `{ \"statusCode\":  10,  \"message\": \"Service unavailable, data not ready, retry later.\"}`\n\n- `WrongParserFormat`       : `{ \"statusCode\":  11,  \"message\": \"Wrong parser format, cannot be loaded.\"}`\n\n\n### Authentication\n\nAfter authenticating [described below](#post-auth-login), additional API calls must contain the returned `access_token` as a URL parameter.\nExample: `GET /api/4/program?access_token=YOUR_ACCESS_TOKEN`\n\n### Changes from API 4.0 to API 4.1\n\n - **NEW**  - `POST /dev/import/sshkey`  Allow user to upload its own ssh key for login into RainMachine Touch HD.\n\n - **NEW**  - `POST /parser/{id}/delete` Delete an existing user (custom uploaded) parser.\n\n - **NEW**  - `POST /restrictions/hourly/{id}` Modify the specified hourly restriction. \n\n - **NEW**  - `GET /restrictions/currently`  Get a summary of currently active restrictions on device.\n\n - **NEW**  - `POST /dev/beta` Subscribe to the beta channel for software updates\n\n - **NEW**  - `POST /dev/trigger` Send a trigger to the notification server\n\n - **MODIFICATION** - `GET /watering/log` Added *userDuration* field\n\n - **MODIFICATION** - `GET /zone` Added *active* field\n\n - **MODIFICATION** - `GET /diag` Added internetStatus, uptimeSeconds, cloudstatus fields\n\n - **MODIFICATION** - `GET /watering/available` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /watering/past` Added possibility to specify start date and days\n\n - **MODIFICATION** - `GET /dailystats` Return an error code if simulation is still being run\n\n - **MODIFICATION** - `GET /parser` Added lastKnownError, isRunning fields\n \n\n### Changes from API 4.1 to API 4.2\n\n - **NEW**  - `POST /dev/parser/{id}/defaults` Reset parser parameters to default values\n\n - **NEW**  - `GET /auth/totp` Generates a timebased one time password for guest/support access with 1 day valability\n \n\n - **MODIFICATION** - `GET and POST /program` Added *(optional)* startTimeParams that are used to set program start time at sunrise or sunset +/- a specified offset in minutes.\n\n - **MODIFICATION** - `GET /parser` Added description, hasForecast, hasHistorical fields for extra information about a parser. \n\n - **MODIFICATION** - `GET /program` Added simulationExpired to let clients know that a new simulation is being run for the program\n\n### Changes from API 4.2 to API 4.3\n\n - **NEW**  - `POST /zone/simulate` Calculate values of Base Watering Time and Field Capacity with the specified zone parameters\n\n - **NEW**  - `GET /provision/doy` Show the local stored EvapoTranspiratio values used when no weather is available\n\n - **MODIFICATION** - Added more values for water log flag: \n    zwfRainSensorSoftware = 8\n    zwfRestrictionMonth = 9\n    zwfRestrictionRainDelay = 10\n    \n\n - **MODIFICATION** - 'GET /watering/queue' - Added *remaining* for zone timers including master valve, soak and delay events.\n\n - **MODIFICATION** - `GET /dailystats/details` Added *wateringFlag* field that list the day restrictions if they exists\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *referenceTime* and *currentFieldCapacity* fields which represent calculated values from zone properties.\n\n - **MODIFICATION** - `GET /zone/*/properties` Added *area* and *flowrate* fields for galons/liters calculations.\n\n - **MODIFICATION** - `GET /programs/*` Added *userPercentage* field (float) which represent the user increase or decrease of the referenceTime for the zone.\n\n - **MODIFICATION** - `GET /programs/*` *futureField1* field now holds the QPF restriction for the program (to be renamed).\n\n### Changes from API 4.3 to API 4.4\n - **MODIFICATION**  - `/provision` - Added *uiUnitsMetric* (boolean) as a way to save on device the measurement units set by different clients\n - **MODIFICATION**  - `/provision` - Added *useBonjourService* to enable/disable the use of Bonjour discovery of RainMachine services (on by default)\n - **MODIFICATION**  - `/provision` - Added *rainSensorSnoozeDuration* to configure how the snooze should be scheduled after rain was detected. Values:\n \n        -1: Until midnight today\n        0: No snooze added it will stop watering only for the period that rain sensor detects rain\n        >0: Number of seconds to snooze\n \n- **MODIFICATION**  - `/provision` - Added *rainSensorRainStart* which holds the timestamp of the last recorded rain start. A *null* value means that rain was never detected.\n- **MODIFICATION**  - `/zone/properties` - Added more soil types: **SandyClay(8), SiltLoam (9), Silt(10)**\n- **MODIFICATION**  - `/zone/properties` - Added *minRuntime* which holds per zone minimum watering time in seconds.\n- **MODIFICATION**  - `/program` - Added *minRuntimeCoef* in *wateringTimes* object. Each zone from *wateringTimes* can have this coefficient which changes the zone *minWatering* setting. This allows programs to have different minimum watering times than the ones set in zone properties.\n- **MODIFICATION**  - `/program` - Added *order* in *wateringTimes* object and it's used to specify the order in which the zones in this program will start watering. \nBy default *order* is the same with zone *id* (meaning zone 1 will start first and then zone 2). With *order* parameter it's possible to set *order: 2* for zone 1 and *order: 1* for zone 2 to reverse their starting order. \nWhen watering RainMachine will sort zones by *order* value (if multiple zones have same order they will be schedule one after another). \nThe API client should set this order correctly for all zones involved in a program.\n\n- **MODIFICATION**  - `/program` - Added *startDate* which holds the start date of a program. The format is *YYYY-MM-DD*.\n- **MODIFICATION**  - `/program` - Added *endDate* which holds the end date of a program run. The format is *YYYY-MM-DD*. This is uses to have programs valid in certain months, for example programs that run from May till August.\n- **MODIFICATION**  - `/program` - Added *yearlyRecurring* which specifies if the program should repeat or not in the next years.\n- **MODIFICATION**  - `/program` - The *freq_modified*  field is now parsed and contains the integer percentage for adaptive frequency.\n- **MODIFICATION**  - `/machine/time` - Added *timestamp* and *timezone* fields to return the local time as unix timestamp and local timezone\n\n- **NEW** - `POST /watering/available` - This allows setting current Available Water value per program per zone.\n\n### Changes from API 4.4 to API 4.5\n - **MODIFICATION**  - `/provision` - Added *automaticUpdates* (boolean) to enable or disable automatic updates.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "API versions",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "/apiVer",
@@ -20,7 +20,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/apiVer?{{ACCESS_TOKEN}}",
 							"host": [
@@ -179,7 +182,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/auth/totp?{{ACCESS_TOKEN}}",
 							"host": [
@@ -433,7 +439,7 @@
 								"auth"
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
@@ -461,7 +467,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/v1/device/list?access_token={{ACCESS_TOKEN}}",
 							"host": [
@@ -479,7 +488,7 @@
 								}
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -499,7 +508,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dailystats?{{ACCESS_TOKEN}}",
 							"host": [
@@ -529,7 +541,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dailystats/2017-03-15?{{ACCESS_TOKEN}}",
 							"host": [
@@ -560,7 +575,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dailystats/details?{{ACCESS_TOKEN}}",
 							"host": [
@@ -597,7 +615,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dev/timezonedb.json?{{ACCESS_TOKEN}}",
 							"host": [
@@ -628,7 +649,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dev/beta?{{ACCESS_TOKEN}}",
 							"host": [
@@ -645,7 +669,7 @@
 								}
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
@@ -659,7 +683,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dev/import/parser?{{ACCESS_TOKEN}}",
 							"host": [
@@ -691,7 +718,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/dev/import/waterlog?{{ACCESS_TOKEN}}",
 							"host": [
@@ -729,7 +759,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag?{{ACCESS_TOKEN}}",
 							"host": [
@@ -759,7 +792,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
 							"host": [
@@ -790,7 +826,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag/upload?{{ACCESS_TOKEN}}",
 							"host": [
@@ -821,7 +860,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag/log?{{ACCESS_TOKEN}}",
 							"host": [
@@ -852,7 +894,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag/log/level?{{ACCESS_TOKEN}}",
 							"host": [
@@ -884,7 +929,10 @@
 								"value": "application/zip"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/diag/download?{{ACCESS_TOKEN}}",
 							"host": [
@@ -909,7 +957,7 @@
 		},
 		{
 			"name": "Machine",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "/machine/time",
@@ -921,7 +969,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
 							"host": [
@@ -952,7 +1003,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/time?{{ACCESS_TOKEN}}",
 							"host": [
@@ -983,7 +1037,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/update/check?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1015,7 +1072,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1046,7 +1106,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/update?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1077,7 +1140,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/sysupgrade?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1108,7 +1174,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/ssh?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1139,7 +1208,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/touch?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1170,7 +1242,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/reboot?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1201,7 +1276,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/machine/shortdetection?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1238,7 +1316,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1305,7 +1386,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program/nextrun?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1336,7 +1420,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program/1?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1405,7 +1492,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program/1/delete?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1437,7 +1527,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program/1/start?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1469,7 +1562,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/program/1/stop?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1507,7 +1603,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1574,7 +1673,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1605,7 +1707,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/name?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1636,7 +1741,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/wifi?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1667,7 +1775,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/wifi/scan?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1699,7 +1810,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/wifi/settings?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1731,7 +1845,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/cloud?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1762,7 +1879,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/provision/doy?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1799,7 +1919,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/currently?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1830,7 +1953,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1861,7 +1987,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/global?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1892,7 +2021,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1923,7 +2055,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/hourly?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1954,7 +2089,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/hourly/{id}/delete?{{ACCESS_TOKEN}}",
 							"host": [
@@ -1987,7 +2125,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2018,7 +2159,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/restrictions/raindelay?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2055,7 +2199,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/zone?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2086,7 +2233,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/program?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2117,7 +2267,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/queue?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2148,7 +2301,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/past/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2181,7 +2337,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/available/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2214,7 +2373,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/log?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2245,7 +2407,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/log/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2278,7 +2443,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/log/details/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2312,7 +2480,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/log/simulated/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2346,7 +2517,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/log/simulated/details/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2381,7 +2555,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/watering/stopall?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2418,7 +2595,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/mixer?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2448,7 +2628,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/mixer/2017-03-15?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2479,7 +2662,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/mixer/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2517,7 +2703,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2547,7 +2736,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2578,7 +2770,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1/data?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2610,7 +2805,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1/data/2017-03-15?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2643,7 +2841,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1/data/2017-03-15/30?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2712,7 +2913,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1/defaults?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2744,7 +2948,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/parser/1/params?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2816,7 +3023,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2846,7 +3056,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/properties?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2877,7 +3090,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/1?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2908,7 +3124,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
 							"host": [
@@ -2940,7 +3159,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/1/properties?{{ACCESS_TOKEN}}",
 							"host": [
@@ -3007,7 +3229,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/1/stop?{{ACCESS_TOKEN}}",
 							"host": [
@@ -3039,7 +3264,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{HOST}}/zone/simulate?{{ACCESS_TOKEN}}",
 							"host": [
