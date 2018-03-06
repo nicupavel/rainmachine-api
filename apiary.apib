@@ -367,7 +367,7 @@ Get device settings
 | `zoneDuration`                | *int array*| Default list of zone durations for manual running                                      |
 | `useCorrectionForPast`        | *boolean*  | If watering algorithm should also consider past weather data                           |
 | `useMasterValve`              | *boolean*  | If a Master Valve is connected to Valve 1                                              |
-| `maxWateringCoef`             | *integer*  | How much over-watering is allowed                                                      |
+| `maxWateringCoef`             | *float*    | How much over-watering is allowed. Should be > 1 (100%). 1.2 means 120%. Default: 2 (200%)                                                     |
 | `rainSensorSnoozeDuration`    | *integer*  | configures how the snooze should be scheduled after rain was detected. **Values:** **-1**: Until midnight today, **0**: No snooze added it will stop watering only for the period that rain sensor detects rain, **>0**: Number of seconds to snooze.|
 | `rainSensorRainStart`         | *integer*  | Timestamp of last rain event. *null* means rain was never detected                     |
 | `useBonjourService`           | *integer*  | Enables or disables the Apple Bonjour discovery service                                |
