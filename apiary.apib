@@ -11,7 +11,11 @@ RainMachine API version 4.5 for accesing [RainMachine](http://www.rainmachine.co
 - [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support
 - [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support
 
-For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port 8080. HTTP access is only allowed from localhost and it's bound to port 18080.
+For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and 
+[RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port **8080**. 
+HTTP access is only allowed from localhost and it's bound to port 18080 (to be removed in the future).
+With version *> 4.0.927* a HTTP access is allowed on port **8081**. 
+
 A typical URL when accessing the machine directly should look like this: 
 
 **https://device.ip:8080/api/4/**
