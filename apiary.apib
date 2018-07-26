@@ -147,7 +147,7 @@ The API client should set this order correctly for all zones involved in a progr
  - **MODIFICATION**  - `/provision` - Added *useFlowSensor* (boolean), *flowSensorClicksPerCubicMeter* (integer) to setup flow sensor and *lastLeakDetected* for the timestamp of last detection.
  - **MODIFICATION**  - `/restrictions/currently` - Added *lastLeakDetected* as above.
  - **MODIFICATION**  - `/watering/log/details` - Added *flowclicks* (integer) to read flow sensor clicks per zone or cycle
-
+ - ** NEW ** - `POST /parser/data/` - Allow injecting Weather Data directly into RainMachine from a Weather Station or another source like weewx or cumulus mx.
  
 # Group API versions
 
@@ -3647,6 +3647,58 @@ Returns parser weather data starting from specified `date` for a number of speci
             }
             ]
             }
+
+## /parser/data
+
+### POST
+*API 4.6*: Allows Weather data to be pushed to RainMachine from an external source. Multiple weather entries can be sent
+in each POST request. If *timestamp* is not specified the current time at the moment of call will be used.
+There is no rate limiting but the data will be registered and mixed with data from other weather services hourly.
+*IMPORTANT*: The QPF and RAIN values shouldn't be send a cumulative but the measured/forecasted values for that hour/day.
+The RainMachine Mixer will sum all QPF or RAIN values in the current day to have the day QPF or RAIN.
+
++ Request 
+
+        {
+            "weather": [
+                {
+                    "mintemp":null,
+                    "maxtemp": null,
+                    "temperature": null,
+                    "wind": null,
+                    "solarrad": null,
+                    "qpf": null,
+                    "rain": null,
+                    "minrh": null,
+                    "maxrh": null,
+                    "condition": 26,
+                    "pressure": null,
+                    "dewpoint": null
+                },
+                {
+                    "timestamp": 1563362587,
+                    "mintemp":null,
+                    "maxtemp": null,
+                    "temperature": null,
+                    "wind": null,
+                    "solarrad": null,
+                    "qpf": null,
+                    "rain": null,
+                    "minrh": null,
+                    "maxrh": null,
+                    "condition": 26,
+                    "pressure": null,
+                    "dewpoint": null
+                }
+            ]
+        }
+        
++ Response 200 (application/json)
+
+        { 
+            "statusCode": 0 
+        }
+
 
 ## /parser/{id}/activate
 
