@@ -172,22 +172,23 @@ and can be accessed from any location with internet access.
 ## Group Authenticate using https://my.rainmachine.com
 
 The following calls in the section should be prepended with **https://my.rainmachine.com/** as the URL. After authentication
-the rest of the API calls should use the **https://my.rainmachine.com/s/sprinklerID/api/4/** as URL with
-**?access_token=<obtained token>** appended.
+the rest of the API calls should use the **https://my.rainmachine.com/s/sprinklerID/api/4/** or the device url obtained from 
+from the response of **/devices/get-sprinklers** call bellow as URL with `?access_token=<obtained token>` appended.
 
 
 ### POST /login/auth
 
-Authenticate with the RainMachine associated with an account. This call should only be used if the account has only
-one RainMachine associated otherwise the `errorType` field from response will return -1 (see below).
+Authenticate with the RainMachine associated with an account. This call should be the first call performed when accessing the 
+device remotelly as it will return an `access_token` that should be used on next call by appending it to the url ` ?access_token=<obtained token> `
 
 If authentication succeeds the `errorType` field from the returned JSON should be 0 and contain `access_token` and 
-`sprinklerId` that will be used for further API calls.
+`sprinklerId` that will should be for further API calls. If `errorType` returned is -1 then another call to **/devices/get-sprinklers**
+should be performed with the returned `access_token` included in URL.
 
 Other values for `errorType` are:
 
 - 0 - success
-- -1 - the user has multiple sprinklers use the **/get-sprinklers** call below to retrieve the list
+- -1 - the user has multiple sprinklers use the **/devices/get-sprinklers** call below to retrieve the list
 - 1 - the email has not been validated
 - 2 - no devices are connected to the cloud 
 - 3 - the password provided is wrong
@@ -213,26 +214,7 @@ Other values for `errorType` are:
         }
         
 
-### POST /devices/login-sprinkler
-Authenticate with a RainMachine when knowning its  *sprinklerId*. `errorType` is either 0 for *success* or 3 for *invalid credentials*
-To retrieve a list of RainMachine devices and their *sprinklerId* use the **/devices/get-sprinklers** API call (see below)
 
-+ Request (application/json)
-
-        {
-            "sprinklerId": "{{SPRINKLERID}}", 
-            "pwd": "{{PASSWORD}}"
-        }
-        
-+ Response 200 (application/json)
-
-        {
-            "access_token": "68d56b3e368758ac6f8d6a848e831c1f92cd27e2fe44c21bc76db653",
-            "errorType": 0,
-            "sprinklerId": "{{SPRINKLERID}}"
-        }
-
-        
 ### POST /devices/get-sprinklers
 Retrieve the list of RainMachine devices associated with the accound. To authenticate with a certain RainMachine the **/devices/login-sprinkler**
 call should be used.
@@ -264,6 +246,29 @@ call should be used.
                 }
             ]
         }
+
+### POST /devices/login-sprinkler
+Authenticate with a RainMachine when knowning its  *sprinklerId*. `errorType` is either 0 for *success* or 3 for *invalid credentials*
+To retrieve a list of RainMachine devices and their *sprinklerId* use the **/devices/get-sprinklers** API call (see below)
+After this call is successful the new `access_token` should be used for further API calls to the device by using either the *sprinklerUrl* 
+obtained in the **/devices/get-sprinklers** call or by constructing a new URL in the form: ` https://my.rainmachine.com/s/" + sprinklerId + "/api/4" `.
+
+
++ Request (application/json)
+
+        {
+            "sprinklerId": "{{SPRINKLERID}}", 
+            "pwd": "{{PASSWORD}}"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "access_token": "68d56b3e368758ac6f8d6a848e831c1f92cd27e2fe44c21bc76db653",
+            "errorType": 0,
+            "sprinklerId": "{{SPRINKLERID}}"
+        }
+
 
 
 ## Group Authenticate directly with device
