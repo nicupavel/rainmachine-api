@@ -181,13 +181,12 @@ from the response of **/devices/get-sprinklers** call bellow as URL with `?acces
 Authenticate with the RainMachine associated with an account. This call should be the first call performed when accessing the 
 device remotelly as it will return an `access_token` that should be used on next call by appending it to the url ` ?access_token=<obtained token> `
 
-If authentication succeeds the `errorType` field from the returned JSON should be 0 and contain `access_token` and 
-`sprinklerId` that will should be for further API calls. If `errorType` returned is -1 then another call to **/devices/get-sprinklers**
-should be performed with the returned `access_token` included in URL.
+If `errorType` field from the returned JSON is 0 the authentication is successful and the returned `access_token` and `sprinklerId` can be used for RainMachine API calls. 
+If `errorType` returned is -1 then another call to **/devices/get-sprinklers** should be performed with the returned `access_token` included in URL.
 
 Other values for `errorType` are:
 
-- 0 - success
+- 0 - success the retuned token can be used to call API on RainMachine
 - -1 - the user has multiple sprinklers use the **/devices/get-sprinklers** call below to retrieve the list
 - 1 - the email has not been validated
 - 2 - no devices are connected to the cloud 
