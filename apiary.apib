@@ -145,6 +145,7 @@ The API client should set this order correctly for all zones involved in a progr
 
 ### Changes from API 4.5 to API 4.6 (alpha)
  - **MODIFICATION**  - `/provision` - Added *useFlowSensor* (boolean), *flowSensorClicksPerCubicMeter* (integer) to setup flow sensor and *lastLeakDetected* for the timestamp of last detection.
+ - **MODIFICATION**  - `/provision/reset` - Added *reboot* (boolean) default true to reboot device after provision reset.
  - **MODIFICATION**  - `/restrictions/currently` - Added *lastLeakDetected* as above.
  - **MODIFICATION**  - `/watering/log/details` - Added *flowclicks* (integer) to read flow sensor clicks per zone or cycle
  - **NEW** - `POST /parser/data/` - Allow injecting Weather Data directly into RainMachine from a Weather Station or another source like weewx or cumulus mx.
