@@ -10,10 +10,13 @@ RainMachine API version 4.5 for accesing [RainMachine](http://www.rainmachine.co
 - 1st generation RainMachine: `hwVer: 1.0` partial support where noted
 - [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html): `hwVer: 2.0` full support
 - [RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html): `hwVer: 3.0` full support
+- [RainMachine Pro](http://www.rainmachine.com/products/rainmachine-pro.html): `hwVer: 5.0` full support
 
-For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html) and 
-[RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html) the RESTful interface is accessible via HTTPS on port **8080**. 
-HTTP access is only allowed from localhost and it's bound to port 18080 (to be removed in the future).
+For the [RainMachine Mini 8](http://www.rainmachine.com/products/rainmachine-mini-8.html), 
+[RainMachine Touch HD](http://www.rainmachine.com/products/rainmachine-touch-hd-12.html)  and [RainMachine Pro](http://www.rainmachine.com/products/rainmachine-pro.html)
+the RESTful interface is accessible via HTTPS on port **8080**. 
+HTTP access is only allowed from localhost and it's bound to port 18080 
+
 With version *> 4.0.927* a HTTP access is allowed on port **8081**. 
 
 A typical URL when accessing the machine directly should look like this: 
@@ -141,9 +144,10 @@ The API client should set this order correctly for all zones involved in a progr
 
 ### Changes from API 4.4 to API 4.5
  - **MODIFICATION**  - `/provision` - Added *automaticUpdates* (boolean) to enable or disable automatic updates.
+ - **NEW** - `POST /watering/pauseall` - Pause all active watering for the specified duration. Calling this with duration set to 0 will unpause.
  - **MODIFICATION**  - Added `RotorsHigh` as a sprinkler head type (release .931)
 
-### Changes from API 4.5 to API 4.6 (alpha)
+### Changes from API 4.5 to API 4.6
  - **MODIFICATION**  - `/provision` - Added *useFlowSensor* (boolean), *flowSensorClicksPerCubicMeter* (integer) to setup flow sensor and *lastLeakDetected* for the timestamp of last detection.
  - **MODIFICATION**  - `/provision` - Added *carryOverInRestriction* to control if water deficit in a restriction should be carried to next water cycle.
  - **MODIFICATION**  - `/provision/reset` - Added *reboot* (boolean) default true to reboot device after provision reset.
@@ -2726,6 +2730,23 @@ Stops all watering in progress including zones and programs that were started.
 
         { "statusCode": 0 }
 
+
+
+
+## POST /watering/pauseall
+Pause all watering on device for the specified duration (in seconds). Calling this with duration set to 0 will unpause the watering.
+
++ Request (application/json)
+    + Body
+    
+            {
+                "duration": 60
+            }
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+        
 
 # Group Restrictions   
 Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay. New in 4.1: Rain Sensor
