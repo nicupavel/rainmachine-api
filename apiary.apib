@@ -651,12 +651,12 @@ This won't work on RainMachine HD-12/16 as WIFI is handled by local interface
 
 ## GET /provision/wifi/ap
 Returns the status of the WIFI Access Point (only usable on RainMachine Pro). If the AP is hidden and does not allow connections
-the hidden key will be true and encryption will be an array of strings containing encryption protocols. If AP is visible and allows connections hidden will be false
-and encryption will be null. ssid key contains the name of the automatically generated name for the RainMachine AP.
+the hidden key will be true. If AP is visible and allows connections hidden will be false
+and encryption will be "none". ssid key contains the name of the automatically generated name for the RainMachine AP.
 
 + Response 200 (application/json)
 
-        { "encryption": [ "psk2", "" ], "hidden": true, "ssid": [ "RainMachine-00d399", "" ] }
+        { "encryption": "psk2" "hidden": true, "ssid": "RainMachine-00d399" }
         
 
 ## GET /provision/cloud
