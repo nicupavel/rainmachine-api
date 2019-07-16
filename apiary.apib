@@ -1042,6 +1042,47 @@ Returns locally stored (on device) seasonal data for the setup location
           0.95999999999999996, 
           0.95999999999999996
         ]
+        
+        
+## /provision/homekit
+### POST
+(Requires API 4.6.1) (Internal) For HD12/16 and Pro devices initialise token provisioning (not used)
+
++ Response 200 (application/json)
+
+        {
+            "statusCode":  0
+        }
+
+
+## GET
+(Requires API 4.6.1) (Internal) For HD12/16 and Pro devices returns token provisioning status
+
++ Response 200 (application/json)
+
+        {
+            "tokenProvisioned": true
+        }
+
+## POST /provision/homekit/pair
+(Requires API 4.6.1) (Internal) For HD12/16 and Pro devices enter pairing mode (send an empty POST body). 
+See also the /machine/pinqr on how to display/read a QR code.
+
++ Response 200 (application/json)
+
+        {
+            "statusCode":  0
+        }
+
+## POST /provision/homekit/remove
+(Requires API 4.6.1) (Internal) For HD12/16 and Pro devices remove all active pairings (send an empty POST body)
+
++ Response 200 (application/json)
+
+        {
+            "statusCode":  0
+        }
+
 
 # Group Programs
 Watering Programs, each program can contain several Zones and rules that control the irrigation
@@ -4551,6 +4592,36 @@ For Mini-8 display detection and settings for valves short circuit protection an
             "actionforshort": 1
           }
         }
+        
+## /machine/pinqr
+### GET
+(Requires API 4.6.1) (Internal) For HD12/16 and Pro devices returns last pin and code used to generate the QR Code
+
++ Response 200 (application/json)
+
+        {
+            "code": null,
+            "pin": null
+        }
+
+
+## POST
+(Requires API 4.6) (Internal) For Pro devices shows a QR Code for Apple HomeKit on device screen.
+
++ Request (application/json)
+    + Body
+    
+                {
+                  "code": "your homekit code",
+                  "pin": "numeric homekit pin"
+                }
+
++ Response 200 (application/json)
+
+        {
+            "statusCode":  0
+        }
+
 
 # Group Dev
 Developer and beta update options
