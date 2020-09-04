@@ -3735,10 +3735,13 @@ Returns parser weather data starting from specified `date` for a number of speci
 
 ### POST
 *API 4.6*: Allows Weather data to be pushed to RainMachine from an external source. Multiple weather entries can be sent
-in each POST request. If *timestamp* is not specified the current time at the moment of call will be used.
+in each POST request and each weather entry should be in *metric units*. If *timestamp* is not specified the current time at the moment of call will be used.
 There is no rate limiting but the data will be registered and mixed with data from other weather services hourly.
-*IMPORTANT*: The QPF and RAIN values shouldn't be send a cumulative but the measured/forecasted values for that hour/day.
-The RainMachine Mixer will sum all QPF or RAIN values in the current day to have the day QPF or RAIN.
+*IMPORTANT*: The QPF and RAIN values shouldn't be send as cumulative values but the measured/forecasted values for each hour or day.
+The RainMachine Mixer will sum all QPF or RAIN values in the current day to have the day total QPF or RAIN.
+
+Also Local Weather Push service should be enabled from Settings > Weather > Developer tab for RainMachine to consider
+the values being sent.
 
 + Request 
 
