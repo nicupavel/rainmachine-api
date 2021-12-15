@@ -155,10 +155,10 @@ The API client should set this order correctly for all zones involved in a progr
  - **MODIFICATION**  - `/watering/log/details` - Added *flowclicks* (integer) to read flow sensor clicks per zone or cycle
  - **NEW** - `POST /parser/data/` - Allow injecting Weather Data directly into RainMachine from a Weather Station or another source like weewx or cumulus mx.
 
-### Changes from API 4.6 to API 4.6.1 (alpha)
+### Changes from API 4.6 to API 4.6.1 
  - **NEW**  - `GET /provision/wifi/ap` - This call will return the state of WIFI Access Point. Only usable on RainMachine Pro 8/16
- 
- 
+ - **NEW**  - `GET /watering/flowmeter` - This call will return the flow meter values (initial, watering and leak clicks)
+ - **NEW**  - `POST /watering/flowmeter` - Ingest flow meter date from an external service
 # Group API versions
 
 ## GET /apiVer
@@ -2802,6 +2802,36 @@ Pause all watering on device for the specified duration (in seconds). Calling th
 
         { "statusCode": 0 }
         
+
+## /watering/flowmeter
+
+### GET
+Returns the registered values from flowmeter.
+
++ Response 200 (application/json)
+
+        { "flowMeterWateringClicks": 4000,
+          "flowMeterLeakClicks": 10,
+          flowMeterStartIndexClicks": 120 }
+
+
+### POST
+Add values to flowmeter counters from an external smart water meter (like Flume) not wired directly to RainMachine.
+Units can be "clicks", "gal", "m3" and "litre".
+
++ Request (application/json)
+    + Body
+    
+            {
+                "value": 60,
+                "units": clicks
+            }
+
++ Response 200 (application/json)
+
+        { "statusCode": 0 }
+        
+
 
 # Group Restrictions   
 Watering Restriction Hourly, Daily, Weekly, Monthly and Freeze Control/Rain Delay. New in 4.1: Rain Sensor
